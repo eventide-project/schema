@@ -16,6 +16,10 @@ module Test
       example.attributes
     end
 
+    def self.hash
+      example.to_h
+    end
+
     class Example
       include ::Schema
 
@@ -31,8 +35,14 @@ describe "Schema" do
   end
 
   it "has attributes" do
-    example = Test::Schema.example
-    assert(example.attributes == { some_attribute: 'some value' })
+    attributes = Test::Schema.attributes
+    assert(attributes == { some_attribute: 'some value' })
+  end
+
+  it "hash of the object is the same as its attributes" do
+    attributes = Test::Schema.attributes
+    hash = Test::Schema.hash
+    assert(hash == attributes)
   end
 
   it "cannot be assigned attributes" do

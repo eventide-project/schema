@@ -4,4 +4,8 @@ module Schema
   def attributes
     attribute_set.get(self)
   end
+
+  def to_h
+    attributes
+  end
 end
