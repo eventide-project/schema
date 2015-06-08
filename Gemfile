@@ -5,6 +5,7 @@ prox_gem 'attribute'
 prox_gem 'subst_attr'
 prox_gem 'dependency'
 prox_gem 'telemetry_logger'
+prox_gem 'set_attributes'
 prox_gem 'runner'
 
 source 'https://rubygems.org'
