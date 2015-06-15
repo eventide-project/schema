@@ -8,6 +8,10 @@ module Test
       example
     end
 
+    def self.configure_dependencies_example
+      ConfigureDependenciesExample.build
+    end
+
     def self.ancestors
       example.class.ancestors
     end
@@ -22,8 +26,17 @@ module Test
 
     class Example
       include Schema::DataStructure
-
       attribute :some_attribute
+    end
+
+    class ConfigureDependenciesExample
+      include Schema::DataStructure
+
+      attr_accessor :some_dependency
+
+      def configure_dependencies
+        self.some_dependency = :set
+      end
     end
   end
 end
@@ -38,5 +51,10 @@ describe "Data Structure" do
     data = Test::DataStructure.hash
     data_structure = Test::DataStructure::Example.build data
     assert(data_structure.some_attribute == 'some value')
+  end
+
+  specify "Can configure its dependencies" do
+    example = Test::DataStructure.configure_dependencies_example
+    assert(example.some_dependency = :set)
   end
 end
