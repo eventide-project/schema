@@ -17,7 +17,7 @@ module Schema
       end
 
       def set_attributes(instance, data)
-        SetAttributes.! instance, data
+        SetAttributes.(instance, data)
       end
     end
   end
