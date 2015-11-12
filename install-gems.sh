@@ -20,12 +20,23 @@ for gemspec in *.gemspec; do
   gem build $gemspec
 done
 
+if [ -z ${POSTURE+x} ]; then
+  POSTURE="operational"
+fi
+
 echo
-echo 'Installing gems locally'
+echo "Installing gems locally (POSTURE: $POSTURE)"
 echo '- - -'
 for gem in *.gem; do
   echo "($gem)"
-  gem install $gem --source https://gem.fury.io/obsidian/ --install-dir ./gems --development
+  cmd="gem install $gem --source https://gem.fury.io/obsidian/ --install-dir ./gems"
+
+  if [ operational != "$POSTURE" ]; then
+    cmd="$cmd --development"
+  fi
+
+  echo $cmd
+  ($cmd)
 done
 
 echo '= = ='
