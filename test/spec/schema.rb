@@ -28,28 +28,31 @@ module Test
   end
 end
 
-describe "Schema" do
-  it "is a Virtus object" do
+context "Schema" do
+  test "is a Virtus object" do
     ancestors = Test::Schema.ancestors
     assert(ancestors.include? Virtus::Model::Core)
   end
 
-  it "has attributes" do
+  test "has attributes" do
     attributes = Test::Schema.attributes
     assert(attributes == { some_attribute: 'some value' })
   end
 
-  it "hash of the object is the same as its attributes" do
+  test "hash of the object is the same as its attributes" do
     attributes = Test::Schema.attributes
     hash = Test::Schema.hash
     assert(hash == attributes)
   end
 
-  it "cannot be assigned attributes" do
+  test "cannot be assigned attributes" do
     example = Test::Schema.example
 
-    assert_raises NoMethodError do
+    begin
       example.attributes = :something
+    rescue NoMethodError => error
     end
+
+    assert error
   end
 end

@@ -41,19 +41,19 @@ module Test
   end
 end
 
-describe "Data Structure" do
-  specify "Is a Schema object" do
+context "Data Structure" do
+  test "Is a Schema object" do
     ancestors = Test::DataStructure.ancestors
     assert(ancestors.include? Schema)
   end
 
-  specify "Can be built from a hash" do
+  test "Can be built from a hash" do
     data = Test::DataStructure.hash
     data_structure = Test::DataStructure::Example.build data
     assert(data_structure.some_attribute == 'some value')
   end
 
-  specify "Can configure its dependencies" do
+  test "Can configure its dependencies" do
     example = Test::DataStructure.configure_dependencies_example
     assert(example.some_dependency = :set)
   end
