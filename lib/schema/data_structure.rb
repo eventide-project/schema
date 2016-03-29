@@ -2,7 +2,7 @@ module Schema
   module DataStructure
     def self.included(cls)
       cls.send :include, Schema
-      cls.send :include, Virtual
+      cls.extend Virtual::Macro
       cls.send :virtual, :configure_dependencies
       cls.extend Build
     end
