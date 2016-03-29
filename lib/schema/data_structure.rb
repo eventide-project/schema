@@ -3,7 +3,7 @@ module Schema
     def self.included(cls)
       cls.send :include, Schema
       cls.extend Virtual::Macro
-      cls.send :virtual, :configure_dependencies
+      cls.virtual :configure_dependencies
       cls.extend Build
     end
 
