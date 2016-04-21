@@ -5,8 +5,8 @@ Gem::Specification.new do |s|
   s.version = '0.1.0.1'
   s.description = ' '
 
-  s.authors = ['Obsidian Software, Inc']
-  s.email = 'opensource@obsidianexchange.com'
+  s.authors = ['The Eventide Project']
+  s.email = 'opensource@eventide-project.org'
   s.homepage = 'https://github.com/obsidian-btc/schema'
   s.licenses = ['MIT']
 
