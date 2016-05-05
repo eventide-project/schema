@@ -7,10 +7,6 @@ module Schema
         example
       end
 
-      def self.configure_dependencies_example
-        ConfigureDependenciesExample.build
-      end
-
       def self.ancestors
         example.class.ancestors
       end
@@ -28,13 +24,19 @@ module Schema
         attribute :some_attribute
       end
 
-      class ConfigureDependenciesExample
-        include ::Schema::DataStructure
+      module ConfigureDependencies
+        def self.example
+          Example.build
+        end
 
-        attr_accessor :some_dependency
+        class Example
+          include ::Schema::DataStructure
 
-        def configure_dependencies
-          self.some_dependency = :set
+          attr_accessor :some_dependency
+
+          def configure_dependencies
+            self.some_dependency = :set
+          end
         end
       end
     end
