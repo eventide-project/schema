@@ -1,4 +1,4 @@
-require 'virtus'
+require 'attribute'
 require 'set_attributes'
 require 'virtual'
 

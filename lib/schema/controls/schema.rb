@@ -21,7 +21,6 @@ module Schema
 
       class Example
         include ::Schema
-
         attribute :some_attribute
       end
     end

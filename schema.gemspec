@@ -15,10 +15,9 @@ Gem::Specification.new do |s|
   s.platform = Gem::Platform::RUBY
   s.required_ruby_version = '>= 2.2.3'
 
+  s.add_runtime_dependency 'attribute'
   s.add_runtime_dependency 'set_attributes'
   s.add_runtime_dependency 'virtual'
-
-  s.add_runtime_dependency 'virtus', '~> 1.0'
 
   s.add_development_dependency 'test_bench'
 end
