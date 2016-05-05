@@ -13,6 +13,7 @@ ENV['LOG_OPTIONAL'] ||= 'on'
 puts RUBY_DESCRIPTION
 
 require_relative '../init.rb'
+require 'schema/controls'
 
 require 'test_bench'; TestBench.activate
 
