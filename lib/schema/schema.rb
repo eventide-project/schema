@@ -9,11 +9,18 @@ module Schema
   end
 
   module AttributeMacro
-    def attribute_macro(attr_name, interface=nil)
+    def attribute_macro(attr_name, interface=nil, strict: nil)
+      strict ||= false
       check = nil
 
       unless interface.nil?
-        check = proc { |val| raise TypeError unless val.is_a? interface }
+        check = proc do |val|
+          if strict
+            raise TypeError unless val.instance_of? interface
+          else
+            raise TypeError unless val.is_a? interface
+          end
+        end
       end
 
       ::Attribute::Define.(self, attr_name, :accessor, check: check)
