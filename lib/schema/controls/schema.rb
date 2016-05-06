@@ -23,6 +23,16 @@ module Schema
         include ::Schema
         attribute :some_attribute
       end
+
+      module Typed
+        class SomeType
+        end
+
+        class Example
+          include ::Schema
+          attribute :some_attribute, SomeType
+        end
+      end
     end
   end
 end
