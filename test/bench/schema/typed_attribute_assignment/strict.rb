@@ -1,4 +1,4 @@
-require_relative '../bench_init'
+require_relative '../../bench_init'
 
 context "Attribute Definition (Not Strict)" do
   example = Schema::Controls::Schema::Typed::Strict::Example.new
