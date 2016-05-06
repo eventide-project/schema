@@ -24,6 +24,13 @@ module Schema
         attribute :some_attribute
       end
 
+      module DefaultValue
+        class Example
+          include ::Schema
+          attribute :some_attribute, default: 'some default value'
+        end
+      end
+
       module Typed
         class SomeType
         end
