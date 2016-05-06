@@ -9,7 +9,7 @@ module Schema
   end
 
   module AttributeMacro
-    def attribute_macro(attr_name, type=nil, strict: nil)
+    def attribute_macro(attr_name, type=nil, strict: nil, default: nil)
       strict ||= false
       check = nil
 
@@ -23,7 +23,12 @@ module Schema
         end
       end
 
-      ::Attribute::Define.(self, attr_name, :accessor, check: check)
+      initialize_value = nil
+      unless default.nil?
+        initialize_value = proc { default }
+      end
+
+      ::Attribute::Define.(self, attr_name, :accessor, check: check, &initialize_value)
 
       attribute = attributes.add(attr_name, type, strict)
       attribute
