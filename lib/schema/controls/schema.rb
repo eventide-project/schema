@@ -28,9 +28,19 @@ module Schema
         class SomeType
         end
 
+        class SomeSubtype < SomeType
+        end
+
         class Example
           include ::Schema
           attribute :some_attribute, SomeType
+        end
+
+        module Strict
+          class Example
+            include ::Schema
+            attribute :some_attribute, SomeType, strict: true
+          end
         end
       end
     end
