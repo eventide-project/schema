@@ -66,4 +66,13 @@ module Schema
       attribute
     end
   end
+
+  def attributes
+    attributes = {}
+    self.class.attributes.map do |attribute|
+      attributes[attribute.name] = public_send(attribute.name)
+    end
+    attributes
+  end
+  alias :to_h :attributes
 end
