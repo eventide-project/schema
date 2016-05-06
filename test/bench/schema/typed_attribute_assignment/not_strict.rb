@@ -1,4 +1,4 @@
-require_relative '../bench_init'
+require_relative '../../bench_init'
 
 context "Attribute Definition (Not Strict)" do
   example = Schema::Controls::Schema::Typed::Example.new
@@ -6,7 +6,7 @@ context "Attribute Definition (Not Strict)" do
   context "Attribute value is not of the same type as the attribute's declared interface" do
     test "Incorrect" do
       assert proc { example.some_attribute = 'some value' } do
-        raises_error? Schema::TypeError
+        raises_error? Schema::Attribute::TypeError
       end
     end
   end
