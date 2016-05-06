@@ -2,7 +2,7 @@
 Gem::Specification.new do |s|
   s.name = 'schema'
   s.summary = "Primitives for schema and structure"
-  s.version = '0.1.2.0'
+  s.version = '0.2.0.0'
   s.description = ' '
 
   s.authors = ['The Eventide Project']
