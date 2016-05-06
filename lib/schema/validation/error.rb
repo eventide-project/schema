@@ -1,6 +1,6 @@
 module Schema
   module Validation
-    class Error < StandardError
+    class Error < RuntimeError
     end
   end
 end
