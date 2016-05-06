@@ -37,7 +37,7 @@ module Schema
     end
 
     def attribute_names
-      raise NotImplementedError
+      attributes.map { |attribute| attribute.name }
     end
   end
 
@@ -53,6 +53,10 @@ module Schema
 
     def [](index)
       items[index]
+    end
+
+    def map(&action)
+      items.map(&action)
     end
 
     def add(name, type, strict=nil)

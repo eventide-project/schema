@@ -12,6 +12,11 @@ context "Class Attributes List" do
       attribute = attributes[0]
       assert(attribute.name == :some_attribute)
     end
+
+    test "Attribute names is a list of just the declared names" do
+      attribute_names = Schema::Controls::Schema::Example.attribute_names
+      assert(attribute_names = [:some_attribute])
+    end
   end
 
   context "Not Typed" do
