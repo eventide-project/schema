@@ -75,4 +75,9 @@ module Schema
     attributes
   end
   alias :to_h :attributes
+
+  def ==(other)
+    self.class == other.class &&
+      attributes == other.attributes
+  end
 end
