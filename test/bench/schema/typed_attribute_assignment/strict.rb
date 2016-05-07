@@ -27,4 +27,10 @@ context "Attribute Definition (Not Strict)" do
       end
     end
   end
+
+  context "Value is nil" do
+    test "Correct" do
+      example.some_attribute = nil
+    end
+  end
 end
