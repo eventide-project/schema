@@ -10,6 +10,10 @@ module Schema
 
   module AttributeMacro
     def attribute_macro(attr_name, type=nil, strict: nil, default: nil)
+      if type.nil? && !strict.nil?
+        raise Schema::Attribute::Error, "The \"#{attr_name}\" attribute is declared with the \"strict\" option but a type is not specified"
+      end
+
       strict ||= false
       check = nil
 
