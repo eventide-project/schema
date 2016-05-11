@@ -70,6 +70,10 @@ module Schema
       items.map(&action)
     end
 
+    def each_with_object(obj, &action)
+      items.each_with_object(obj, &action)
+    end
+
     def add(name, type, strict=nil)
       strict ||= false
       attribute = Schema::Attribute.new(name, type, strict)
@@ -79,11 +83,9 @@ module Schema
   end
 
   def attributes
-    attributes = {}
-    self.class.attributes.map do |attribute|
+    self.class.attributes.each_with_object({}) do |attribute, attributes|
       attributes[attribute.name] = public_send(attribute.name)
     end
-    attributes
   end
   alias :to_h :attributes
 
