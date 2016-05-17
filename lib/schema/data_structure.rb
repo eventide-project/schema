@@ -6,6 +6,7 @@ module Schema
         extend Build
         extend Virtual::Macro
         virtual :configure_dependencies
+        alias :configure :configure_dependencies
       end
     end
 
