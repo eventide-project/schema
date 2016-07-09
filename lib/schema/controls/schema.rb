@@ -4,6 +4,14 @@ module Schema
       def self.example
         example = Example.new
         example.some_attribute = 'some value'
+        example.some_other_attribute = 'some other value'
+        example
+      end
+
+      def self.other_example
+        example = OtherExample.new
+        example.some_attribute = 'some value'
+        example.some_other_attribute = 'some other value'
         example
       end
 
@@ -22,6 +30,13 @@ module Schema
       class Example
         include ::Schema
         attribute :some_attribute
+        attribute :some_other_attribute
+      end
+
+      class OtherExample
+        include ::Schema
+        attribute :some_attribute
+        attribute :some_other_attribute
       end
 
       module DefaultValue

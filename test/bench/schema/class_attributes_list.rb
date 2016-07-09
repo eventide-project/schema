@@ -5,7 +5,7 @@ context "Class Attributes List" do
     attributes = Schema::Controls::Schema::Example.attributes
 
     test "Each defined attribute is included in the class's attribute list" do
-      assert(attributes.length == 1)
+      assert(attributes.length == 2)
     end
 
     test "Name is the declared name" do
