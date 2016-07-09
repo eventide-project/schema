@@ -1,4 +1,4 @@
-require_relative '../bench_init'
+require_relative '../../bench_init'
 
 context "Equality" do
   context "Instances are equal when" do
@@ -20,8 +20,8 @@ context "Equality" do
       assert(example_1 != example_2)
     end
 
-    test "Attributes and values are equal and classes are equal" do
-      example_2 = Schema::Controls::Schema::Typed::Example.new
+    test "Attributes and values are equal and classes are not equal" do
+      example_2 = Schema::Controls::Schema.other_example
 
       assert(example_1 != example_2)
     end
