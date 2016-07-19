@@ -100,7 +100,6 @@ module Schema
     end
 
     attributes.each do |attribute|
-
       return false if public_send(attribute) != other.public_send(attribute)
     end
 
