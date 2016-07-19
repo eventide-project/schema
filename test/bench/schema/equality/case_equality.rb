@@ -6,7 +6,7 @@ context "Case Equality" do
       example_1 = Schema::Controls::Schema.example
       example_2 = Schema::Controls::Schema.example
 
-      test "Instances are equal" do
+      test "Schemas are equal" do
         assert(example_1 === example_2)
       end
     end
@@ -15,7 +15,7 @@ context "Case Equality" do
       example_1 = Schema::Controls::Schema.example
       example_2 = Schema::Controls::Schema.other_example
 
-      test "Instances are equal" do
+      test "Schemas are equal" do
         assert(example_1 === example_2)
       end
     end
@@ -28,7 +28,9 @@ context "Case Equality" do
 
       example_2.some_attribute = 'some other value'
 
-      refute(example_1 == example_2)
+      test "Schema are not equal" do
+        refute(example_1 == example_2)
+      end
     end
   end
 end
