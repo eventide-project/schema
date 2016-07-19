@@ -100,12 +100,17 @@ module Schema
     end
 
     attributes.each do |attribute|
+
       return false if public_send(attribute) != other.public_send(attribute)
     end
 
     true
   end
   alias :eql? :==
+
+  def ===(other)
+    self.eql?(other, ignore_class: true)
+  end
 
   module Assertions
     def attributes_equal?(other, attributes=nil, print: nil)
