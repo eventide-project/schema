@@ -3,8 +3,8 @@ require_relative '../../bench_init'
 context "Equality" do
   example_1 = Schema::Controls::Schema.example
 
-  context "Ignore Class" do
-    context "Classes aren't equal" do
+  context "Not Equal" do
+    context "Class is ignored" do
       example_2 = Schema::Controls::Schema.other_example
 
       test "Schemas are equal" do
