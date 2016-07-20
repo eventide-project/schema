@@ -14,16 +14,22 @@ module Schema
     end
 
     module Build
-      def build(data=nil)
+      def build(data=nil, strict=nil)
         data ||= {}
+        strict ||= false
+
         new.tap do |instance|
-          set_attributes(instance, data)
+          set_attributes(instance, data, strict)
           instance.configure_dependencies
         end
       end
 
-      def set_attributes(instance, data)
-        SetAttributes.(instance, data)
+      def set_attributes(instance, data, strict)
+        begin
+          SetAttributes.(instance, data, strict: strict)
+        rescue SetAttributes::Attribute::Error => e
+          raise Schema::Error, e.message
+        end
       end
     end
   end

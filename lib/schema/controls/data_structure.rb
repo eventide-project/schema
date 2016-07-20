@@ -24,6 +24,15 @@ module Schema
         attribute :some_attribute
       end
 
+      module ExtraAttributes
+        def self.data
+          {
+            :some_attribute => 'some value',
+            :some_other_attribute => 'some other value'
+          }
+        end
+      end
+
       module ConfigureDependencies
         def self.example
           Example.build
@@ -34,7 +43,7 @@ module Schema
 
           attr_accessor :some_dependency
 
-          def configure_dependencies
+          def configure
             self.some_dependency = :set
           end
         end
