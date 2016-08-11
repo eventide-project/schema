@@ -100,7 +100,13 @@ module Schema
     end
 
     attributes.each do |attribute|
-      return false if public_send(attribute) != other.public_send(attribute)
+      if attribute.is_a? Hash
+        this_attribute, other_attribute = attribute.keys.first, attribute.values.first
+      else
+        this_attribute, other_attribute = attribute, attribute
+      end
+
+      return false if public_send(this_attribute) != other.public_send(other_attribute)
     end
 
     true
