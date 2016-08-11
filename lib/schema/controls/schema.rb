@@ -36,6 +36,21 @@ module Schema
       class OtherExample < Example
       end
 
+      module Equivalent
+        def self.example
+          example = Example.new
+          example.some_attribute = 'some value'
+          example.yet_another_attribute = 'some other value'
+          example
+        end
+
+        class Example
+          include ::Schema
+          attribute :some_attribute
+          attribute :yet_another_attribute
+        end
+      end
+
       module DefaultValue
         class Example
           include ::Schema
