@@ -33,10 +33,7 @@ module Schema
         attribute :some_other_attribute
       end
 
-      class OtherExample
-        include ::Schema
-        attribute :some_attribute
-        attribute :some_other_attribute
+      class OtherExample < Example
       end
 
       module DefaultValue
