@@ -1,6 +1,6 @@
 require_relative '../../bench_init'
 
-context "Equality" do
+context "Equality Assertion" do
   context "Specific Attributes" do
     example_1 = Schema::Controls::Schema.example
     example_2 = Schema::Controls::Schema.example
@@ -12,7 +12,9 @@ context "Equality" do
     context "Equal" do
       context "Specified attributes are equal" do
         test "Schemas are equal" do
-          assert(example_1.eql?(example_2, :some_attribute))
+          assert example_1 do
+            attributes_equal? example_2, :some_attribute
+          end
         end
       end
     end
@@ -20,7 +22,9 @@ context "Equality" do
     context "Not Equal" do
       context "Specified attributes are not equal" do
         test "Schemas are not equal" do
-          refute(example_1.eql?(example_2, :some_other_attribute))
+          refute example_1 do
+            attributes_equal? example_2, :some_other_attribute
+          end
         end
       end
     end
