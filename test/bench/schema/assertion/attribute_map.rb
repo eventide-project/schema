@@ -13,7 +13,7 @@ context "Equality Assertion" do
           assert example_1 do
             attributes_equal? example_2, [
               :some_attribute,
-              {some_other_attribute: :yet_another_attribute}
+              { some_other_attribute: :yet_another_attribute }
             ]
           end
         end
@@ -33,7 +33,7 @@ context "Equality Assertion" do
           refute example_1 do
             attributes_equal? example_2, [
               :some_attribute,
-              {some_other_attribute: :yet_another_attribute}
+              { some_other_attribute: :yet_another_attribute }
             ]
           end
         end
