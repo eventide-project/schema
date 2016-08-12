@@ -11,7 +11,7 @@ context "Equality" do
           assert(example_1.eql?(example_2,
             [
               :some_attribute,
-              {some_other_attribute: :yet_another_attribute}
+              { some_other_attribute: :yet_another_attribute }
             ],
             ignore_class: true
           ))
@@ -30,7 +30,7 @@ context "Equality" do
           refute(example_1.eql?(example_2,
             [
               :some_attribute,
-              {some_other_attribute: :yet_another_attribute}
+              { some_other_attribute: :yet_another_attribute }
             ],
             ignore_class: true
           ))
