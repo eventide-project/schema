@@ -30,7 +30,9 @@ module Schema
       end
 
       initialize_value = nil
-      unless default.nil?
+      if default.is_a? Proc
+        initialize_value = default
+      elsif !default.nil?
         initialize_value = proc { default }
       end
 
