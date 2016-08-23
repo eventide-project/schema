@@ -56,6 +56,13 @@ module Schema
           include ::Schema
           attribute :some_attribute, default: 'some default value'
         end
+
+        module Proc
+          class Example
+            include ::Schema
+            attribute :some_attribute, default: proc { 'some default value' }
+          end
+        end
       end
 
       module Typed
