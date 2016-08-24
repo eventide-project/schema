@@ -38,7 +38,7 @@ module Schema
 
       ::Attribute::Define.(self, attr_name, :accessor, check: check, &initialize_value)
 
-      attribute = attributes.add(attr_name, type, strict)
+      attribute = attributes.register(attr_name, type, strict)
       attribute
     end
     alias :attribute :attribute_macro
@@ -81,6 +81,10 @@ module Schema
       attribute = Schema::Attribute.new(name, type, strict)
       items << attribute
       attribute
+    end
+
+    def register(name, type, strict=nil)
+      add(name, type, strict=nil)
     end
   end
 

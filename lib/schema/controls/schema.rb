@@ -84,6 +84,19 @@ module Schema
           end
         end
       end
+
+      module Duplicate
+        def self.example
+          Example.new
+        end
+
+        class Example
+          include ::Schema
+
+          attribute :some_attribute, Numeric
+          attribute :some_attribute, String, default: 'some default'
+        end
+      end
     end
   end
 end
