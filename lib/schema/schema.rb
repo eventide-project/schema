@@ -55,31 +55,31 @@ module Schema
   end
 
   class AttributeRegistry
-    def items
-      @items ||= []
+    def entries
+      @entries ||= []
     end
 
     def length
-      items.length
+      entries.length
     end
     alias :count :length
 
     def [](index)
-      items[index]
+      entries[index]
     end
 
     def map(&action)
-      items.map(&action)
+      entries.map(&action)
     end
 
     def each_with_object(obj, &action)
-      items.each_with_object(obj, &action)
+      entries.each_with_object(obj, &action)
     end
 
     def add(name, type, strict=nil)
       strict ||= false
       attribute = Schema::Attribute.new(name, type, strict)
-      items << attribute
+      entries << attribute
       attribute
     end
 
@@ -89,15 +89,11 @@ module Schema
     end
 
     def remove(name)
-      items.delete_if { |entry| entry.name == name }
-    end
-
-    def __attribute(name)
-      items.find { |entry| entry.name == name }
+      entries.delete_if { |entry| entry.name == name }
     end
 
     def attribute(name)
-      items.find { |entry| entry.name == name }
+      entries.find { |entry| entry.name == name }
     end
 
     def attribute?(name)
