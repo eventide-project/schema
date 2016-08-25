@@ -84,7 +84,24 @@ module Schema
     end
 
     def register(name, type, strict=nil)
-      add(name, type, strict=nil)
+      remove(name)
+      add(name, type, strict)
+    end
+
+    def remove(name)
+      items.delete_if { |entry| entry.name == name }
+    end
+
+    def __attribute(name)
+      items.find { |entry| entry.name == name }
+    end
+
+    def attribute(name)
+      items.find { |entry| entry.name == name }
+    end
+
+    def attribute?(name)
+      !attribute(name).nil?
     end
   end
 

@@ -94,7 +94,7 @@ module Schema
           include ::Schema
 
           attribute :some_attribute, Numeric
-          attribute :some_attribute, String, default: 'some default'
+          attribute :some_attribute, String
         end
       end
     end
