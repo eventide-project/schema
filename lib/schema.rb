@@ -1,9 +1,11 @@
 require 'attribute'
 require 'set_attributes'
+require 'validate'
 require 'virtual'
 
 require 'schema/schema'
 require 'schema/schema/assertions'
 require 'schema/schema/attribute'
 require 'schema/data_structure'
+require 'schema/validation/has_all_attributes'
 require 'schema/validation/error'

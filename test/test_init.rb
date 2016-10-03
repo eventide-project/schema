@@ -20,4 +20,4 @@ require 'pp'
 
 require 'test_bench'; TestBench.activate
 
-Telemetry::Logger::AdHoc.activate
+include Schema

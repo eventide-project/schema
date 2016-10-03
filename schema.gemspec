@@ -17,6 +17,7 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency 'attribute'
   s.add_runtime_dependency 'set_attributes'
+  s.add_runtime_dependency 'validate'
   s.add_runtime_dependency 'virtual'
 
   s.add_development_dependency 'test_bench'

@@ -97,6 +97,30 @@ module Schema
           attribute :some_attribute, String
         end
       end
+
+      module Validation
+        def self.example
+          Example.new
+        end
+
+        def self.errors
+          [
+            'some_attribute is missing',
+            'some_other_attribute is missing'
+          ]
+        end
+
+        class Example
+          include ::Schema
+
+          attribute :some_attribute
+          attribute :some_other_attribute
+
+          module Validator
+            extend ::Schema::Validation::HasAllAttributes
+          end
+        end
+      end
     end
   end
 end
