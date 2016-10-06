@@ -105,8 +105,8 @@ module Schema
 
         def self.errors
           [
-            'some_attribute is missing',
-            'some_other_attribute is missing'
+            "some_attribute can't be nil",
+            "some_other_attribute can't be nil"
           ]
         end
 

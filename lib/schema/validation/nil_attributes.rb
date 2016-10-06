@@ -10,7 +10,7 @@ module Schema
           errors ||= []
           schema.class.attribute_names.each do |attribute|
             if schema.public_send(attribute).nil?
-              errors << "#{attribute} is missing"
+              errors << "#{attribute} can't be nil"
             end
           end
           errors.empty?
