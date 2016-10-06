@@ -1,7 +1,7 @@
 module Schema
   module Validation
-    module HasAllAttributes
-      def has_all_attributes
+    module NilAttributes
+      def nil_attributes
         Validator
       end
 

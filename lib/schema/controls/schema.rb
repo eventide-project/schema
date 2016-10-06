@@ -117,7 +117,7 @@ module Schema
           attribute :some_other_attribute
 
           module Validator
-            extend ::Schema::Validation::HasAllAttributes
+            extend ::Schema::Validation::NilAttributes
           end
         end
       end

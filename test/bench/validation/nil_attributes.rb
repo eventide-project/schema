@@ -2,11 +2,11 @@ require_relative '../bench_init'
 
 context "Schema" do
   context "Validation" do
-    context "All Attributes" do
+    context "Nil Attributes" do
       schema = Controls::Schema::Validation.example
 
       errors = []
-      valid = Validate.(schema, errors, scenario: :has_all_attributes)
+      valid = Validate.(schema, errors, scenario: :nil_attributes)
 
       test "Is invalid" do
         refute(valid)
