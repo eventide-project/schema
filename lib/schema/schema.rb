@@ -21,9 +21,9 @@ module Schema
         check = proc do |val|
           unless val.nil?
             if strict
-              raise Schema::Attribute::TypeError, "#{val} is not an instance of #{type.name}" unless val.instance_of? type
+              raise Schema::Attribute::TypeError, "#{val.inspect} is not an instance of #{type.name}" unless val.instance_of? type
             else
-              raise Schema::Attribute::TypeError, "#{val} is not a kind of #{type.name}" unless val.is_a? type
+              raise Schema::Attribute::TypeError, "#{val.inspect} is not a kind of #{type.name}" unless val.is_a? type
             end
           end
         end
