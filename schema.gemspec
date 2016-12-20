@@ -2,7 +2,7 @@
 Gem::Specification.new do |s|
   s.name = 'evt-schema'
   s.summary = "Primitives for schema and structure"
-  s.version = '0.6.0.2'
+  s.version = '0.6.0.3'
   s.description = ' '
 
   s.authors = ['The Eventide Project']
@@ -20,5 +20,5 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'evt-validate'
   s.add_runtime_dependency 'evt-virtual'
 
-  s.add_development_dependency 'ntl-test_bench'
+  s.add_development_dependency 'test_bench'
 end
