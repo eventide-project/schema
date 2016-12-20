@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 Gem::Specification.new do |s|
-  s.name = 'schema'
+  s.name = 'evt-schema'
   s.summary = "Primitives for schema and structure"
   s.version = '0.6.0.2'
   s.description = ' '
