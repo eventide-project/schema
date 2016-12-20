@@ -15,10 +15,10 @@ Gem::Specification.new do |s|
   s.platform = Gem::Platform::RUBY
   s.required_ruby_version = '>= 2.3.3'
 
-  s.add_runtime_dependency 'attribute'
-  s.add_runtime_dependency 'set_attributes'
-  s.add_runtime_dependency 'validate'
-  s.add_runtime_dependency 'virtual'
+  s.add_runtime_dependency 'evt-attribute'
+  s.add_runtime_dependency 'evt-set_attributes'
+  s.add_runtime_dependency 'evt-validate'
+  s.add_runtime_dependency 'evt-virtual'
 
-  s.add_development_dependency 'test_bench'
+  s.add_development_dependency 'ntl-test_bench'
 end
