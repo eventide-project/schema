@@ -1,4 +1,4 @@
-require_relative '../../bench_init'
+require_relative '../../automated_init'
 
 context "Duplicate Attribute Definition" do
   example = Schema::Controls::Schema::Duplicate.example

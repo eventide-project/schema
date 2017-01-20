@@ -1,4 +1,4 @@
-require_relative '../bench_init'
+require_relative '../automated_init'
 
 context "Attributes List" do
   example = Schema::Controls::Schema.example

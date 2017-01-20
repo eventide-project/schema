@@ -1,4 +1,4 @@
-require_relative '../../bench_init'
+require_relative '../../automated_init'
 
 context "Equality" do
   example_1 = Schema::Controls::Schema.example
