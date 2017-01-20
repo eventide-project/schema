@@ -1,4 +1,4 @@
-require_relative '../bench_init'
+require_relative '../automated_init'
 
 context "Incorrect Attribute Definition" do
   context "Strict without type" do

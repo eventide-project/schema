@@ -36,6 +36,29 @@ module Schema
       class OtherExample < Example
       end
 
+      module TransientAttributes
+        def self.example
+          example = Example.new
+          example.some_attribute = 'some value'
+          example.some_other_attribute = 'some other value'
+          example.yet_another_attribute = 'yet another value'
+          example
+        end
+
+        class Example
+          include ::Schema
+          attribute :some_attribute
+          attribute :some_other_attribute
+          attribute :yet_another_attribute
+
+          def self.transient_attributes
+            [
+              :yet_another_attribute
+            ]
+          end
+        end
+      end
+
       module Equivalent
         def self.example
           example = Example.new

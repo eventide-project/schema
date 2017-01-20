@@ -1,4 +1,4 @@
-require_relative '../../bench_init'
+require_relative '../../automated_init'
 
 context "Equality" do
   context "Attribute Map (Classes are Ignored)" do

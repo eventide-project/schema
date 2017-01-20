@@ -1,4 +1,4 @@
-require_relative '../bench_init'
+require_relative '../automated_init'
 
 context "Default Attribute Value" do
   context "Attribute With Default Value Declaration" do
