@@ -4,7 +4,7 @@ module Schema
   def self.included(cls)
     cls.class_exec do
       extend AttributeMacro
-      extend AttributeList
+      extend Attributes
     end
   end
 
@@ -44,13 +44,24 @@ module Schema
     alias :attribute :attribute_macro
   end
 
-  module AttributeList
+  module Attributes
     def attributes
       @attributes ||= AttributeRegistry.new
     end
 
     def attribute_names
-      attributes.map { |attribute| attribute.name }
+      transient_attributes = []
+      if respond_to?(:transient_attributes)
+        transient_attributes = self.transient_attributes
+      end
+
+      attribute_names = []
+      attributes.each do |attribute|
+        next if transient_attributes.include?(attribute.name)
+        attribute_names << attribute.name
+      end
+
+      attribute_names
     end
   end
 
@@ -70,6 +81,10 @@ module Schema
 
     def map(&action)
       entries.map(&action)
+    end
+
+    def each(&action)
+      entries.each(&action)
     end
 
     def each_with_object(obj, &action)
@@ -102,7 +117,13 @@ module Schema
   end
 
   def attributes
+    transient_attributes = []
+    if self.class.respond_to?(:transient_attributes)
+      transient_attributes = self.class.transient_attributes
+    end
+
     self.class.attributes.each_with_object({}) do |attribute, attributes|
+      next if transient_attributes.include?(attribute.name)
       attributes[attribute.name] = public_send(attribute.name)
     end
   end
