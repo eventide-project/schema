@@ -1,6 +1,6 @@
 require_relative '../../automated_init'
 
-context "Attribute Definition (Not Strict)" do
+context "Attribute Definition (Strict)" do
   example = Schema::Controls::Schema::Typed::Strict::Example.new
 
   context "Attribute value is not of the same type as the attribute's declared interface" do
