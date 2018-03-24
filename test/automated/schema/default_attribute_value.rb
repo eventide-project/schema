@@ -23,7 +23,7 @@ context "Default Attribute Value" do
 
       example.some_attribute = nil
 
-      test "Retains the default value (rather than reverting to the default value)" do
+      test "Retains the nil value rather than reverting to the default value" do
         assert(example.some_attribute.nil?)
       end
     end
