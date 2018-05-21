@@ -5,6 +5,8 @@ module Schema
     cls.class_exec do
       extend AttributeMacro
       extend Attributes
+
+      const_set(:Boolean, Boolean)
     end
   end
 
@@ -14,10 +16,23 @@ module Schema
         raise Schema::Attribute::Error, "The \"#{attr_name}\" attribute is declared with the \"strict\" option but a type is not specified"
       end
 
-      strict ||= false
+      if type == Boolean && strict == false
+        raise Schema::Attribute::Error, "The \"#{attr_name}\" attribute is declared with the \"strict\" option disabled but boolean type is specified"
+      end
+
       check = nil
 
-      unless type.nil?
+      if type == Boolean
+        strict ||= true
+
+        check = proc do |val|
+          unless val.nil? || Boolean.(val)
+            raise Schema::Attribute::TypeError, "#{val.inspect} is not a boolean"
+          end
+        end
+      elsif !type.nil?
+        strict ||= false
+
         check = proc do |val|
           unless val.nil?
             if strict
@@ -113,6 +128,12 @@ module Schema
 
     def attribute?(name)
       !attribute(name).nil?
+    end
+  end
+
+  module Boolean
+    def self.call(val)
+      val == true || val == false
     end
   end
 

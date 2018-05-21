@@ -108,6 +108,17 @@ module Schema
         end
       end
 
+      module Boolean
+        def self.example
+          Example.new
+        end
+
+        class Example
+          include ::Schema
+          attribute :some_boolean_attribute, Boolean
+        end
+      end
+
       module Duplicate
         def self.example
           Example.new
