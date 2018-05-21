@@ -20,16 +20,19 @@ module Schema
         raise Schema::Attribute::Error, "The \"#{attr_name}\" attribute is declared with the \"strict\" option disabled but boolean type is specified"
       end
 
-      strict ||= false
       check = nil
 
       if type == Boolean
+        strict ||= true
+
         check = proc do |val|
           unless val.nil? || Boolean.(val)
             raise Schema::Attribute::TypeError, "#{val.inspect} is not a boolean"
           end
         end
       elsif !type.nil?
+        strict ||= false
+
         check = proc do |val|
           unless val.nil?
             if strict
