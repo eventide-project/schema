@@ -30,8 +30,8 @@ puts some_object.to_h
 some_object.amount = 'foo' # => raises Schema::Attribute::TypeError
 ```
 
-A special class is provided for `TrueClass` and `FalseClass` which is called
-`Boolean` to identify boolean values.
+A special type called `Boolean` is provided which only allows the values
+`true` and `false`
 
 ### No type checking
 
