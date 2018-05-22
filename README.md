@@ -277,7 +277,7 @@ Returns `true` if:
 
 `obj1.eql?(obj2, [:name, {age: :amount}], ignore_class: true)` returns true if:
 
-- `obj1.name == obj2.age`
+- `obj1.name == obj2.name`
 - `obj1.age == ob2.amount`
 
 ## License
