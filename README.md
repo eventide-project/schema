@@ -1,4 +1,4 @@
-# schema
+# Schema
 
 Primitives for schema and data structure
 
@@ -12,30 +12,51 @@ class SomeClass
 
   attribute :name, String
   attribute :amount, Numeric
-  attribute :active, Boolean
 end
 
 some_object = SomeClass.new
 
 some_object.name = 'Some Name'
 some_object.amount = 11
-some_object.active = true
 
-puts some_object.inspect
-# => #<SomeClass:0x00555710f467c8 @name="Some Name", @amount=11, @active=true>
+some_object.inspect
+# => #<SomeClass:0x00555710f467c8 @name="Some Name", @amount=11>
 
-puts some_object.to_h
-# => {:name=>"Some Name", :amount=>11, :active=>true}
+some_object.to_h
+# => {:name=>"Some Name", :amount=>11}
 
-some_object.amount = 'foo' # => raises Schema::Attribute::TypeError
+some_object.amount = 'foo'
+# => Schema::Attribute::TypeError
 ```
 
-A special class is provided for `TrueClass` and `FalseClass` which is called
-`Boolean` to identify boolean values.
+#### Boolean Type
 
-### No type checking
+Ruby does not have an explicit boolean data type. The `false` and `true` values in Ruby are instances of `FalseClass` and `TrueClass`, respectively. This makes it quite difficult to declare a boolean attribute that is type-checked without adding branching logic that checks whether the value's class is `FalseClass` or `TrueClass`.
 
-You can have attributes with no type checking
+Importing the Schema namespace into a class makes a `Boolean` data type available. Declaring an attribute as `Boolean` will ensure that its value can only be `false`, `true`, or `nil`.
+
+```ruby
+class SomeClass
+  include Schema
+
+  attribute :active, Boolean
+end
+
+some_object = SomeClass.new
+
+some_object.active = true
+# => true
+
+some_object.active = false
+# => false
+
+some_object.active = 'foo'
+# => Schema::Attribute::TypeError
+```
+
+### Optional Type Checking
+
+Type checking for attributes is optional.
 
 ```ruby
 class SomeClass
@@ -47,33 +68,38 @@ end
 some_object = SomeClass.new
 
 some_object.name = 'Some Name'
+# => "Some Name"
+
 some_object.name = 123
-puts some_object.name.inspect # => 123
+# => 123
 ```
 
 ### Default values
 
-All attributes default to `nil` upon initialization, but you can customize it
-with `default` key. You can use a `proc` to assign a value that will be
-calculated during initialization
+Attribute values are `nil` by default. An attribute declaration can specify a default value using the optional `default` argument. To specify a default value to an attribute, it is assigned a `proc`.
 
 ```ruby
-class SomeClass
+class Planet
   include Schema
 
-  attribute :name, String, default: '<no name>'
-  attribute :birth_date, Time, default: proc { Time.now }
+  attribute :name, String, default: proc { 'Earth' }
+  attribute :age, Numeric, default: proc { 4_500_000_000 }
   attribute :description, String
 end
 
-some_object = SomeClass.new
+some_object = Planet.new
 
-puts some_object.name # => "<no name>"
-puts some_object.birth_date.to_s # => "2018-05-21 16:57:21 -0700"
-puts some_object.description # => nil
+some_object.name
+# => "Earth"
+
+some_object.age
+# => 4500000000
+
+some_object.description
+# => nil
 ```
 
-You can also provide default values for attributes without types, like:
+Default values can also be specified for attributes without that are not declared with types:
 
 ```ruby
 class SomeClass
@@ -83,28 +109,29 @@ class SomeClass
 end
 ```
 
-Remember that default values are **not type-checked upon initialization**.
-However when retrieving from attributes with invalid default values, an error
-is raised:
+NOTE: An attribute's default value is not type-checked when the class that they are members of is initialized. They are checked when the attribute is accessed.
 
 ```ruby
 class SomeClass
   include Schema
-  attribute :age, default: 'Some Name'
+
+  attribute :age, Numeric, default: 'Some Name'
 end
 
 some_object = SomeClass.new
-some_object.age # => raises Schema::Attribute::TypeError
+
+some_object.age
+# => Schema::Attribute::TypeError
 ```
 
-### Strict
+### Strict Attributes and Polymorphism
 
-Your attribute will accept any subtype of the specified type. `strict` defaults
-to `false`, except for `Boolean` which is a special case and cannot be `false`
+A type-checked attribute will, by default, accept a value that is either the attribute's exact type, or a subtype of that type.
 
 ```ruby
 class Animal
 end
+
 class Dog < Animal
 end
 
@@ -112,55 +139,39 @@ class SomeClass
   include Schema
 
   attribute :animal_only, Animal, strict: true
-  attribute :any_animal, Animal, strict: false
-  attribute :any_animal_no_strict, Animal
+  attribute :animal_or_subtype, Animal
 end
 
 some_object = SomeClass.new
 
 some_object.animal_only = Animal.new
-some_object.animal_only = Dog.new # => raises Schema::Attribute::TypeError
 
-some_object.any_animal = Animal.new
-some_object.any_animal = Dog.new
-puts some_object.any_animal.inspect # => #<Dog:0x00561154140fd0>
+some_object.animal_only = Dog.new
+# => Schema::Attribute::TypeError
 
-some_object.any_animal_no_strict = Animal.new
-some_object.any_animal_no_strict = Dog.new
-# As mentioned, behaves like `strict: false`
-puts some_object.any_animal_no_strict.inspect # => #<Dog:0x00561154140fd0>
+some_object.animal_or_subtype = Animal.new
+some_object.animal_or_subtype = Dog.new
 ```
 
-You **cannot define** an attribute as strict if it doesn't have a type:
+If an attribute is defined as strict, it must be declared with a type. If it is not declared with a type, an error will be raised when the class is loaded.
 
 ```ruby
 class SomeClass
+  include Schema
+
   attribute :name, strict: true
 end
+
 # => raises Schema::Attribute::Error
-```
-
-### Repeated attribute definition
-
-In case you define 2 or more times the same attribute, the last one is the only
-valid one:
-
-```ruby
-class SomeClass
-  attribute :name, Numeric
-  attribute :name, String
-end
-
-some_object = SomeClass.new
-some_object.name = 123 # => raises Schema::Attribute::TypeError
-some_object.name = 'Some Name'
-puts some_object.name # => "Some Name"
 ```
 
 ### Schema::DataStructure
 
-Behaves like schema, but also provides a class method `build` which allows to
-provide attributes as hash during initialization
+The `DataStructure` module is a specialization of `Schema` that augments the receiver with operations that are useful when implementing typical applicative code.
+
+When `Schema::DataStructure` is included in a class, the class method `build` is defined on the class.
+
+The `build` method allows the class to be constructed from a hash of values whose keys correspond to the object's attribute names.
 
 ```ruby
 class SomeClass
@@ -168,56 +179,40 @@ class SomeClass
 
   attribute :name, String
   attribute :amount, Numeric
-  attribute :active, Boolean
 end
 
-some_object = SomeClass.build(name: 'Some Name', amount: 11)
-some_object.active = true
+data = { name: 'Some Name', amount: 11 }
+
+some_object = SomeClass.build(data)
 
 puts some_object.inspect
-# => #<SomeClass:0x00555710f467c8 @name="Some Name", @amount=11, @active=true>
+# => #<SomeClass:0x00555710f467c8 @name="Some Name", @amount=11>
 ```
 
-### Transient attributes
+### Attribute Names
 
-You can list all attributes defined by `Schema`
+Attribute names can be retrieved from a schema class.
 
 ```ruby
 class SomeClass
-  include Schema::DataStructure
+  include Schema
 
   attribute :name, String
   attribute :amount, Numeric
   attribute :active, Boolean
 end
 
-SomeClass.attribute_names # => [:name, :amount, :active]
+SomeClass.attribute_names
+# => [:name, :amount, :active]
 ```
 
-You can also hide attributes from the list:
+### Transient Attributes
+
+Transient attributes offer a way to exclude attributes and their values from the hash representation of a schema object.
 
 ```ruby
 class SomeClass
-  include Schema::DataStructure
-
-  attribute :name, String
-  attribute :amount, Numeric
-  attribute :active, Boolean
-
-  def self.transient_attributes
-    [:active]
-  end
-end
-
-SomeClass.attribute_names # => [:name, :amount]
-```
-
-When attributes are hidden from the list and you transform the object to a 
-Hash using `to_h`, they will be excluded:
-
-```ruby
-class SomeClass
-  include Schema::DataStructure
+  include Schema
 
   attribute :name, String
   attribute :amount, Numeric
@@ -227,37 +222,63 @@ class SomeClass
     [:active]
   end
 end
+
+SomeClass.attribute_names
+# => [:name, :amount]
 
 some_object = SomeClass.new
+
 some_object.name = 'Some Name'
 some_object.amount = 11
 some_object.active = true
-SomeClass.to_h # => {name: "Some Name", amount: 11}
+
+some_object.to_h
+# => {name: "Some Name", amount: 11}
 ```
 
 ## Equality
 
-You can compare two entities using `==`, `eql?` and `===`:
+Two instances of a schema can be compared using Ruby's common equality operators: `==`, `===`, and `eql?`.
 
-- `==` returns `true` if:
-  - The objects are of the same class
-  - Attributes have the same values
-- `===` returns `true` if:
-  - Attributes have the same values
-- `eql?` (no options) returns `true` if:
-  - The objects are of the same class
-  - Attributes have the same values
-- `eql?` with `ignore_class: true` returns `true` if:
-  - Attributes have the same values
-- `eql?` can also check only some attributes or alias some:
-  - `obj1.eql?(obj2, [:name, :age], ignore_class: true)` will check only the
-    `:name` and `:age` values
-  - `obj1.eql?(obj2, [:name, {age: :amount}], ignore_class: true)` will check
-    `obj1.name == obj2.age` and that `obj1.age == ob2.amount`
+### `==`
 
-## Validation
+Returns `true` if:
 
-TODO: Describe `nil` validation with `Validate`
+- The objects are of the same class
+- Attributes have the same values
+
+### `===` (Case Equality)
+
+Returns `true` if:
+
+- Attributes have the same values
+
+### `eql?`
+
+Returns `true` if:
+
+- The objects are of the same class
+- Attributes have the same values
+
+#### `eql?` with `ignore_class: true`
+
+Returns `true` if:
+
+- Attributes have the same values
+
+#### `eql?` with List of Attribute Names
+
+`obj1.eql?(obj2, [:name, :age], ignore_class: true)` returns true if:
+
+- `obj1.name == obj2.name`
+- `obj1.age == ob2.age`
+
+#### `eql?` with List of Attribute Names and Mappings
+
+`obj1.eql?(obj2, [:name, {age: :amount}], ignore_class: true)` returns true if:
+
+- `obj1.name == obj2.age`
+- `obj1.age == ob2.amount`
 
 ## License
 
