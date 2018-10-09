@@ -4,7 +4,8 @@ module Schema
       cls.class_exec do
         include Schema
         extend Build
-        extend Virtual::Macro
+
+        Virtual.activate(self)
 
         virtual :configure
         virtual :configure_dependencies do
