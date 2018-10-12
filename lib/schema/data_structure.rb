@@ -2,10 +2,9 @@ module Schema
   module DataStructure
     def self.included(cls)
       cls.class_exec do
+        include Virtual
         include Schema
         extend Build
-
-        Virtual.activate(self)
 
         virtual :configure
         virtual :configure_dependencies do
