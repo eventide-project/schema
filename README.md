@@ -4,8 +4,6 @@ Primitives for schema and data structure
 
 ## Example
 
-### Basic usage
-
 ```ruby
 class SomeClass
   include Schema
@@ -24,12 +22,94 @@ some_object.inspect
 
 some_object.to_h
 # => {:name=>"Some Name", :amount=>11}
+```
+
+## Type-Checked Attributes
+
+Attributes that are declared with a data type can only accept values of that type. When values are assigned that are not of that type, a `Schema::Attribute::TypeError` error is raised.
+
+```ruby
+class SomeClass
+  include Schema
+
+  attribute :name, String
+  attribute :amount, Numeric
+end
+
+some_object = SomeClass.new
+
+some_object.name = 'Some Name'
+# => "Some Name"
+
+some_object.amount = 123
+# => 123
 
 some_object.amount = 'foo'
 # => Schema::Attribute::TypeError
 ```
 
-#### Boolean Type
+## Optional Type Checking
+
+Type checking for attributes is optional. If an attribute's type is not declared, then a value of any type can be assigned to the attribute.
+
+```ruby
+class SomeClass
+  include Schema
+
+  attribute :name
+end
+
+some_object = SomeClass.new
+
+some_object.name = 'Some Name'
+# => "Some Name"
+
+some_object.name = 123
+# => 123
+```
+
+## Strict Attributes and Polymorphism
+
+A type-checked attribute will, by default, accept a value that is either the attribute's exact type, or a subtype of that type.
+
+```ruby
+class Animal
+end
+
+class Dog < Animal
+end
+
+class SomeClass
+  include Schema
+
+  attribute :animal_only, Animal, strict: true
+  attribute :animal_or_subtype, Animal
+end
+
+some_object = SomeClass.new
+
+some_object.animal_only = Animal.new
+
+some_object.animal_only = Dog.new
+# => Schema::Attribute::TypeError
+
+some_object.animal_or_subtype = Animal.new
+some_object.animal_or_subtype = Dog.new
+```
+
+If an attribute is defined as strict, it must be declared with a type. If it is not declared with a type, an error will be raised when the class is loaded.
+
+```ruby
+class SomeClass
+  include Schema
+
+  attribute :name, strict: true
+end
+
+# => raises Schema::Attribute::Error
+```
+
+## Boolean Type
 
 Ruby does not have an explicit boolean data type. The `false` and `true` values in Ruby are instances of `FalseClass` and `TrueClass`, respectively. This makes it quite difficult to declare a boolean attribute that is type-checked without adding branching logic that checks whether the value's class is `FalseClass` or `TrueClass`.
 
@@ -54,27 +134,7 @@ some_object.active = 'foo'
 # => Schema::Attribute::TypeError
 ```
 
-### Optional Type Checking
-
-Type checking for attributes is optional.
-
-```ruby
-class SomeClass
-  include Schema
-
-  attribute :name
-end
-
-some_object = SomeClass.new
-
-some_object.name = 'Some Name'
-# => "Some Name"
-
-some_object.name = 123
-# => 123
-```
-
-### Default values
+## Default values
 
 Attribute values are `nil` by default. An attribute declaration can specify a default value using the optional `default` argument. To specify a default value to an attribute, it is assigned a `proc`.
 
@@ -124,48 +184,7 @@ some_object.age
 # => Schema::Attribute::TypeError
 ```
 
-### Strict Attributes and Polymorphism
-
-A type-checked attribute will, by default, accept a value that is either the attribute's exact type, or a subtype of that type.
-
-```ruby
-class Animal
-end
-
-class Dog < Animal
-end
-
-class SomeClass
-  include Schema
-
-  attribute :animal_only, Animal, strict: true
-  attribute :animal_or_subtype, Animal
-end
-
-some_object = SomeClass.new
-
-some_object.animal_only = Animal.new
-
-some_object.animal_only = Dog.new
-# => Schema::Attribute::TypeError
-
-some_object.animal_or_subtype = Animal.new
-some_object.animal_or_subtype = Dog.new
-```
-
-If an attribute is defined as strict, it must be declared with a type. If it is not declared with a type, an error will be raised when the class is loaded.
-
-```ruby
-class SomeClass
-  include Schema
-
-  attribute :name, strict: true
-end
-
-# => raises Schema::Attribute::Error
-```
-
-### Schema::DataStructure
+## Schema::DataStructure
 
 The `DataStructure` module is a specialization of `Schema` that augments the receiver with operations that are useful when implementing typical applicative code.
 
@@ -189,7 +208,7 @@ puts some_object.inspect
 # => #<SomeClass:0x00555710f467c8 @name="Some Name", @amount=11>
 ```
 
-### Attribute Names
+## Attribute Names
 
 Attribute names can be retrieved from a schema class.
 
@@ -206,7 +225,7 @@ SomeClass.attribute_names
 # => [:name, :amount, :active]
 ```
 
-### Transient Attributes
+## Transient Attributes
 
 Transient attributes offer a way to exclude attributes and their values from the hash representation of a schema object.
 
