@@ -4,6 +4,8 @@ require 'validate'
 require 'virtual'
 
 require 'schema/schema'
+require 'schema/schema/assertions'
+require 'schema/schema/compare'
 require 'schema/schema/attribute'
 require 'schema/data_structure'
 require 'schema/validation/nil_attributes'
