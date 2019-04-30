@@ -5,9 +5,13 @@ module Schema
     cls.class_exec do
       extend AttributeMacro
       extend Attributes
-      include Virtual
 
-      virtual :export
+      # This is done as a countermeasure for incompatibility
+      # between Virtual and an Assertions module
+      # include Virtual
+      # virtual :export
+      define_method(:export) {|data|}
+      #
 
       const_set(:Boolean, Boolean)
     end
