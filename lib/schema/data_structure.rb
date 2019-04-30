@@ -11,7 +11,6 @@ module Schema
           configure
         end
         virtual :import
-        virtual :export
       end
     end
 

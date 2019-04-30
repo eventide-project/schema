@@ -1,7 +1,7 @@
 require_relative '../automated_init'
 
 context "Data Structure" do
-  context "Build" do
+  context "Import" do
     data = Schema::Controls::DataStructure.hash
 
     refute(data[:some_attribute] == 'some imported value')

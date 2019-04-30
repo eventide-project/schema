@@ -5,6 +5,9 @@ module Schema
     cls.class_exec do
       extend AttributeMacro
       extend Attributes
+      include Virtual
+
+      virtual :export
 
       const_set(:Boolean, Boolean)
     end
@@ -143,10 +146,14 @@ module Schema
       transient_attributes = self.class.transient_attributes
     end
 
-    self.class.attributes.each_with_object({}) do |attribute, attributes|
+    data = self.class.attributes.each_with_object({}) do |attribute, attributes|
       next if transient_attributes.include?(attribute.name)
       attributes[attribute.name] = public_send(attribute.name)
     end
+
+    export(data)
+
+    data
   end
   alias :to_h :attributes
 
