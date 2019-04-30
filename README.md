@@ -218,7 +218,7 @@ A message that has nested objects that aren't just primitive values requires spe
 
 A Schema::DataStructure that implements the `import(data)` method can intercept the input data that the class is constructed with. The data can be modified and customized by this method, and the object's attributes can be manipulated.
 
-Note that the import stage of construction of a data structure happens before the attributes are assigned to the object.
+Note that the import stage of construction of a data structure from hash data happens before the input hash's attributes are assigned to the object. The `import` method directly modifies the input hash data.
 
 ```ruby
 class Address
