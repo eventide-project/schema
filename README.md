@@ -134,7 +134,7 @@ some_object.active = 'foo'
 # => Schema::Attribute::TypeError
 ```
 
-## Default values
+## Default Values
 
 Attribute values are `nil` by default. An attribute declaration can specify a default value using the optional `default` argument. To specify a default value to an attribute, it is assigned a `proc`.
 
@@ -206,6 +206,63 @@ some_object = SomeClass.build(data)
 
 puts some_object.inspect
 # => #<SomeClass:0x00555710f467c8 @name="Some Name", @amount=11>
+```
+
+### Intercepting and Modifying Input Data
+
+A Schema::DataStructure that implements the `import(data)` method can intercept the input data that the class is constructed with. The data can be modified and customized by this method, and the object's attributes can be manipulated.
+
+Note that the import stage of construction of a data structure happens before the attributes are assigned to the object.
+
+The `import` method can be used to transform input data into more complex data structure objects, such as those with child objects.
+
+```ruby
+class Address
+  include Schema::DataStructure
+
+  attribute :city, String
+  attribute :state, String
+end
+
+class SomeClass
+  include Schema::DataStructure
+
+  attribute :name, String
+  attribute :address, Address
+
+  def import(data)
+    address = Address.build(data[:address])
+    data[:address] = address
+  end
+end
+```
+
+### Intercepting and Modifying Outut Data
+
+A Schema::DataStructure that implements the `export(data)` method can intercept the output data that the object outputs when either `to_h` or `attributes` is invoked. The data can be modified and customized by this method.
+
+Note that the export stage of converting a data structure to a hash happens after the object's attributes have been converted to a hash but just before the hash data is returned to the receiver.
+
+The `export` method can be used to transform out data from more complex data structure objects, such as those with child objects.
+
+```ruby
+class Address
+  include Schema::DataStructure
+
+  attribute :city, String
+  attribute :state, String
+end
+
+class SomeClass
+  include Schema::DataStructure
+
+  attribute :name, String
+  attribute :address, Address
+
+  def export(data)
+    data[:address] = address.to_h
+  end
+end
 ```
 
 ## Attribute Names
