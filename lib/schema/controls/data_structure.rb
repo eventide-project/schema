@@ -48,6 +48,18 @@ module Schema
           end
         end
       end
+
+      module ImportAndExport
+        class Example < DataStructure::Example
+          def import(data)
+            data[:some_attribute] = 'some imported value'
+          end
+
+          def export(data)
+            data[:some_attribute] = 'some exported value'
+          end
+        end
+      end
     end
   end
 end
