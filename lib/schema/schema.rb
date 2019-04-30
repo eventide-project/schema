@@ -6,6 +6,13 @@ module Schema
       extend AttributeMacro
       extend Attributes
 
+      # This is done as a countermeasure for incompatibility
+      # between Virtual and an Assertions module
+      # include Virtual
+      # virtual :export
+      define_method(:export) {|data|}
+      #
+
       const_set(:Boolean, Boolean)
     end
   end
@@ -143,10 +150,14 @@ module Schema
       transient_attributes = self.class.transient_attributes
     end
 
-    self.class.attributes.each_with_object({}) do |attribute, attributes|
+    data = self.class.attributes.each_with_object({}) do |attribute, attributes|
       next if transient_attributes.include?(attribute.name)
       attributes[attribute.name] = public_send(attribute.name)
     end
+
+    export(data)
+
+    data
   end
   alias :to_h :attributes
 

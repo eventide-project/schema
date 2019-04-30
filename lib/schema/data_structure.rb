@@ -10,6 +10,7 @@ module Schema
         virtual :configure_dependencies do
           configure
         end
+        virtual :import
       end
     end
 
@@ -19,6 +20,7 @@ module Schema
         strict ||= false
 
         new.tap do |instance|
+          instance.import(data)
           set_attributes(instance, data, strict)
           instance.configure_dependencies
         end
