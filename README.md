@@ -210,13 +210,15 @@ puts some_object.inspect
 
 ## Intercepting and Modifying Input and Output Data
 
+By default, a data structure whose attributes are primitive values like strings, numbers, or booleans can be converted to hash data implicitly without any additional implementation.
+
+A message that has nested objects that aren't just primitive values requires specific instructions for transforming those custom types to and from hash data.
+
 ### Input Data
 
 A Schema::DataStructure that implements the `import(data)` method can intercept the input data that the class is constructed with. The data can be modified and customized by this method, and the object's attributes can be manipulated.
 
 Note that the import stage of construction of a data structure happens before the attributes are assigned to the object.
-
-The `import` method can be used to transform input data into more complex data structure objects, such as those with child objects.
 
 ```ruby
 class Address
@@ -244,8 +246,6 @@ end
 A Schema::DataStructure that implements the `export(data)` method can intercept the output data that the object outputs when either `to_h` or `attributes` is invoked. The data can be modified and customized by this method.
 
 Note that the export stage of converting a data structure to a hash happens after the object's attributes have been converted to a hash but just before the hash data is returned to the receiver.
-
-The `export` method can be used to transform out data from more complex data structure objects, such as those with child objects.
 
 ```ruby
 class Address
