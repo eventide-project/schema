@@ -208,7 +208,9 @@ puts some_object.inspect
 # => #<SomeClass:0x00555710f467c8 @name="Some Name", @amount=11>
 ```
 
-### Intercepting and Modifying Input Data
+## Intercepting and Modifying Input and Output Data
+
+### Input Data
 
 A Schema::DataStructure that implements the `import(data)` method can intercept the input data that the class is constructed with. The data can be modified and customized by this method, and the object's attributes can be manipulated.
 
@@ -237,7 +239,7 @@ class SomeClass
 end
 ```
 
-### Intercepting and Modifying Outut Data
+### Output Data
 
 A Schema::DataStructure that implements the `export(data)` method can intercept the output data that the object outputs when either `to_h` or `attributes` is invoked. The data can be modified and customized by this method.
 
