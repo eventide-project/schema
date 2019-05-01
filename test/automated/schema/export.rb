@@ -1,6 +1,6 @@
 require_relative '../automated_init'
 
-context "Data Structure" do
+context "Schema" do
   context "Export" do
     data_structure = Schema::Controls::DataStructure::ImportAndExport.example
 
