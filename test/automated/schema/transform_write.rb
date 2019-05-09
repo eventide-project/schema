@@ -2,7 +2,7 @@ require_relative '../automated_init'
 
 context "Schema" do
   context "Export" do
-    data_structure = Schema::Controls::DataStructure::ImportAndExport.example
+    data_structure = Schema::Controls::DataStructure::ReadAndWrite.example
 
     refute(data_structure.some_attribute == 'some written value')
 

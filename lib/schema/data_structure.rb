@@ -10,7 +10,7 @@ module Schema
         virtual :configure_dependencies do
           configure
         end
-        virtual :read
+        virtual :transform_read
       end
     end
 
@@ -20,7 +20,7 @@ module Schema
         strict ||= false
 
         new.tap do |instance|
-          instance.read(data)
+          instance.transform_read(data)
           set_attributes(instance, data, strict)
           instance.configure_dependencies
         end

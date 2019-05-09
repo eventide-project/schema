@@ -51,7 +51,7 @@ module Schema
         end
       end
 
-      module ImportAndExport
+      module ReadAndWrite
         def self.example
           example = Example.new
           example.some_attribute = 'some value'
@@ -59,11 +59,11 @@ module Schema
         end
 
         class Example < DataStructure::Example
-          def read(data)
+          def transform_read(data)
             data[:some_attribute] = 'some read value'
           end
 
-          def write(data)
+          def transform_write(data)
             data[:some_attribute] = 'some written value'
           end
         end

@@ -216,11 +216,11 @@ A message that has nested objects that aren't just primitive values requires spe
 
 ### Input Data
 
-A Schema::DataStructure that implements the `read(data)` method can intercept the input data that the class is constructed with. The data can be modified and customized by this method, and the object's attributes can be manipulated.
+A Schema::DataStructure that implements the `transform_read(data)` method can intercept the input data that the class is constructed with. The data can be modified and customized by this method, and the object's attributes can be manipulated.
 
 Note that the read stage of construction of a data structure from hash data happens before the input hash's attributes are assigned to the object.
 
-To affect changes to the input data, the `read` method implementation must directly modify the hash data that the method receives as an argument.
+To affect changes to the input data, the `transform_read` method implementation must directly modify the hash data that the method receives as an argument.
 
 ```ruby
 class Address
@@ -236,7 +236,7 @@ class SomeClass
   attribute :name, String
   attribute :address, Address
 
-  def read(data)
+  def transform_read(data)
     address = Address.build(data[:address])
     data[:address] = address
   end
@@ -245,11 +245,11 @@ end
 
 ### Output Data
 
-A Schema::DataStructure that implements the `write(data)` method can intercept the output data that the object outputs when either `to_h` or `attributes` is invoked. The data can be modified and customized by this method.
+A Schema::DataStructure that implements the `transform_write(data)` method can intercept the output data that the object outputs when either `to_h` or `attributes` is invoked. The data can be modified and customized by this method.
 
 Note that the write stage of converting a data structure to a hash happens after the object's attributes have been converted to a hash but just before the hash data is returned to the receiver.
 
-To affect changes to the output data, the `write` method implementation must directly modify the hash data that the method receives as an argument. Changes made to the argument have no effect on the state of the data structure object itself.
+To affect changes to the output data, the `transform_write` method implementation must directly modify the hash data that the method receives as an argument. Changes made to the argument have no effect on the state of the data structure object itself.
 
 ```ruby
 class Address
@@ -265,7 +265,7 @@ class SomeClass
   attribute :name, String
   attribute :address, Address
 
-  def write(data)
+  def transform_write(data)
     data[:address] = address.to_h
   end
 end

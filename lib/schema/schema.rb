@@ -9,8 +9,8 @@ module Schema
       # This is done as a countermeasure for incompatibility
       # between Virtual and an Assertions module
       # include Virtual
-      # virtual :write
-      define_method(:write) {|data|}
+      # virtual :transform_write
+      define_method(:transform_write) {|data|}
       #
 
       const_set(:Boolean, Boolean)
@@ -155,7 +155,7 @@ module Schema
       attributes[attribute.name] = public_send(attribute.name)
     end
 
-    write(data)
+    transform_write(data)
 
     data
   end
