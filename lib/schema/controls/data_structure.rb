@@ -59,12 +59,12 @@ module Schema
         end
 
         class Example < DataStructure::Example
-          def import(data)
-            data[:some_attribute] = 'some imported value'
+          def read(data)
+            data[:some_attribute] = 'some read value'
           end
 
-          def export(data)
-            data[:some_attribute] = 'some exported value'
+          def write(data)
+            data[:some_attribute] = 'some written value'
           end
         end
 

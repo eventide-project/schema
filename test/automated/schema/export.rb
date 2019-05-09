@@ -4,12 +4,12 @@ context "Schema" do
   context "Export" do
     data_structure = Schema::Controls::DataStructure::ImportAndExport.example
 
-    refute(data_structure.some_attribute == 'some exported value')
+    refute(data_structure.some_attribute == 'some written value')
 
     data = data_structure.to_h
 
     test "The output data has been intercepted and modified" do
-      assert(data[:some_attribute] == 'some exported value')
+      assert(data[:some_attribute] == 'some written value')
     end
   end
 end

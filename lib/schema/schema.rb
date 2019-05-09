@@ -9,8 +9,8 @@ module Schema
       # This is done as a countermeasure for incompatibility
       # between Virtual and an Assertions module
       # include Virtual
-      # virtual :export
-      define_method(:export) {|data|}
+      # virtual :write
+      define_method(:write) {|data|}
       #
 
       const_set(:Boolean, Boolean)
@@ -155,7 +155,7 @@ module Schema
       attributes[attribute.name] = public_send(attribute.name)
     end
 
-    export(data)
+    write(data)
 
     data
   end
