@@ -29,7 +29,7 @@ module Schema
       def set_attributes(instance, data, strict)
         begin
           SetAttributes.(instance, data, strict: strict)
-        rescue SetAttributes::Attribute::Error => e
+        rescue SetAttributes::Assign::Error => e
           raise Schema::Error, e.message
         end
       end
