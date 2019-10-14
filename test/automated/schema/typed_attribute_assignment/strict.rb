@@ -5,8 +5,8 @@ context "Attribute Definition (Strict)" do
 
   context "Attribute value is not of the same type as the attribute's declared interface" do
     test "Incorrect" do
-      assert proc { example.some_attribute = 'some value' } do
-        raises_error? Schema::Attribute::TypeError
+      assert_raises Schema::Attribute::TypeError do
+        example.some_attribute = 'some value'
       end
     end
   end
@@ -22,8 +22,8 @@ context "Attribute Definition (Strict)" do
     test "Incorrect" do
       something = Schema::Controls::Schema::Typed::SomeSubtype.new
 
-      assert proc { example.some_attribute = something } do
-        raises_error? Schema::Attribute::TypeError
+      assert_raises Schema::Attribute::TypeError do
+        example.some_attribute = something
       end
     end
   end

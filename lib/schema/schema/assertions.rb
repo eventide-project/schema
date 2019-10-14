@@ -23,4 +23,5 @@ module Schema
       equal
     end
   end
+  include Assertions
 end

@@ -6,12 +6,8 @@ module Schema
       extend AttributeMacro
       extend Attributes
 
-      # This is done as a countermeasure for incompatibility
-      # between Virtual and an Assertions module
-      # include Virtual
-      # virtual :transform_write
-      define_method(:transform_write) {|data|}
-      #
+      include Virtual
+      virtual :transform_write
 
       const_set(:Boolean, Boolean)
     end
@@ -187,5 +183,28 @@ module Schema
 
   def ===(other)
     self.eql?(other, ignore_class: true)
+  end
+
+  def attributes_equal?(other, attributes=nil, print: nil)
+    attributes ||= self.class.attribute_names
+
+    print = true if print.nil?
+    print ||= false
+
+    equal = self.eql?(other, attributes, ignore_class: true)
+
+    if !equal && print
+      attributes = Array(attributes)
+
+      require 'pp'
+      puts "self: #{self.class.name}"
+      pp self.attributes.select { |k, v| attributes.include? k }
+      puts "other #{other.class.name}:"
+      pp other.attributes.select { |k, v| attributes.include? k }
+      puts "attributes:"
+      attributes.each { |a| puts a.inspect}
+    end
+
+    equal
   end
 end

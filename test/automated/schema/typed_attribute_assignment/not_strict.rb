@@ -5,8 +5,8 @@ context "Attribute Definition (Not Strict)" do
 
   context "Value is not of the same type as the attribute's declared interface" do
     test "Incorrect" do
-      assert proc { example.some_attribute = 'some value' } do
-        raises_error? Schema::Attribute::TypeError
+      assert_raises Schema::Attribute::TypeError do
+        example.some_attribute = 'some value'
       end
     end
   end
