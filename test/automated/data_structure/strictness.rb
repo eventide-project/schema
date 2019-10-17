@@ -18,7 +18,7 @@ context "Data Structure" do
         data = Schema::Controls::DataStructure::ExtraAttributes.data
 
         test "Is incorrect" do
-          assert_raises Schema::Error do
+          assert_raises(Schema::Error) do
             Schema::Controls::DataStructure::Example.build(data, strict)
           end
         end
