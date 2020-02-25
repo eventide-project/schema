@@ -6,6 +6,9 @@ module Schema
       extend AttributeMacro
       extend Attributes
 
+      include Virtual
+      virtual :transform_write
+
       const_set(:Boolean, Boolean)
     end
   end
@@ -143,10 +146,14 @@ module Schema
       transient_attributes = self.class.transient_attributes
     end
 
-    self.class.attributes.each_with_object({}) do |attribute, attributes|
+    data = self.class.attributes.each_with_object({}) do |attribute, attributes|
       next if transient_attributes.include?(attribute.name)
       attributes[attribute.name] = public_send(attribute.name)
     end
+
+    transform_write(data)
+
+    data
   end
   alias :to_h :attributes
 
@@ -176,5 +183,28 @@ module Schema
 
   def ===(other)
     self.eql?(other, ignore_class: true)
+  end
+
+  def attributes_equal?(other, attributes=nil, print: nil)
+    attributes ||= self.class.attribute_names
+
+    print = true if print.nil?
+    print ||= false
+
+    equal = self.eql?(other, attributes, ignore_class: true)
+
+    if !equal && print
+      attributes = Array(attributes)
+
+      require 'pp'
+      puts "self: #{self.class.name}"
+      pp self.attributes.select { |k, v| attributes.include? k }
+      puts "other #{other.class.name}:"
+      pp other.attributes.select { |k, v| attributes.include? k }
+      puts "attributes:"
+      attributes.each { |a| puts a.inspect}
+    end
+
+    equal
   end
 end

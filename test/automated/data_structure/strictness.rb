@@ -13,11 +13,13 @@ context "Data Structure" do
       end
 
       context "Strict" do
+        strict = true
+
         data = Schema::Controls::DataStructure::ExtraAttributes.data
 
         test "Is incorrect" do
-          assert proc { Schema::Controls::DataStructure::Example.build(data, strict=true) } do
-            raises_error? Schema::Error
+          assert_raises(Schema::Error) do
+            Schema::Controls::DataStructure::Example.build(data, strict)
           end
         end
       end

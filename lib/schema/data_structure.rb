@@ -10,6 +10,7 @@ module Schema
         virtual :configure_dependencies do
           configure
         end
+        virtual :transform_read
       end
     end
 
@@ -19,6 +20,7 @@ module Schema
         strict ||= false
 
         new.tap do |instance|
+          instance.transform_read(data)
           set_attributes(instance, data, strict)
           instance.configure_dependencies
         end
@@ -27,7 +29,7 @@ module Schema
       def set_attributes(instance, data, strict)
         begin
           SetAttributes.(instance, data, strict: strict)
-        rescue SetAttributes::Attribute::Error => e
+        rescue SetAttributes::Assign::Error => e
           raise Schema::Error, e.message
         end
       end

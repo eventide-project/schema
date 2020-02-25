@@ -7,32 +7,32 @@ context "Schema" do
 
       context "Value is true" do
         test "Correct" do
-          refute proc { example.some_boolean_attribute = true } do
-            raises_error?
+          refute_raises do
+            example.some_boolean_attribute = true
           end
         end
       end
 
       context "Value is false" do
         test "Correct" do
-          refute proc { example.some_boolean_attribute = false } do
-            raises_error?
+          refute_raises do
+            example.some_boolean_attribute = false
           end
         end
       end
 
       context "Value is nil" do
         test "Correct" do
-          refute proc { example.some_boolean_attribute = nil } do
-            raises_error?
+          refute_raises do
+            example.some_boolean_attribute = nil
           end
         end
       end
 
       context "Value is neither a boolean nor nil" do
         test "Inorrect" do
-          assert proc { example.some_boolean_attribute = Object.new } do
-            raises_error? Schema::Attribute::TypeError
+          assert_raises(Schema::Attribute::TypeError) do
+            example.some_boolean_attribute = Object.new
           end
         end
       end

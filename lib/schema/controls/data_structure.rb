@@ -16,7 +16,9 @@ module Schema
       end
 
       def self.hash
-        example.to_h
+        {
+          some_attribute: 'some value'
+        }
       end
 
       class Example
@@ -45,6 +47,32 @@ module Schema
 
           def configure
             self.some_dependency = :set
+          end
+        end
+      end
+
+      module ReadAndWrite
+        def self.example
+          example = Example.new
+          example.some_attribute = 'some value'
+          example
+        end
+
+        class Example < DataStructure::Example
+          def transform_read(data)
+            data[:some_attribute] = 'some read value'
+          end
+
+          def transform_write(data)
+            data[:some_attribute] = 'some written value'
+          end
+        end
+
+        module Data
+          def self.example
+            {
+              some_attribute: 'some value'
+            }
           end
         end
       end

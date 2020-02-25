@@ -134,7 +134,7 @@ some_object.active = 'foo'
 # => Schema::Attribute::TypeError
 ```
 
-## Default values
+## Default Values
 
 Attribute values are `nil` by default. An attribute declaration can specify a default value using the optional `default` argument. To specify a default value to an attribute, it is assigned a `proc`.
 
@@ -206,6 +206,69 @@ some_object = SomeClass.build(data)
 
 puts some_object.inspect
 # => #<SomeClass:0x00555710f467c8 @name="Some Name", @amount=11>
+```
+
+## Intercepting and Modifying Input and Output Data
+
+By default, a data structure whose attributes are primitive values like strings, numbers, or booleans can be converted to hash data implicitly without any additional implementation.
+
+A message that has nested objects that aren't just primitive values requires specific instructions for transforming those custom types to and from hash data.
+
+### Input Data
+
+A Schema::DataStructure that implements the `transform_read(data)` method can intercept the input data that the class is constructed with. The data can be modified and customized by this method, and the object's attributes can be manipulated.
+
+Note that the read stage of construction of a data structure from hash data happens before the input hash's attributes are assigned to the object.
+
+To affect changes to the input data, the `transform_read` method implementation must directly modify the hash data that the method receives as an argument.
+
+```ruby
+class Address
+  include Schema::DataStructure
+
+  attribute :city, String
+  attribute :state, String
+end
+
+class SomeClass
+  include Schema::DataStructure
+
+  attribute :name, String
+  attribute :address, Address
+
+  def transform_read(data)
+    address = Address.build(data[:address])
+    data[:address] = address
+  end
+end
+```
+
+### Output Data
+
+A Schema::DataStructure that implements the `transform_write(data)` method can intercept the output data that the object outputs when either `to_h` or `attributes` is invoked. The data can be modified and customized by this method.
+
+Note that the write stage of converting a data structure to a hash happens after the object's attributes have been converted to a hash but just before the hash data is returned to the receiver.
+
+To affect changes to the output data, the `transform_write` method implementation must directly modify the hash data that the method receives as an argument. Changes made to the argument have no effect on the state of the data structure object itself.
+
+```ruby
+class Address
+  include Schema::DataStructure
+
+  attribute :city, String
+  attribute :state, String
+end
+
+class SomeClass
+  include Schema::DataStructure
+
+  attribute :name, String
+  attribute :address, Address
+
+  def transform_write(data)
+    data[:address] = address.to_h
+  end
+end
 ```
 
 ## Attribute Names
