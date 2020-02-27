@@ -11,8 +11,8 @@ context "Compare" do
 
     difference = Schema::Compare.(schema_1, schema_2)
 
-    test "Difference is determined" do
-      refute(difference.nil?)
+    test "Schema is different" do
+      assert(difference.different?)
     end
   end
 end

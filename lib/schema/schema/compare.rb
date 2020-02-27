@@ -1,11 +1,17 @@
 module Schema
   module Compare
-    def self.call(schema_1, schema_2)
-      :foo
-    end
+    Error = Class.new(RuntimeError)
 
-    class Difference
-      attr_accessor :schema_1
+    def self.call(control, compare)
+      if not control.is_a?(Schema)
+        raise Error, 'Control object is not an implementation of Schema'
+      end
+
+      if not compare.is_a?(Schema)
+        raise Error, 'Compare object is not an implementation of Schema'
+      end
+
+      Difference.new
     end
   end
 end
