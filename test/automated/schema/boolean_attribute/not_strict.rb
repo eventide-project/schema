@@ -7,7 +7,7 @@ context "Schema" do
         assert_raises(Schema::Attribute::Error) do
           Class.new do
             include Schema
-            attribute :some_boolean_attribute, Boolean, strict: false
+            attribute :some_boolean_attribute, Schema::Boolean, strict: false
           end
         end
       end

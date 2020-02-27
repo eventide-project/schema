@@ -3,7 +3,7 @@ require_relative '../automated_init'
 context "Schema" do
   context "Validation" do
     context "Nil Attributes" do
-      schema = Controls::Schema::Validation.example
+      schema = Schema::Controls::Schema::Validation.example
 
       errors = []
       valid = Validate.(schema, errors, scenario: :nil_attributes)
@@ -13,7 +13,7 @@ context "Schema" do
       end
 
       test "An error is recorded for each attribute" do
-        assert(errors == Controls::Schema::Validation.errors)
+        assert(errors == Schema::Controls::Schema::Validation.errors)
       end
     end
   end
