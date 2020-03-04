@@ -1,28 +1,25 @@
 module Schema
   module Compare
     class Difference
-      # attr_reader :control
-      # attr_reader :compare
-
-      # def control_class
-      #   control.class
-      # end
-
-      # def compare_class
-      #   compare.class
-      # end
-
-      # def initialize(control, compare)
-      #   @control = control
-      #   @compare = compare
-      # end
-
       include Initializer
 
-      initializer :control_class, :control_attributes, :compare_class, :compare_attributes
+      Entry = Struct.new(
+        :control_name,
+        :control_value,
+        :control_name,
+        :control_value
+      )
+
+      def attribute_differences
+        @attribute_differences ||= []
+      end
+
+      # initializer :control_class, :control_attributes, :compare_class, :compare_attributes
+      initializer :control_class, :compare_class
 
       def self.build(control, compare)
-        new(control.class, control.attributes, compare.class, compare.attributes)
+        # new(control.class, control.attributes, compare.class, compare.attributes)
+        new(control.class, compare.class)
       end
 
       def same?
