@@ -2,17 +2,28 @@ require_relative '../automated_init'
 
 context "Compare" do
   context "Schema Attributes Differ" do
-    schema_1 = Schema::Controls::Schema.example
-    schema_2 = Schema::Controls::Schema.example
+    control = Schema::Controls::Schema.example
+    compare = Schema::Controls::Schema.example
 
-    schema_2.some_other_attribute = SecureRandom.hex
+    compare.some_other_attribute = SecureRandom.hex
 
-    refute(schema_1.some_other_attribute == schema_2.some_other_attribute)
+    refute(control.some_other_attribute == compare.some_other_attribute)
 
-    difference = Schema::Compare.(schema_1, schema_2)
+    difference = Schema::Compare.(control, compare)
 
-    test "Schema is different" do
+    test "Schemas are different" do
       assert(difference.different?)
+    end
+  end
+
+  context "Schema Attributes Do Not Differ" do
+    control = Schema::Controls::Schema.example
+    compare = Schema::Controls::Schema.example
+
+    difference = Schema::Compare.(control, compare)
+
+    test "Schemas are same" do
+      assert(difference.same?)
     end
   end
 end

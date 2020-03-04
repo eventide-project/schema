@@ -27,13 +27,22 @@ module Schema
         example.to_h
       end
 
-      class Example
-        include ::Schema
-        attribute :some_attribute
-        attribute :some_other_attribute
+      module Attributes
+        def self.included(cls)
+          cls.class_exec do
+            include ::Schema
+            attribute :some_attribute
+            attribute :some_other_attribute
+          end
+        end
       end
 
-      class OtherExample < Example
+      class Example
+        include Attributes
+      end
+
+      class OtherExample
+        include Attributes
       end
 
       module TransientAttributes

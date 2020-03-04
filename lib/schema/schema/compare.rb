@@ -11,7 +11,7 @@ module Schema
         raise Error, 'Compare object is not an implementation of Schema'
       end
 
-      Difference.new
+      Difference.build(control, compare)
     end
   end
 end

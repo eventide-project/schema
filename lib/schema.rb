@@ -1,5 +1,6 @@
 require 'attribute'
 require 'set_attributes'
+require 'initializer'
 require 'validate'
 require 'virtual'
 
