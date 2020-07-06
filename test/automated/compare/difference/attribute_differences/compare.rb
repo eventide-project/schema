@@ -1,19 +1,41 @@
 require_relative '../../../automated_init'
 
-_context "Compare" do
+context "Compare" do
   context "Attributes" do
     context "Attribute Differences" do
       context "Compare" do
-        attr_names = Schema::Controls::Attribute.names
-        control_values = Schema::Controls::Attribute.control_values
-        compare_values = Schema::Controls::Attribute.compare_values
+        control = Schema::Controls::Schema.example
+
+        compare = Schema::Controls::Schema.example
+        compare.some_other_attribute = SecureRandom.hex
+
+        control_attributes = control.attributes
+        compare_attributes = compare.attributes
+
+        attr_names = control_attributes.keys
+
+        attribute_differences = Schema::Compare::Difference::Attributes.compare(
+          attr_names,
+          control_attributes,
+          compare_attributes
+        )
+
+        context "Attribute with Different Value" do
+          different = attribute_differences.different?(:some_other_attribute)
+
+          test "Different" do
+            assert(different)
+          end
+        end
+
+        context "Attribute with Same Value" do
+          different = attribute_differences.different?(:some_attribute)
+
+          test "Not Different" do
+            refute(different)
+          end
+        end
       end
     end
   end
 end
-
-
-__END__
-        attr_names = Schema::Controls::Attribute.names
-        control_values = Schema::Controls::Attribute.control_values
-        compare_values = Schema::Controls::Attribute.compare_values

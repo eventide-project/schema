@@ -12,7 +12,7 @@ module Schema
           @entries ||= []
         end
 
-        def self.compare(attr_names, control_values, compare_values)
+        def self.compare(attr_names, control_attributes, compare_attributes)
           # ...
         end
 

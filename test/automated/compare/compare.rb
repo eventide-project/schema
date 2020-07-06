@@ -1,5 +1,3 @@
-## Failing, Scott Mon Jul 6 2020
-
 require_relative '../automated_init'
 
 context "Compare" do

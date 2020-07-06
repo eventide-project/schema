@@ -15,11 +15,11 @@ module Schema
 
       module Entry
         def self.attr_name
-          :some_different_attribute
+          Attribute::Name.some_attribute
         end
 
         def self.control_value
-          'some value'
+          Attribute::Value.some_attribute
         end
 
         def self.compare_value
