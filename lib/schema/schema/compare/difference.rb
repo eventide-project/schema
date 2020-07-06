@@ -6,8 +6,8 @@ module Schema
       Entry = Struct.new(
         :control_name,
         :control_value,
-        :control_name,
-        :control_value
+        :compare_name,
+        :compare_value
       )
 
       def attribute_differences
