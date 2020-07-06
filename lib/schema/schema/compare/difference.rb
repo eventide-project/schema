@@ -27,11 +27,14 @@ module Schema
           return false
         end
 
-        control_attributes == compare_attributes
+        # control_attributes == compare_attributes
+        true
       end
 
       def classes_same?
         control_class == compare_class
+
+        ## attribute lists must also be same
       end
 
       def different?
