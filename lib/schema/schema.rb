@@ -157,6 +157,7 @@ module Schema
   end
   alias :to_h :attributes
 
+## TODO Implement in terms of Compare, Scott Mon Jul 6 2020
   def ==(other, attributes=nil, ignore_class: nil)
     attributes ||= self.class.attribute_names
     attributes = Array(attributes)

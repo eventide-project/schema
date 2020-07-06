@@ -3,16 +3,24 @@ module Schema
     module Schema
       def self.example
         example = Example.new
-        example.some_attribute = 'some value'
-        example.some_other_attribute = 'some other value'
+        example.some_attribute = some_attribute
+        example.some_other_attribute = some_other_attribute
         example
       end
 
       def self.other_example
         example = OtherExample.new
-        example.some_attribute = 'some value'
-        example.some_other_attribute = 'some other value'
+        example.some_attribute = some_attribute
+        example.some_other_attribute = some_other_attribute
         example
+      end
+
+      def self.some_attribute
+        'some value'
+      end
+
+      def self.some_other_attribute
+        'some other value'
       end
 
       def self.ancestors

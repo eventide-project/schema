@@ -3,23 +3,19 @@ module Schema
     class Difference
       include Initializer
 
-      Entry = Struct.new(
-        :control_name,
-        :control_value,
-        :compare_name,
-        :compare_value
-      )
+      # initializer :control_class, :compare_class, :attributes
 
-      def attribute_differences
-        @attribute_differences ||= []
-      end
+      # def self.build(control, compare)
+      #   # attribute_differences = ...
 
-      # initializer :control_class, :control_attributes, :compare_class, :compare_attributes
-      initializer :control_class, :compare_class
+      #   new(control.class, compare.class, attribute_differences)
+      # end
+
+
+      initializer :control_class, :control_attributes, :compare_class, :compare_attributes
 
       def self.build(control, compare)
-        # new(control.class, control.attributes, compare.class, compare.attributes)
-        new(control.class, compare.class)
+        new(control.class, control.attributes, compare.class, compare.attributes)
       end
 
       def same?
@@ -27,14 +23,11 @@ module Schema
           return false
         end
 
-        # control_attributes == compare_attributes
-        true
+        control_attributes == compare_attributes
       end
 
       def classes_same?
         control_class == compare_class
-
-        ## attribute lists must also be same
       end
 
       def different?
