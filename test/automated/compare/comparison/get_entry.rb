@@ -2,8 +2,8 @@ require_relative '../../automated_init'
 
 context "Compare" do
   context "Comparison" do
-    context "Entries" do
-      context "Added" do
+    context "Get Entry" do
+      context "Present" do
         control_entry = Schema::Controls::Comparison::Entry.example
 
         entries = [control_entry]
@@ -19,7 +19,7 @@ context "Compare" do
         end
       end
 
-      context "Not Added" do
+      context "Absent" do
         entries = []
 
         comparison = Schema::Compare::Comparison.new(entries)

@@ -48,19 +48,6 @@ module Schema
       end
       alias :[] :entry
 
-      def add(control_attr_name, control_value, compare_attr_name, compare_value)
-        entry = Entry.new(
-          control_attr_name,
-          control_value,
-          compare_attr_name,
-          compare_value
-        )
-
-        entries << entry
-
-        entry
-      end
-
       def different?(attr_name)
         entry = self[attr_name]
 
