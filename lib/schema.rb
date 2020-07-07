@@ -5,7 +5,6 @@ require 'validate'
 require 'virtual'
 
 require 'schema/schema'
-require 'schema/schema/assertions'
 require 'schema/schema/compare/comparison'
 require 'schema/schema/compare/comparison/entry'
 require 'schema/schema/compare'
