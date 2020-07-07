@@ -14,20 +14,20 @@ module Schema
         attr_names ||= control_attributes.keys
 
         entries = attr_names.map do |attr_name|
-          build_entry(attr_name, control_attributes, compare_attributes)
+          build_entry(attr_name, control_attributes, attr_name, compare_attributes)
         end
 
         new(entries)
       end
 
-      def self.build_entry(attr_name, control_attributes, compare_attributes)
-        control_value = control_attributes[attr_name]
-        compare_value = compare_attributes[attr_name]
+      def self.build_entry(control_attr_name, control_attributes, compare_attr_name, compare_attributes)
+        control_value = control_attributes[control_attr_name]
+        compare_value = compare_attributes[compare_attr_name]
 
         entry = Entry.new(
-          attr_name,
+          control_attr_name,
           control_value,
-          attr_name,
+          compare_attr_name,
           compare_value
         )
 
