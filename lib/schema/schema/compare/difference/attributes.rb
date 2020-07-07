@@ -3,8 +3,9 @@ module Schema
     class Difference
       class Attributes
         Entry = Struct.new(
-          :attr_name,
+          :control_attr_name,
           :control_value,
+          :compare_attr_name,
           :compare_value
         )
 
@@ -34,6 +35,7 @@ module Schema
           entry = Entry.new(
             attr_name,
             control_value,
+            attr_name,
             compare_value
           )
 
@@ -46,20 +48,27 @@ module Schema
 
         def difference(attr_name)
           entries.find do |entry|
-            entry.attr_name == attr_name
+            entry.control_attr_name == attr_name
           end
         end
         alias :[] :difference
 
-        def add(attr_name, control_value, compare_value)
-          entry = Entry.new(attr_name, control_value, compare_value)
+        def add(control_attr_name, control_value, compare_attr_name, compare_value)
+          entry = Entry.new(
+            control_attr_name,
+            control_value,
+            compare_attr_name,
+            compare_value
+          )
+
           entries << entry
+
           entry
         end
 
         def different?(attr_name)
           entries.any? do |entry|
-            entry.attr_name == attr_name
+            entry.control_attr_name == attr_name
           end
         end
       end

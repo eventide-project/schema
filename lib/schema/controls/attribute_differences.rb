@@ -7,6 +7,7 @@ module Schema
         differences.add(
           Entry.attr_name,
           Entry.control_value,
+          Entry.attr_name,
           Entry.compare_value
         )
 
