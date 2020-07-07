@@ -2,6 +2,8 @@ module Schema
   module Compare
     class Difference
       class Attributes
+        Error = Class.new(RuntimeError)
+
         Entry = Struct.new(
           :control_attr_name,
           :control_value,
@@ -74,6 +76,8 @@ module Schema
 
         def different?(attr_name)
           entry = self[attr_name]
+
+          raise Error, "No attribute difference entry for #{attr_name.inspect}"
 
           entry.control_value != entry.compare_value
         end
