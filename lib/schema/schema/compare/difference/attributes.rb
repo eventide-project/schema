@@ -13,6 +13,12 @@ module Schema
           @entries ||= []
         end
 
+        def []
+          entries.first do |entry|
+            entry.control_attr_name == attr_name
+          end
+        end
+
         def self.compare(attr_names, control_attributes, compare_attributes)
           instance = new
 
@@ -67,9 +73,9 @@ module Schema
         end
 
         def different?(attr_name)
-          entries.any? do |entry|
-            entry.control_attr_name == attr_name
-          end
+          entry = self[attr_name]
+
+          entry.control_value != entry.compare_value
         end
       end
     end

@@ -8,7 +8,7 @@ context "Compare" do
           context "Difference" do
             differences = Schema::Controls::AttributeDifferences::Different::Mapped.example
 
-            attr_name = Schema::Controls::AttributeDifferences::Different::Entry.attr_name
+            attr_name = Schema::Controls::AttributeDifferences::Different::Mapped::Entry.control_attr_name
             different = differences.different?(attr_name)
 
             test "Detected" do
@@ -17,10 +17,10 @@ context "Compare" do
           end
 
           context "No Difference" do
-## TODO same
-            differences = Schema::Compare::Difference::Attributes.new
+            differences = Schema::Controls::AttributeDifferences::Same::Mapped.example
 
-            different = differences.different?(Schema::Controls::Random.example)
+            attr_name = Schema::Controls::AttributeDifferences::Same::Mapped::Entry.control_attr_name
+            different = differences.different?(attr_name)
 
             test "Not Detected" do
               refute(different)
