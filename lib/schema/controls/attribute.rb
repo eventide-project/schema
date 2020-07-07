@@ -31,6 +31,18 @@ module Schema
         def self.yet_another_attribute
           'yet another value'
         end
+
+        module Alternate
+          def self.example
+            'some alternate value'
+          end
+        end
+
+        module Random
+          def self.example
+            SecureRandom.hex
+          end
+        end
       end
     end
   end

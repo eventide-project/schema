@@ -24,9 +24,7 @@ module Schema
         end
 
         def self.compare_value
-          #Attribute::Value.some_other_attribute
-
-          'some different value'
+          Attribute::Value::Alternate.example
         end
       end
 
