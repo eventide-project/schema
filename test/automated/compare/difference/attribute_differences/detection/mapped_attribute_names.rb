@@ -8,7 +8,7 @@ context "Compare" do
           context "Difference" do
             differences = Schema::Controls::AttributeDifferences::Mapped.example
 
-            attr_name = Schema::Controls::AttributeDifferences::Entry.attr_name
+            attr_name = Schema::Controls::AttributeDifferences::Entry::Different.attr_name
             different = differences.different?(attr_name)
 
             test "Detected" do

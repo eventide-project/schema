@@ -7,9 +7,9 @@ context "Compare" do
         context "Added" do
           differences = Schema::Compare::Difference::Attributes.new
 
-          attr_name = Schema::Controls::AttributeDifferences::Entry.attr_name
-          control_value = Schema::Controls::AttributeDifferences::Entry.control_value
-          compare_value = Schema::Controls::AttributeDifferences::Entry.compare_value
+          attr_name = Schema::Controls::Attribute::Name.some_attribute
+          control_value = Schema::Controls::Attribute::Value.some_attribute
+          compare_value = Schema::Controls::Attribute::Value::Alternate.example
 
           differences.add(attr_name, control_value, attr_name, compare_value)
 
@@ -37,7 +37,7 @@ context "Compare" do
         context "Not Added" do
           differences = Schema::Compare::Difference::Attributes.new
 
-          attr_name = Schema::Controls::AttributeDifferences::Entry.attr_name
+          attr_name = Schema::Controls::Random.example
 
           entry = differences[attr_name]
 
