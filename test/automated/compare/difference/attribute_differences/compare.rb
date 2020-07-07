@@ -3,7 +3,7 @@ require_relative '../../../automated_init'
 context "Compare" do
   context "Attributes" do
     context "Attribute Differences" do
-      _context "Compare" do
+      context "Compare" do
         control = Schema::Controls::Schema.example
 
         compare = Schema::Controls::Schema.example
@@ -14,25 +14,25 @@ context "Compare" do
 
         attr_names = control_attributes.keys
 
-        attribute_differences = Schema::Compare::Difference::Attributes.compare(
+        attribute_differences = Schema::Compare::Difference::Attributes.build(
           attr_names,
           control_attributes,
           compare_attributes
         )
-
-        context "Attribute with Different Value" do
-          different = attribute_differences.different?(:some_other_attribute)
-
-          test "Different" do
-            assert(different)
-          end
-        end
 
         context "Attribute with Same Value" do
           different = attribute_differences.different?(:some_attribute)
 
           test "Not Different" do
             refute(different)
+          end
+        end
+
+        context "Attribute with Different Value" do
+          different = attribute_differences.different?(:some_other_attribute)
+
+          test "Different" do
+            assert(different)
           end
         end
       end

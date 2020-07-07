@@ -15,30 +15,20 @@ module Schema
           @entries ||= []
         end
 
-        def []
-          entries.first do |entry|
-            entry.control_attr_name == attr_name
-          end
-        end
-
-        def self.compare(attr_names, control_attributes, compare_attributes)
+        def self.build(attr_names, control_attributes, compare_attributes)
           instance = new
 
           attr_names.each do |attr_name|
-            entry = compare_attribute(attr_name, control_attributes, compare_attributes)
-            instance.entries << entry if not entry.nil?
+            entry = build_entry(attr_name, control_attributes, compare_attributes)
+            instance.entries << entry
           end
 
           instance
         end
 
-        def self.compare_attribute(attr_name, control_attributes, compare_attributes)
+        def self.build_entry(attr_name, control_attributes, compare_attributes)
           control_value = control_attributes[attr_name]
           compare_value = compare_attributes[attr_name]
-
-          if control_value == compare_value
-            return nil
-          end
 
           entry = Entry.new(
             attr_name,
@@ -48,10 +38,6 @@ module Schema
           )
 
           entry
-        end
-
-        def self.build(*args)
-          compare(*args)
         end
 
         def difference(attr_name)
@@ -77,7 +63,9 @@ module Schema
         def different?(attr_name)
           entry = self[attr_name]
 
-          raise Error, "No attribute difference entry for #{attr_name.inspect}"
+          if entry.nil?
+            raise Error, "No attribute difference entry for #{attr_name.inspect}"
+          end
 
           entry.control_value != entry.compare_value
         end
