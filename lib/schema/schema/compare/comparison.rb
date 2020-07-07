@@ -14,8 +14,12 @@ module Schema
 
       initializer :entries
 
-      def self.build(control_attributes, compare_attributes, attr_names)
-      #def self.build(control, compare, attr_names=nil)
+      def self.build(control, compare, attr_names=nil)
+        control_attributes = control.attributes
+        compare_attributes = compare.attributes
+
+        attr_names ||= control_attributes.keys
+
         entries = attr_names.map do |attr_name|
           build_entry(attr_name, control_attributes, compare_attributes)
         end
