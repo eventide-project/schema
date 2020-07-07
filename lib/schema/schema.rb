@@ -182,10 +182,6 @@ module Schema
   end
   alias :eql? :==
 
-  def ===(other)
-    self.eql?(other, ignore_class: true)
-  end
-
   def attributes_equal?(other, attributes=nil, print: nil)
     attributes ||= self.class.attribute_names
 
