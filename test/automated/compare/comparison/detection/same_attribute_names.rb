@@ -7,7 +7,7 @@ context "Compare" do
         context "Difference" do
           comparison = Schema::Controls::Comparison::Different.example
 
-          attr_name = Schema::Controls::Comparison::Different::Entry.attr_name
+          attr_name = Schema::Controls::Comparison::Different::Entry.control_attr_name
           different = comparison.different?(attr_name)
 
           test "Detected" do
@@ -18,7 +18,7 @@ context "Compare" do
         context "No Difference" do
           comparison = Schema::Controls::Comparison::Same.example
 
-          attr_name = Schema::Controls::Comparison::Same::Entry.attr_name
+          attr_name = Schema::Controls::Comparison::Same::Entry.control_attr_name
           different = comparison.different?(attr_name)
 
           test "Not Detected" do

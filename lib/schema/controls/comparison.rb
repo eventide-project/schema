@@ -3,25 +3,33 @@ module Schema
     module Comparison
       module Different
         def self.example
-          comparison = ::Schema::Compare::Comparison.new
+          entry = Entry.example
 
-          comparison.add(
-            Entry.attr_name,
-            Entry.control_value,
-            Entry.attr_name,
-            Entry.compare_value
-          )
+          entries = [entry]
 
-          comparison
+          ::Schema::Compare::Comparison.new(entries)
         end
 
         module Entry
-          def self.attr_name
+          def self.example
+            ::Schema::Compare::Comparison::Entry.new(
+              self.control_attr_name,
+              self.control_value,
+              self.compare_attr_name,
+              self.compare_value
+            )
+          end
+
+          def self.control_attr_name
             Attribute::Name.some_attribute
           end
 
           def self.control_value
             Attribute::Value.some_attribute
+          end
+
+          def self.compare_attr_name
+            Attribute::Name.some_attribute
           end
 
           def self.compare_value
@@ -31,19 +39,23 @@ module Schema
 
         module Mapped
           def self.example
-            comparison = ::Schema::Compare::Comparison.new
+            entry = Entry.example
 
-            comparison.add(
-              Entry.control_attr_name,
-              Entry.control_value,
-              Entry.compare_attr_name,
-              Entry.compare_value
-            )
+            entries = [entry]
 
-            comparison
+            ::Schema::Compare::Comparison.new(entries)
           end
 
           module Entry
+            def self.example
+              ::Schema::Compare::Comparison::Entry.new(
+                self.control_attr_name,
+                self.control_value,
+                self.compare_attr_name,
+                self.compare_value
+              )
+            end
+
             def self.control_attr_name
               Attribute::Name.some_attribute
             end
@@ -65,57 +77,79 @@ module Schema
 
       module Same
         def self.example
-          comparison = ::Schema::Compare::Comparison.new
+          entry = Entry.example
 
-          comparison.add(
-            Entry.attr_name,
-            Entry.value,
-            Entry.attr_name,
-            Entry.value
-          )
+          entries = [entry]
 
-          comparison
+          ::Schema::Compare::Comparison.new(entries)
         end
 
         module Entry
-          def self.attr_name
+          def self.example
+            ::Schema::Compare::Comparison::Entry.new(
+              self.control_attr_name,
+              self.control_value,
+              self.compare_attr_name,
+              self.compare_value
+            )
+          end
+
+          def self.control_attr_name
             Attribute::Name.some_attribute
           end
 
-          def self.value
+          def self.control_value
+            Attribute::Value.some_attribute
+          end
+
+          def self.compare_attr_name
+            Attribute::Name.some_attribute
+          end
+
+          def self.compare_value
             Attribute::Value.some_attribute
           end
         end
 
         module Mapped
           def self.example
-            comparison = ::Schema::Compare::Comparison.new
+            entry = Entry.example
 
-            comparison.add(
-              Entry.control_attr_name,
-              Entry.value,
-              Entry.compare_attr_name,
-              Entry.value,
-            )
+            entries = [entry]
 
-            comparison
+            ::Schema::Compare::Comparison.new(entries)
           end
 
           module Entry
+            def self.example
+              ::Schema::Compare::Comparison::Entry.new(
+                self.control_attr_name,
+                self.control_value,
+                self.compare_attr_name,
+                self.compare_value
+              )
+            end
+
             def self.control_attr_name
               Attribute::Name.some_attribute
             end
 
-            def self.value
+            def self.control_value
               Attribute::Value.some_attribute
             end
 
             def self.compare_attr_name
               Attribute::Name.some_other_attribute
             end
+
+            def self.compare_value
+              Attribute::Value.some_attribute
+            end
           end
         end
       end
+
+      Entry = Same::Entry
     end
   end
 end

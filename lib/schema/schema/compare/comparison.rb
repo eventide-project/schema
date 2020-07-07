@@ -12,27 +12,15 @@ module Schema
         :compare_value
       )
 
-      def entries
-        @entries ||= []
-      end
-
-      #def attr_names
-      #  @attr_names ||= control_attributes.keys
-      #end
-      #attr_writer :attr_names
-
-      #initializer :entries
+      initializer :entries
 
       def self.build(control_attributes, compare_attributes, attr_names)
       #def self.build(control, compare, attr_names=nil)
-        instance = new
-
-        attr_names.each do |attr_name|
-          entry = build_entry(attr_name, control_attributes, compare_attributes)
-          instance.entries << entry
+        entries = attr_names.map do |attr_name|
+          build_entry(attr_name, control_attributes, compare_attributes)
         end
 
-        instance
+        new(entries)
       end
 
       def self.build_entry(attr_name, control_attributes, compare_attributes)
