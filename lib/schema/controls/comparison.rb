@@ -1,18 +1,18 @@
 module Schema
   module Controls
-    module AttributeDifferences
+    module Comparison
       module Different
         def self.example
-          differences = ::Schema::Compare::Difference::Attributes.new
+          comparison = ::Schema::Compare::Comparison.new
 
-          differences.add(
+          comparison.add(
             Entry.attr_name,
             Entry.control_value,
             Entry.attr_name,
             Entry.compare_value
           )
 
-          differences
+          comparison
         end
 
         module Entry
@@ -31,16 +31,16 @@ module Schema
 
         module Mapped
           def self.example
-            differences = ::Schema::Compare::Difference::Attributes.new
+            comparison = ::Schema::Compare::Comparison.new
 
-            differences.add(
+            comparison.add(
               Entry.control_attr_name,
               Entry.control_value,
               Entry.compare_attr_name,
               Entry.compare_value
             )
 
-            differences
+            comparison
           end
 
           module Entry
@@ -65,16 +65,16 @@ module Schema
 
       module Same
         def self.example
-          differences = ::Schema::Compare::Difference::Attributes.new
+          comparison = ::Schema::Compare::Comparison.new
 
-          differences.add(
+          comparison.add(
             Entry.attr_name,
             Entry.value,
             Entry.attr_name,
             Entry.value
           )
 
-          differences
+          comparison
         end
 
         module Entry
@@ -89,16 +89,16 @@ module Schema
 
         module Mapped
           def self.example
-            differences = ::Schema::Compare::Difference::Attributes.new
+            comparison = ::Schema::Compare::Comparison.new
 
-            differences.add(
+            comparison.add(
               Entry.control_attr_name,
               Entry.value,
               Entry.compare_attr_name,
               Entry.value,
             )
 
-            differences
+            comparison
           end
 
           module Entry

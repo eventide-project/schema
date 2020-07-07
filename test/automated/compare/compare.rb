@@ -1,6 +1,6 @@
 require_relative '../automated_init'
 
-context "Compare" do
+_context "Compare" do
   context "Schema Attributes Differ" do
     control = Schema::Controls::Schema.example
     compare = Schema::Controls::Schema.example
