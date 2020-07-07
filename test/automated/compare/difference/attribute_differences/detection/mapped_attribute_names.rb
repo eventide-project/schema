@@ -19,7 +19,7 @@ context "Compare" do
           context "No Difference" do
             differences = Schema::Compare::Difference::Attributes.new
 
-            different = differences.different?(SecureRandom.hex)
+            different = differences.different?(Schema::Controls::Random.example)
 
             test "Not Detected" do
               refute(different)

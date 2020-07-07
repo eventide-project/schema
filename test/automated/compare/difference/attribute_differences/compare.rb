@@ -7,7 +7,7 @@ context "Compare" do
         control = Schema::Controls::Schema.example
 
         compare = Schema::Controls::Schema.example
-        compare.some_other_attribute = SecureRandom.hex
+        compare.some_other_attribute = Schema::Controls::Attribute::Value::Random.example
 
         control_attributes = control.attributes
         compare_attributes = compare.attributes

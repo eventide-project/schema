@@ -40,7 +40,7 @@ module Schema
 
         module Random
           def self.example
-            SecureRandom.hex
+            Controls::Random.example
           end
         end
       end

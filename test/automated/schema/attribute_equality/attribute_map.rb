@@ -23,7 +23,7 @@ context "Attribute Equality Predicate" do
         example_1 = Schema::Controls::Schema.example
         example_2 = Schema::Controls::Schema::Equivalent.example
 
-        example_2.yet_another_attribute = SecureRandom.hex
+        example_2.yet_another_attribute = Schema::Controls::Attribute::Value::Random.example
 
         refute(example_1.some_other_attribute == example_2.yet_another_attribute)
 
