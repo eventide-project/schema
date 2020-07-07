@@ -5,13 +5,6 @@ module Schema
 
       Error = Class.new(RuntimeError)
 
-      Entry = Struct.new(
-        :control_attr_name,
-        :control_value,
-        :compare_attr_name,
-        :compare_value
-      )
-
       initializer :entries
 
       def self.build(control, compare, attr_names=nil)
@@ -55,8 +48,7 @@ module Schema
           raise Error, "No attribute difference entry for #{attr_name.inspect}"
         end
 
-        #entry.different?
-        entry.control_value != entry.compare_value
+        entry.different?
       end
     end
   end
