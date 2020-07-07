@@ -1,14 +1,14 @@
 require_relative '../../../../automated_init'
 
-context "Compare" do
+_context "Compare" do
   context "Attributes" do
     context "Attribute Differences" do
       context "Detection" do
         context "Same Attribute Names" do
           context "Difference" do
-            differences = Schema::Controls::AttributeDifferences.example
+            differences = Schema::Controls::AttributeDifferences::Different.example
 
-            attr_name = Schema::Controls::AttributeDifferences::Entry::Different.attr_name
+            attr_name = Schema::Controls::AttributeDifferences::Different::Entry.attr_name
             different = differences.different?(attr_name)
 
             test "Detected" do
@@ -17,7 +17,7 @@ context "Compare" do
           end
 
           context "No Difference" do
-            differences = Schema::Compare::Difference::Attributes.new
+            differences = Schema::Controls::AttributeDifferences::Same.example
 
             different = differences.different?(Schema::Controls::Random.example)
 
