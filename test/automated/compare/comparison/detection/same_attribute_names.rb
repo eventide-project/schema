@@ -5,7 +5,7 @@ context "Compare" do
     context "Detection" do
       context "Same Attribute Names" do
         context "Difference" do
-          comparison = Schema::Controls::Comparison::Different.example
+          comparison = Schema::Controls::Comparison::Different::Attributes.example
 
           attr_name = Schema::Controls::Comparison::Different::Attributes::Entry.control_attr_name
           different = comparison.different?(attr_name)

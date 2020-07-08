@@ -1,6 +1,22 @@
 module Schema
   module Controls
     module Comparison
+      def self.example
+        Same.example
+      end
+
+      def self.control_class
+        Same.control_class
+      end
+
+      def self.compare_class
+        Same.compare_class
+      end
+
+      def self.entries
+        Same.entries
+      end
+
       module Different
         def self.example
           ::Schema::Compare::Comparison.new(control_class, compare_class, entries)
@@ -123,7 +139,7 @@ module Schema
             end
 
             def self.compare_attr_name
-              Attribute::Name.some_other_attribute
+              Attribute::Name.yet_another_attribute
             end
 
             def self.compare_value
@@ -217,7 +233,7 @@ module Schema
             end
 
             def self.compare_attr_name
-              Attribute::Name.some_other_attribute
+              Attribute::Name.yet_another_attribute
             end
 
             def self.compare_value

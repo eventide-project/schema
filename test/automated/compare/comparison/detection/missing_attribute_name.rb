@@ -4,7 +4,7 @@ context "Compare" do
   context "Comparison" do
     context "Detection" do
       context "Missing Attribute Name" do
-        comparison = Schema::Controls::Comparison::Different.example
+        comparison = Schema::Controls::Comparison.example
 
         attr_name = Schema::Controls::Random.example
 

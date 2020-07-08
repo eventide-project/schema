@@ -3,8 +3,8 @@ require_relative '../../automated_init'
 context "Compare" do
   context "Comparison" do
     context "Get Entry" do
-      control_class = Schema::Controls::Comparison::Same.control_class
-      compare_class = Schema::Controls::Comparison::Same.compare_class
+      control_class = Schema::Controls::Comparison.control_class
+      compare_class = Schema::Controls::Comparison.compare_class
 
       context "Present" do
         control_entry = Schema::Controls::Comparison::Entry.example
