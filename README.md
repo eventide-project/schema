@@ -322,7 +322,7 @@ some_object.to_h
 
 Two instances of a schema can be compared using Ruby's common equality operator, `==`, and the `eql?` method.
 
-The `operator` and the `eql?` method can be used interchangeably. They have identical implementations and signatures. The `eql?` method is an alias of the `==` operator.
+The `==` operator and the `eql?` method can be used interchangeably. They have identical implementations and signatures. The `eql?` method is an alias of the `==` operator.
 
 ``` ruby
 eql?(other, attribute_names=nil, ignore_class: nil)
