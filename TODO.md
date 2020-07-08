@@ -1,4 +1,7 @@
-# Attribute Mapping Notes
+# TODO
+
+- Control and compare class named on Comparison
+- Comparison.difference without args
 
 ## No attributes specified, uses control's attributes
 
