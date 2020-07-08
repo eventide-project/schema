@@ -15,7 +15,7 @@ module Schema
         end
 
         def self.compare_class
-          Controls::Schema::Example
+          Controls::Schema::OtherExample
         end
 
         module Entry
@@ -51,7 +51,15 @@ module Schema
 
             entries = [entry]
 
-            ::Schema::Compare::Comparison.new(Different.control_class, Different.compare_class, entries)
+            ::Schema::Compare::Comparison.new(control_class, compare_class, entries)
+          end
+
+          def self.control_class
+            Controls::Schema::Example
+          end
+
+          def self.compare_class
+            Controls::Schema::Equivalent
           end
 
           module Entry
@@ -89,7 +97,15 @@ module Schema
 
           entries = [entry]
 
-          ::Schema::Compare::Comparison.new(entries)
+          ::Schema::Compare::Comparison.new(control_class, compare_class, entries)
+        end
+
+        def self.control_class
+          Controls::Schema::Example
+        end
+
+        def self.compare_class
+          Controls::Schema::Example
         end
 
         module Entry
@@ -125,7 +141,15 @@ module Schema
 
             entries = [entry]
 
-            ::Schema::Compare::Comparison.new(entries)
+            ::Schema::Compare::Comparison.new(control_class, compare_class, entries)
+          end
+
+          def self.control_class
+            Controls::Schema::Example
+          end
+
+          def self.compare_class
+            Controls::Schema::Equivalent
           end
 
           module Entry

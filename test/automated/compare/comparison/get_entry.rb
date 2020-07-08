@@ -3,12 +3,15 @@ require_relative '../../automated_init'
 context "Compare" do
   context "Comparison" do
     context "Get Entry" do
+      control_class = Schema::Controls::Comparison::Same.control_class
+      compare_class = Schema::Controls::Comparison::Same.compare_class
+
       context "Present" do
         control_entry = Schema::Controls::Comparison::Entry.example
 
         entries = [control_entry]
 
-        comparison = Schema::Compare::Comparison.new(entries)
+        comparison = Schema::Compare::Comparison.new(control_class, compare_class, entries)
 
         attr_name = control_entry.control_attr_name
 
@@ -22,7 +25,7 @@ context "Compare" do
       context "Absent" do
         entries = []
 
-        comparison = Schema::Compare::Comparison.new(entries)
+        comparison = Schema::Compare::Comparison.new(control_class, compare_class, entries)
 
         attr_name = Schema::Controls::Random.example
 
