@@ -41,6 +41,8 @@ module Schema
       end
       alias :[] :entry
 
+      # TODO: attr_name is optional (Nathan Ladd)
+      # TODO: optional ignore_class argument (Nathan Ladd)
       def different?(attr_name)
         entry = self[attr_name]
 
