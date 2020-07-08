@@ -325,12 +325,18 @@ Two instances of a schema can be compared using Ruby's common equality operator,
 The `operator` and the `eql?` method can be used interchangeably. They have identical implementations and signatures. The `eql?` method is an alias of the `==` operator.
 
 ``` ruby
-==(other, attribute_names=nil, ignore_class: nil)
+eql?(other, attribute_names=nil, ignore_class: nil)
 ```
 
 **Returns**
 
 Boolean value indicating whether the schemas are equal or not
+
+**Alias**
+
+`==`
+
+_Note that the `==` alias can only be invoked with the first parameter_
 
 **Parameters**
 
