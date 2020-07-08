@@ -3,54 +3,90 @@ module Schema
     module Comparison
       module Different
         def self.example
-          entry = Entry.example
-
-          entries = [entry]
-
           ::Schema::Compare::Comparison.new(control_class, compare_class, entries)
         end
 
         def self.control_class
-          Controls::Schema::Example
+          Classes.control_class
         end
 
         def self.compare_class
-          Controls::Schema::OtherExample
+          Classes.compare_class
         end
 
-        module Entry
+        def self.entries
+          Attributes.entries
+        end
+
+        module Classes
           def self.example
-            ::Schema::Compare::Comparison::Entry.new(
-              self.control_attr_name,
-              self.control_value,
-              self.compare_attr_name,
-              self.compare_value
-            )
+            ::Schema::Compare::Comparison.new(control_class, compare_class, entries)
           end
 
-          def self.control_attr_name
-            Attribute::Name.some_attribute
+          def self.control_class
+            Controls::Schema::Example
           end
 
-          def self.control_value
-            Attribute::Value.some_attribute
+          def self.compare_class
+            Controls::Schema::OtherExample
           end
 
-          def self.compare_attr_name
-            Attribute::Name.some_attribute
+          def self.entries
+            entry = Same::Entry.example
+
+            [entry]
+          end
+        end
+
+        module Attributes
+          def self.example
+            ::Schema::Compare::Comparison.new(control_class, compare_class, entries)
           end
 
-          def self.compare_value
-            Attribute::Value::Alternate.example
+          def self.control_class
+            Controls::Schema::Example
+          end
+
+          def self.compare_class
+            Controls::Schema::Example
+          end
+
+          def self.entries
+            entry = Entry.example
+
+            [entry]
+          end
+
+          module Entry
+            def self.example
+              ::Schema::Compare::Comparison::Entry.new(
+                self.control_attr_name,
+                self.control_value,
+                self.compare_attr_name,
+                self.compare_value
+              )
+            end
+
+            def self.control_attr_name
+              Attribute::Name.some_attribute
+            end
+
+            def self.control_value
+              Attribute::Value.some_attribute
+            end
+
+            def self.compare_attr_name
+              Attribute::Name.some_attribute
+            end
+
+            def self.compare_value
+              Attribute::Value::Alternate.example
+            end
           end
         end
 
         module Mapped
           def self.example
-            entry = Entry.example
-
-            entries = [entry]
-
             ::Schema::Compare::Comparison.new(control_class, compare_class, entries)
           end
 
@@ -60,6 +96,12 @@ module Schema
 
           def self.compare_class
             Controls::Schema::Equivalent
+          end
+
+          def self.entries
+            entry = Entry.example
+
+            [entry]
           end
 
           module Entry
@@ -93,10 +135,6 @@ module Schema
 
       module Same
         def self.example
-          entry = Entry.example
-
-          entries = [entry]
-
           ::Schema::Compare::Comparison.new(control_class, compare_class, entries)
         end
 
@@ -106,6 +144,12 @@ module Schema
 
         def self.compare_class
           Controls::Schema::Example
+        end
+
+        def self.entries
+          entry = Entry.example
+
+          [entry]
         end
 
         module Entry
@@ -137,10 +181,6 @@ module Schema
 
         module Mapped
           def self.example
-            entry = Entry.example
-
-            entries = [entry]
-
             ::Schema::Compare::Comparison.new(control_class, compare_class, entries)
           end
 
@@ -150,6 +190,12 @@ module Schema
 
           def self.compare_class
             Controls::Schema::Equivalent
+          end
+
+          def self.entries
+            entry = Entry.example
+
+            [entry]
           end
 
           module Entry
