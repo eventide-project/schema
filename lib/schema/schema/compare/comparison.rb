@@ -6,7 +6,7 @@ module Schema
       Error = Class.new(RuntimeError)
 
       def attribute_names
-        entries.map { |entry| entry.control_attribute_name }
+        entries.map { |entry| entry.control_name }
       end
 
       initializer :control_class, :compare_class, :entries
@@ -24,14 +24,14 @@ module Schema
         new(control.class, compare.class, entries)
       end
 
-      def self.build_entry(control_attribute_name, control_attributes, compare_attribute_name, compare_attributes)
-        control_value = control_attributes[control_attribute_name]
-        compare_value = compare_attributes[compare_attribute_name]
+      def self.build_entry(control_name, control_attributes, compare_name, compare_attributes)
+        control_value = control_attributes[control_name]
+        compare_value = compare_attributes[compare_name]
 
         entry = Entry.new(
-          control_attribute_name,
+          control_name,
           control_value,
-          compare_attribute_name,
+          compare_name,
           compare_value
         )
 
@@ -40,7 +40,7 @@ module Schema
 
       def entry(attribute_name)
         entries.find do |entry|
-          entry.control_attribute_name == attribute_name
+          entry.control_name == attribute_name
         end
       end
       alias :[] :entry

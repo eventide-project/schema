@@ -13,7 +13,7 @@ context "Compare" do
 
         comparison = Schema::Compare::Comparison.new(control_class, compare_class, entries)
 
-        attribute_name = control_entry.control_attribute_name
+        attribute_name = control_entry.control_name
 
         entry = comparison[attribute_name]
 
