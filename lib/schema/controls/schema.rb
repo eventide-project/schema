@@ -66,7 +66,7 @@ module Schema
           Class.new do
             include ::Schema
 
-            attribute :"random_attribute_#{Controls::Random.example}"
+            attribute Attribute::Name.random
           end
         end
       end

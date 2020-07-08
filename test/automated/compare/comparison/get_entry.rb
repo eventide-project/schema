@@ -27,7 +27,7 @@ context "Compare" do
 
         comparison = Schema::Compare::Comparison.new(control_class, compare_class, entries)
 
-        attribute_name = Schema::Controls::Random.example
+        attribute_name = Schema::Controls::Attribute::Name.random
 
         entry = comparison[attribute_name]
 

@@ -17,6 +17,10 @@ module Schema
         def self.yet_another_attribute
           :yet_another_attribute
         end
+
+        def self.random
+          :"random_attribute_#{Controls::Random.example}"
+        end
       end
 
       module Value
@@ -32,15 +36,13 @@ module Schema
           'yet another value'
         end
 
+        def self.random
+          Controls::Random.example
+        end
+
         module Alternate
           def self.example
             'some alternate value'
-          end
-        end
-
-        module Random
-          def self.example
-            Controls::Random.example
           end
         end
       end

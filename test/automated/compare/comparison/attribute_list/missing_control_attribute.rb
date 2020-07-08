@@ -7,7 +7,7 @@ context "Compare" do
         control = Schema::Controls::Schema.example
         compare = Schema::Controls::Schema.example
 
-        listed_attribute_names = [Schema::Controls::Random.example]
+        listed_attribute_names = [Schema::Controls::Attribute::Name.random]
 
         test "Is an error" do
           assert_raises(Schema::Compare::Comparison::Error) do

@@ -6,7 +6,7 @@ context "Compare" do
       context "Missing Attribute Name" do
         comparison = Schema::Controls::Comparison.example
 
-        attribute_name = Schema::Controls::Random.example
+        attribute_name = Schema::Controls::Attribute::Name.random
 
         test "Is an error" do
           assert_raises(Schema::Compare::Comparison::Error) do
