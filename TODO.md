@@ -1,5 +1,6 @@
 # TODO
 
+- mapped comparison
 - attribute_name, rather than attr_name
 
 ## No attributes specified, uses control's attributes
