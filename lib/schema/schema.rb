@@ -158,10 +158,15 @@ module Schema
   alias :to_h :attributes
 
 ## TODO Implement in terms of Compare, Scott Mon Jul 6 2020
+## attribute_names, rather than attributes
   def ==(other, attributes=nil, ignore_class: nil)
     attributes ||= self.class.attribute_names
     attributes = Array(attributes)
 
+## Why is class ignored by default
+## It's not a terribly accurate form of equality
+## Maybe the == operator should not have been overwritten?
+## There's no way to do object equality with schemas otherwise
     ignore_class = false if ignore_class.nil?
 
     if !ignore_class
