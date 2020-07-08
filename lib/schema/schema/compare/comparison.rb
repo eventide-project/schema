@@ -5,9 +5,10 @@ module Schema
 
       Error = Class.new(RuntimeError)
 
-      def attribute_names
+      def entries_attribute_names
         entries.map { |entry| entry.control_name }
       end
+      alias :attribute_names :entries_attribute_names
 
       initializer :control_class, :compare_class, :entries
 

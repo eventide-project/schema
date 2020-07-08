@@ -16,7 +16,13 @@ comparison = Schema::Compare::Comparison.build(control, compare)
 comparison = Schema::Compare::Comparison.build(control, compare, [:some_attribute])
 ```
 
-- Test that just the given attributes were compared
+- Test that just the given attributes are in entries
+  - Start with a control with multiple entries
+  - control schema
+  - compare schema
+  - Build using control name that's the same
+  - Assert that entries only have the one named in the whitelist
+
 - Raise if a missing control attribute is given
 - Raise if a missing compare attribute is given
 
