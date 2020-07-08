@@ -1,5 +1,4 @@
-Attribute Mapping Notes
-=======================
+# Attribute Mapping Notes
 
 ## No attributes specified, uses control's attributes
 
