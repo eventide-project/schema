@@ -5,6 +5,10 @@ module Schema
 
       Error = Class.new(RuntimeError)
 
+      def attribute_names
+        entries.map { |entry| entry.control_attr_name }
+      end
+
       initializer :control_class, :compare_class, :entries
 
       def self.build(control, compare, attr_names=nil)
@@ -41,9 +45,29 @@ module Schema
       end
       alias :[] :entry
 
-      # TODO: attr_name is optional (Nathan Ladd)
-      # TODO: optional ignore_class argument (Nathan Ladd)
-      def different?(attr_name)
+      def different?(attr_name=nil, ignore_class: nil)
+        if not attr_name.nil?
+          return attribute_different?(attr_name)
+        end
+
+        ignore_class ||= false
+
+        if not ignore_class
+          return true if classes_different?
+        end
+
+        attribute_names.each do |attribute_name|
+          return true if attribute_different?(attribute_name)
+        end
+
+        false
+      end
+
+      def classes_different?
+        control_class != compare_class
+      end
+
+      def attribute_different?(attr_name)
         entry = self[attr_name]
 
         if entry.nil?

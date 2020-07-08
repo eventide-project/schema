@@ -1,7 +1,6 @@
 # TODO
 
-- Control and compare class named on Comparison
-- Comparison.difference without args
+- attribute_name, rather than attr_name
 
 ## No attributes specified, uses control's attributes
 

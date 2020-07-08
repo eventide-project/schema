@@ -3,13 +3,13 @@ require_relative '../../automated_init'
 context "Compare" do
   context "Comparison" do
     context "Class Difference" do
-      comparison = Schema::Controls::Comparison::Difference::Class.example
+      comparison = Schema::Controls::Comparison::Different::Classes.example
 
       context "Don't Ignore Class" do
         different = comparison.different?
 
         test "Different" do
-          refute(different)
+          assert(different)
         end
       end
 
