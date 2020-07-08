@@ -57,6 +57,20 @@ module Schema
         include Attributes
       end
 
+      module Random
+        def self.example
+          example_class.new
+        end
+
+        def self.example_class
+          Class.new do
+            include ::Schema
+
+            attribute :"random_attribute_#{Controls::Random.example}"
+          end
+        end
+      end
+
       module TransientAttributes
         def self.example
           example = Example.new

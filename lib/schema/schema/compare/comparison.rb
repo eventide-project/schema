@@ -13,21 +13,28 @@ module Schema
       initializer :control_class, :compare_class, :entries
 
       def self.build(control, compare, attribute_names=nil)
-        control_attributes = control.attributes
-        compare_attributes = compare.attributes
-
-        attribute_names ||= control_attributes.keys
+        attribute_names ||= control.class.attribute_names
 
         entries = attribute_names.map do |attribute_name|
-          build_entry(attribute_name, control_attributes, attribute_name, compare_attributes)
+          build_entry(attribute_name, control, attribute_name, compare)
         end
 
         new(control.class, compare.class, entries)
       end
 
-      def self.build_entry(control_name, control_attributes, compare_name, compare_attributes)
-        control_value = control_attributes[control_name]
-        compare_value = compare_attributes[compare_name]
+      def self.build_entry(control_name, control, compare_name, compare)
+        control_class = control.class
+        if not control_class.attribute_names.include?(control_name)
+          raise Error, "Attribute is not defined (Attribute Name: #{control_name.inspect}, Schema Class: #{control_class})"
+        end
+
+        compare_class = compare.class
+        if not compare_class.attribute_names.include?(compare_name)
+          raise Error, "Attribute is not defined (Attribute Name: #{compare_name.inspect}, Schema Class: #{compare_class})"
+        end
+
+        control_value = control.public_send(control_name)
+        compare_value = compare.public_send(compare_name)
 
         entry = Entry.new(
           control_name,
@@ -72,7 +79,7 @@ module Schema
         entry = self[attribute_name]
 
         if entry.nil?
-          raise Error, "No attribute difference entry for #{attribute_name.inspect}"
+          raise Error, "No attribute difference entry (Attribute Name: #{attribute_name.inspect})"
         end
 
         entry.different?
