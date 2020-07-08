@@ -328,13 +328,17 @@ The `operator` and the `eql?` method can be used interchangeably. They have iden
 ==(other, attribute_names=nil, ignore_class: nil)
 ```
 
+**Returns**
+
+Boolean value indicating whether the schemas are equal or not
+
 **Parameters**
 
 | Name | Description | Type | Default |
 | --- | --- | --- | --- |
 | other | The right-hand side object to compare to the left-hand side object | Schema | |
-| attribute_names | Optional list of attribute names to include in the evaluation of equality | Array of Symbol | Attribute names of left-hand side object |
-| ignore_class | Controls whether the classes of the objects are considered in the evaluation of equality | Boolean | False |
+| attribute_names | Optional list of attribute names to which equality evaluation is limited | Array of Symbol | Attribute names of left-hand side object |
+| ignore_class | Optionally controls whether the classes of the objects are considered in the evaluation of equality | Boolean | False |
 
 ### Basic Equality
 
@@ -407,6 +411,70 @@ some_object.eql?(some_other_object, ignore_class: true)
 # => false
 
 some_object.eql?(some_other_object, [:some_attribute], ignore_class: true)
+# => true
+```
+
+## Comparison and Difference
+
+Two instances of a schema can be compared and a comparison object is produced that illustrates which attributes have equal values and which do not.
+
+``` ruby
+Schema::Compare.(control, compare, attribute_names=nil)
+```
+
+**Returns**
+
+Instance of `Schema::Compare::Comparison` containing an entry for each attribute compared
+
+**Parameters**
+
+| Name | Description | Type |
+| --- | --- | --- |
+| control | Baseline object for comparison | Schema |
+| compare | Object to compare to the baseline | Schema |
+| attribute_names | Optional list of attribute names to which comparison is limited | Array of Symbol or Hash |
+
+``` ruby
+class SomeClass
+  include Schema
+
+  attribute :some_attribute, String
+  attribute :some_other_attribute, String
+end
+
+class SomeOtherClass
+  include Schema
+
+  attribute :some_attribute, String
+  attribute :some_other_attribute, String
+end
+
+some_object = SomeClass.new
+some_object.some_attribute = 'some value'
+some_object.some_other_attribute = 'some other value'
+
+some_other_object = SomeOtherClass.new
+some_other_object.some_attribute = 'some value'
+some_other_object.some_other_attribute = 'yet another value'
+
+comparison = Schema::Compare.(control, compare)
+#=> #<Schema::Compare::Comparison:0x...
+ @entries=
+  [#<struct Schema::Compare::Comparison::Entry
+    control_attr_name=:some_attribute,
+    control_value="some value",
+    compare_attr_name=:some_attribute,
+    compare_value="some value">,
+   #<struct Schema::Compare::Comparison::Entry
+    control_attr_name=:some_other_attribute,
+    control_value="some other value",
+    compare_attr_name=:some_other_attribute,
+    compare_value="yet another value">]>
+
+comparison.different?(:some_attribute)
+# => false
+
+comparison.different?(:some_other_attribute)
 # => true
 ```
 
