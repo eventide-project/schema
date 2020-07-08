@@ -422,7 +422,7 @@ some_object.eql?(some_other_object, [:some_attribute], ignore_class: true)
 
 ## Comparison and Difference
 
-Two instances of a schema can be compared and a comparison object is produced that illustrates which attributes have equal values and which do not.
+Two instances of schema objects can be compared and a comparison object is produced that illustrates which attributes have equal values and which do not.
 
 ``` ruby
 Schema::Compare.(control, compare, attribute_names=nil)
