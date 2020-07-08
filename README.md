@@ -320,47 +320,95 @@ some_object.to_h
 
 ## Equality
 
-Two instances of a schema can be compared using Ruby's common equality operators: `==`, `===`, and `eql?`.
+Two instances of a schema can be compared using Ruby's common equality operator, `==`, and the `eql?` method.
 
-### `==`
+The `operator` and the `eql?` method can be used interchangeably. They have identical implementations and signatures. The `eql?` method is an alias of the `==` operator.
 
-Returns `true` if:
+``` ruby
+==(other, attribute_names=nil, ignore_class: nil)
+```
+
+**Parameters**
+
+| Name | Description | Type | Default |
+| --- | --- | --- | --- |
+| other | The right-hand side object to compare to the left-hand side object | Schema | |
+| attribute_names | Optional list of attribute names to include in the evaluation of equality | Array of Symbol | Attribute names of left-hand side object |
+| ignore_class | Controls whether the classes of the objects are considered in the evaluation of equality | Boolean | False |
+
+### Basic Equality
+
+Two schema objects are equal if:
 
 - The objects are of the same class
-- Attributes have the same values
+- The attributes of the left-hand side object are also present on the object of the right-hand side
+- The common attributes of the left-hand side and right-hand side objects have values that are equal
 
-### `===` (Case Equality)
+``` ruby
+class SomeClass
+  include Schema
 
-Returns `true` if:
+  attribute :some_attribute, String
+  attribute :some_other_attribute, String
+end
 
-- Attributes have the same values
+some_object = SomeClass.new
+some_object.some_attribute = 'some value'
+some_object.some_other_attribute = 'some other value'
 
-### `eql?`
+some_other_object = SomeClass.new
+some_other_object.some_attribute = 'some value'
+some_other_object.some_other_attribute = 'some other value'
 
-Returns `true` if:
+some_object == some_other_object
+# => true
 
-- The objects are of the same class
-- Attributes have the same values
+some_object.eql?(some_other_object)
+# => true
 
-#### `eql?` with `ignore_class: true`
+some_other_object.some_other_attribute = 'yet another value'
 
-Returns `true` if:
+some_object.eql?(some_other_object)
+# => false
 
-- Attributes have the same values
+some_object.eql?(some_other_object, [:some_attribute])
+# => true
+```
 
-#### `eql?` with List of Attribute Names
+### Equality Irrespective of Class Differences
 
-`obj1.eql?(obj2, [:name, :age], ignore_class: true)` returns true if:
+Two schema objects are equal if:
 
-- `obj1.name == obj2.name`
-- `obj1.age == ob2.age`
+- The objects are either of the same class, or they're not
+- The attributes of the left-hand side object are also present on the object of the right-hand side
+- The common attributes of the left-hand side and right-hand side objects have values that are equal
 
-#### `eql?` with List of Attribute Names and Mappings
+``` ruby
+class SomeOtherClass
+  include Schema
 
-`obj1.eql?(obj2, [:name, {age: :amount}], ignore_class: true)` returns true if:
+  attribute :some_attribute, String
+  attribute :some_other_attribute, String
+end
 
-- `obj1.name == obj2.name`
-- `obj1.age == ob2.amount`
+some_other_object = SomeOtherClass.new
+some_other_object.some_attribute = 'some value'
+some_other_object.some_other_attribute = 'some other value'
+
+some_object.eql?(some_other_object)
+# => false
+
+some_object.eql?(some_other_object, ignore_class: true)
+# => true
+
+some_other_object.some_other_attribute = 'yet another value'
+
+some_object.eql?(some_other_object, ignore_class: true)
+# => false
+
+some_object.eql?(some_other_object, [:some_attribute], ignore_class: true)
+# => true
+```
 
 ## License
 
