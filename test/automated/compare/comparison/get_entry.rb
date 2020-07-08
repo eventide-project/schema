@@ -13,9 +13,9 @@ context "Compare" do
 
         comparison = Schema::Compare::Comparison.new(control_class, compare_class, entries)
 
-        attr_name = control_entry.control_attr_name
+        attribute_name = control_entry.control_attribute_name
 
-        entry = comparison[attr_name]
+        entry = comparison[attribute_name]
 
         test "Recorded entry" do
           assert(entry == control_entry)
@@ -27,9 +27,9 @@ context "Compare" do
 
         comparison = Schema::Compare::Comparison.new(control_class, compare_class, entries)
 
-        attr_name = Schema::Controls::Random.example
+        attribute_name = Schema::Controls::Random.example
 
-        entry = comparison[attr_name]
+        entry = comparison[attribute_name]
 
         test "No recorded entry" do
           assert(entry.nil?)

@@ -467,14 +467,14 @@ comparison = Schema::Compare.(control, compare)
 #=> #<Schema::Compare::Comparison:0x...
  @entries=
   [#<struct Schema::Compare::Comparison::Entry
-    control_attr_name=:some_attribute,
+    control_attribute_name=:some_attribute,
     control_value="some value",
-    compare_attr_name=:some_attribute,
+    compare_attribute_name=:some_attribute,
     compare_value="some value">,
    #<struct Schema::Compare::Comparison::Entry
-    control_attr_name=:some_other_attribute,
+    control_attribute_name=:some_other_attribute,
     control_value="some other value",
-    compare_attr_name=:some_other_attribute,
+    compare_attribute_name=:some_other_attribute,
     compare_value="yet another value">]>
 
 comparison.different?(:some_attribute)

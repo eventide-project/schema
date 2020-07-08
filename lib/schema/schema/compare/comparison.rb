@@ -6,48 +6,48 @@ module Schema
       Error = Class.new(RuntimeError)
 
       def attribute_names
-        entries.map { |entry| entry.control_attr_name }
+        entries.map { |entry| entry.control_attribute_name }
       end
 
       initializer :control_class, :compare_class, :entries
 
-      def self.build(control, compare, attr_names=nil)
+      def self.build(control, compare, attribute_names=nil)
         control_attributes = control.attributes
         compare_attributes = compare.attributes
 
-        attr_names ||= control_attributes.keys
+        attribute_names ||= control_attributes.keys
 
-        entries = attr_names.map do |attr_name|
-          build_entry(attr_name, control_attributes, attr_name, compare_attributes)
+        entries = attribute_names.map do |attribute_name|
+          build_entry(attribute_name, control_attributes, attribute_name, compare_attributes)
         end
 
         new(control.class, compare.class, entries)
       end
 
-      def self.build_entry(control_attr_name, control_attributes, compare_attr_name, compare_attributes)
-        control_value = control_attributes[control_attr_name]
-        compare_value = compare_attributes[compare_attr_name]
+      def self.build_entry(control_attribute_name, control_attributes, compare_attribute_name, compare_attributes)
+        control_value = control_attributes[control_attribute_name]
+        compare_value = compare_attributes[compare_attribute_name]
 
         entry = Entry.new(
-          control_attr_name,
+          control_attribute_name,
           control_value,
-          compare_attr_name,
+          compare_attribute_name,
           compare_value
         )
 
         entry
       end
 
-      def entry(attr_name)
+      def entry(attribute_name)
         entries.find do |entry|
-          entry.control_attr_name == attr_name
+          entry.control_attribute_name == attribute_name
         end
       end
       alias :[] :entry
 
-      def different?(attr_name=nil, ignore_class: nil)
-        if not attr_name.nil?
-          return attribute_different?(attr_name)
+      def different?(attribute_name=nil, ignore_class: nil)
+        if not attribute_name.nil?
+          return attribute_different?(attribute_name)
         end
 
         ignore_class ||= false
@@ -67,11 +67,11 @@ module Schema
         control_class != compare_class
       end
 
-      def attribute_different?(attr_name)
-        entry = self[attr_name]
+      def attribute_different?(attribute_name)
+        entry = self[attribute_name]
 
         if entry.nil?
-          raise Error, "No attribute difference entry for #{attr_name.inspect}"
+          raise Error, "No attribute difference entry for #{attribute_name.inspect}"
         end
 
         entry.different?

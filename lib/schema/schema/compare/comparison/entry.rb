@@ -2,9 +2,9 @@ module Schema
   module Compare
     class Comparison
       Entry = Struct.new(
-        :control_attr_name,
+        :control_attribute_name,
         :control_value,
-        :compare_attr_name,
+        :compare_attribute_name,
         :compare_value
       ) do
         def different?

@@ -14,13 +14,13 @@ module Schema
   end
 
   module AttributeMacro
-    def attribute_macro(attr_name, type=nil, strict: nil, default: nil)
+    def attribute_macro(attribute_name, type=nil, strict: nil, default: nil)
       if type.nil? && !strict.nil?
-        raise Schema::Attribute::Error, "The \"#{attr_name}\" attribute is declared with the \"strict\" option but a type is not specified"
+        raise Schema::Attribute::Error, "The \"#{attribute_name}\" attribute is declared with the \"strict\" option but a type is not specified"
       end
 
       if type == Boolean && strict == false
-        raise Schema::Attribute::Error, "The \"#{attr_name}\" attribute is declared with the \"strict\" option disabled but boolean type is specified"
+        raise Schema::Attribute::Error, "The \"#{attribute_name}\" attribute is declared with the \"strict\" option disabled but boolean type is specified"
       end
 
       check = nil
@@ -54,9 +54,9 @@ module Schema
         initialize_value = proc { default }
       end
 
-      ::Attribute::Define.(self, attr_name, :accessor, check: check, &initialize_value)
+      ::Attribute::Define.(self, attribute_name, :accessor, check: check, &initialize_value)
 
-      attribute = attributes.register(attr_name, type, strict)
+      attribute = attributes.register(attribute_name, type, strict)
       attribute
     end
     alias :attribute :attribute_macro
