@@ -104,7 +104,7 @@ module Schema
             end
 
             def self.compare_value
-              Attribute::Value::Alternate.example
+              Attribute::Value.alternate
             end
           end
 
@@ -179,7 +179,7 @@ module Schema
               end
 
               def self.compare_value
-                Attribute::Value::Alternate.example
+                Attribute::Value.alternate
               end
             end
           end

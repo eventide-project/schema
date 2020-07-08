@@ -36,14 +36,12 @@ module Schema
           'yet another value'
         end
 
-        def self.random
-          Controls::Random.example
+        def self.alternate
+          'some alternate value'
         end
 
-        module Alternate
-          def self.example
-            'some alternate value'
-          end
+        def self.random
+          Controls::Random.example
         end
       end
     end
