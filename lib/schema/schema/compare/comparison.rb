@@ -5,7 +5,7 @@ module Schema
 
       Error = Class.new(RuntimeError)
 
-      initializer :entries
+      initializer :control_class, :compare_class, :entries
 
       def self.build(control, compare, attr_names=nil)
         control_attributes = control.attributes
@@ -17,7 +17,7 @@ module Schema
           build_entry(attr_name, control_attributes, attr_name, compare_attributes)
         end
 
-        new(entries)
+        new(control.class, compare.class, entries)
       end
 
       def self.build_entry(control_attr_name, control_attributes, compare_attr_name, compare_attributes)
