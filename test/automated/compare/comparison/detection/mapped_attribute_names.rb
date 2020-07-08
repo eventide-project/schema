@@ -7,8 +7,7 @@ context "Compare" do
         context "Difference" do
           comparison = Schema::Controls::Comparison::Different::Mapped.example
 
-          attr_name = Schema::Controls::Comparison::Different::Mapped::Entry.control_attr_name
-          different = comparison.different?(attr_name)
+          different = comparison.different?(:some_other_attribute)
 
           test "Detected" do
             assert(different)
@@ -18,8 +17,7 @@ context "Compare" do
         context "No Difference" do
           comparison = Schema::Controls::Comparison::Same::Mapped.example
 
-          attr_name = Schema::Controls::Comparison::Same::Mapped::Entry.control_attr_name
-          different = comparison.different?(attr_name)
+          different = comparison.different?(:some_other_attribute)
 
           test "Not Detected" do
             refute(different)

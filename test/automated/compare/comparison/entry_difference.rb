@@ -4,7 +4,7 @@ context "Compare" do
   context "Comparison" do
     context "Entry Difference" do
       context "Different" do
-        entry = Schema::Controls::Comparison::Different::Attributes::Entry.example
+        entry = Schema::Controls::Comparison::Entry::Different.example
 
         different = entry.different?
 
@@ -14,7 +14,7 @@ context "Compare" do
       end
 
       context "Same" do
-        entry = Schema::Controls::Comparison::Same::Entry.example
+        entry = Schema::Controls::Comparison::Entry::Same.example
 
         different = entry.different?
 
