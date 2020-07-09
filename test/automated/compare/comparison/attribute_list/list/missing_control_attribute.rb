@@ -8,11 +8,11 @@ context "Compare" do
           control = Schema::Controls::Schema.example
           compare = Schema::Controls::Schema.example
 
-          listed_attribute_names = [Schema::Controls::Attribute::Name.random]
+          list = [Schema::Controls::Attribute::Name.random]
 
           test "Is an error" do
             assert_raises(Schema::Compare::Comparison::Error) do
-              Schema::Compare::Comparison.build(control, compare, listed_attribute_names)
+              Schema::Compare::Comparison.build(control, compare, list)
             end
           end
         end

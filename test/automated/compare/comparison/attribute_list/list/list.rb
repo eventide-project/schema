@@ -7,25 +7,25 @@ context "Compare" do
         control = Schema::Controls::Schema.example
         compare = Schema::Controls::Schema.example
 
-        listed_attribute_names = [:some_attribute]
+        control_name = :some_attribute
 
-        comparison = Schema::Compare::Comparison.build(control, compare, listed_attribute_names)
+        list = [control_name]
 
-        attribute_names = comparison.entries_attribute_names
+        comparison = Schema::Compare::Comparison.build(control, compare, list)
 
         context "Listed Attributes" do
-          listed = (attribute_names == listed_attribute_names)
+          entry = comparison[control_name]
 
-          test "Are in the entries list" do
-            assert(listed)
+          test "Control name" do
+            assert(entry.control_name == control_name)
           end
         end
 
         context "Omitted Attributes" do
-          included = attribute_names.include?(:some_other_attribute)
+          entry = comparison[:some_other_attribute]
 
           test "Are not in the entries list" do
-            refute(included)
+            assert(entry.nil?)
           end
         end
       end
