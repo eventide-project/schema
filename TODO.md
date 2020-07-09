@@ -2,22 +2,6 @@
 
 - mapped comparison
 
-## Attributes specified
-
-```ruby
-comparison = Schema::Compare::Comparison.build(control, compare, [:some_attribute])
-```
-
-- Test that just the given attributes are in entries
-  - Start with a control with multiple entries
-  - control schema
-  - compare schema
-  - Build using control name that's the same
-  - Assert that entries only have the one named in the whitelist
-
-- Raise if a missing control attribute is given
-- Raise if a missing compare attribute is given
-
 ## Attributes with mapping specified
 
 ```ruby
@@ -27,6 +11,8 @@ comparison = Schema::Compare::Comparison.build(control, compare, [
 ```
 
 - Test that the control attribute was compared against the compare attribute
+
+(this might already be covered)
 - Raise if a missing control attribute is given
 - Raise if a missing compare attribute is given
 

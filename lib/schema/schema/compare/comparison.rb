@@ -23,6 +23,8 @@ module Schema
 
         attribute_names ||= control.class.attribute_names
 
+        ## normalize list of attributes to a hash
+
         entries = attribute_names.map do |attribute_name|
           build_entry(attribute_name, control, attribute_name, compare)
         end
