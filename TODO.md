@@ -1,6 +1,5 @@
 # TODO
 
-- move check that objects are schema implementations to comparison class
 - mapped comparison
 
 ## Attributes specified

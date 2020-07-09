@@ -13,6 +13,14 @@ module Schema
       initializer :control_class, :compare_class, :entries
 
       def self.build(control, compare, attribute_names=nil)
+        if not control.is_a?(Schema)
+          raise Error, 'Control object is not an implementation of Schema'
+        end
+
+        if not compare.is_a?(Schema)
+          raise Error, 'Compare object is not an implementation of Schema'
+        end
+
         attribute_names ||= control.class.attribute_names
 
         entries = attribute_names.map do |attribute_name|
