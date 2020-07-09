@@ -448,23 +448,18 @@ class SomeClass
   attribute :some_other_attribute, String
 end
 
-class SomeOtherClass
-  include Schema
+control = SomeClass.new
+control.some_attribute = 'some value'
+control.some_other_attribute = 'some other value'
 
-  attribute :some_attribute, String
-  attribute :some_other_attribute, String
-end
-
-some_object = SomeClass.new
-some_object.some_attribute = 'some value'
-some_object.some_other_attribute = 'some other value'
-
-some_other_object = SomeOtherClass.new
-some_other_object.some_attribute = 'some value'
-some_other_object.some_other_attribute = 'yet another value'
+compare = SomeClass.new
+compare.some_attribute = 'some value'
+compare.some_other_attribute = 'yet another value'
 
 comparison = Schema::Compare.(control, compare)
 #=> #<Schema::Compare::Comparison:0x...
+ @compare_class=SomeClass,
+ @control_class=SomeClass,
  @entries=
   [#<struct Schema::Compare::Comparison::Entry
     control_name=:some_attribute,
@@ -485,6 +480,45 @@ comparison.different?(:some_attribute)
 
 comparison.different?(:some_other_attribute)
 # => true
+
+
+# Different classes, same attribute values
+
+class SomeOtherClass
+  include Schema
+
+  attribute :some_attribute, String
+  attribute :some_other_attribute, String
+end
+
+compare = SomeOtherClass.new
+compare.some_attribute = 'some value'
+compare.some_other_attribute = 'some other value'
+
+comparison = Schema::Compare.(control, compare)
+#=> #<Schema::Compare::Comparison:0x...
+ @compare_class=SomeClass,
+ @control_class=SomeOtherClass,
+ @entries=
+  [#<struct Schema::Compare::Comparison::Entry
+    control_name=:some_attribute,
+    control_value="some value",
+    compare_name=:some_attribute,
+    compare_value="some value">,
+   #<struct Schema::Compare::Comparison::Entry
+    control_name=:some_other_attribute,
+    control_value="some other value",
+    compare_name=:some_other_attribute,
+    compare_value="some other value">]>
+
+comparison.different?
+# => true
+
+comparison.different?(:some_attribute)
+# => false
+
+comparison.different?(:some_other_attribute)
+# => false
 ```
 
 ### Limit the Attributes Compared
@@ -492,8 +526,14 @@ comparison.different?(:some_other_attribute)
 The comparison can be limited to a subset of the schema objects' attributes.
 
 ``` ruby
+compare = SomeClass.new
+compare.some_attribute = 'some value'
+compare.some_other_attribute = 'yet another value'
+
 comparison = Schema::Compare.(control, compare, [:some_attribute])
 #=> #<Schema::Compare::Comparison:0x...
+ @compare_class=SomeClass,
+ @control_class=SomeClass,
  @entries=
   [#<struct Schema::Compare::Comparison::Entry
     control_name=:some_attribute,
@@ -510,9 +550,10 @@ comparison.different?(:some_attribute)
 comparison.different?(:some_other_attribute)
 # => No attribute difference entry (Attribute Name: :some_other_attribute) (Schema::Compare::Comparison::Error)
 
-
 comparison = Schema::Compare.(control, compare, [:some_other_attribute])
 #=> #<Schema::Compare::Comparison:0x...
+ @compare_class=SomeClass,
+ @control_class=SomeClass,
  @entries=
   [#<struct Schema::Compare::Comparison::Entry
     control_name=:some_other_attribute,
