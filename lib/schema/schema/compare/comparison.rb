@@ -13,6 +13,16 @@ module Schema
       initializer :control_class, :compare_class, :entries
 
       def self.build(control, compare, attribute_names=nil)
+        assure_schemas(control, compare)
+
+        attribute_names ||= control.class.attribute_names
+
+        entries = build_entries(control, compare, attribute_names)
+
+        new(control.class, compare.class, entries)
+      end
+
+      def self.assure_schemas(control, compare)
         if not control.is_a?(Schema)
           raise Error, 'Control object is not an implementation of Schema'
         end
@@ -20,16 +30,18 @@ module Schema
         if not compare.is_a?(Schema)
           raise Error, 'Compare object is not an implementation of Schema'
         end
+      end
 
-        attribute_names ||= control.class.attribute_names
+      def self.build_entries(control, compare, attribute_names)
+        attribute_names.map do |attribute_name|
+          if attribute_name.is_a?(Hash)
+            control_name, compare_name = attribute_name.keys.first, attribute_name.values.first
+          else
+            control_name, compare_name = attribute_name, attribute_name
+          end
 
-        ## normalize list of attributes to a hash
-
-        entries = attribute_names.map do |attribute_name|
-          build_entry(attribute_name, control, attribute_name, compare)
+          build_entry(control_name, control, compare_name, compare)
         end
-
-        new(control.class, compare.class, entries)
       end
 
       def self.build_entry(control_name, control, compare_name, compare)

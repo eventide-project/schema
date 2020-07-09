@@ -1,6 +1,7 @@
 # TODO
 
 - mapped comparison
+- equality tests using map: use hash arrow
 
 ## Attributes with mapping specified
 
