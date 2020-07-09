@@ -4,32 +4,32 @@ context "Equality" do
   context "Whole Object" do
     context "Equal" do
       context "Attributes and values are equal and classes are equal" do
-        example_1 = Schema::Controls::Schema.example
-        example_2 = Schema::Controls::Schema.example
+        control = Schema::Controls::Schema.example
+        compare = Schema::Controls::Schema.example
 
         test "Schemas are equal" do
-          assert(example_1 == example_2)
+          assert(control == compare)
         end
       end
     end
 
     context "Not Equal" do
-      example_1 = Schema::Controls::Schema.example
+      control = Schema::Controls::Schema.example
 
       context "Attributes and values are not equal and classes are equal" do
-        example_2 = Schema::Controls::Schema.example
-        example_2.some_attribute = 'some other value'
+        compare = Schema::Controls::Schema.example
+        compare.some_attribute = 'some other value'
 
         test "Schemas are not equal" do
-          refute(example_1 == example_2)
+          refute(control == compare)
         end
       end
 
       context "Attributes and values are equal and classes are not equal" do
-        example_2 = Schema::Controls::Schema.other_example
+        compare = Schema::Controls::Schema.other_example
 
         test "Schemas are not equal" do
-          refute(example_1 == example_2)
+          refute(control == compare)
         end
       end
     end

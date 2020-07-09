@@ -157,28 +157,12 @@ module Schema
   end
   alias :to_h :attributes
 
-## TODO Implement in terms of Compare, Scott Mon Jul 6 2020
   def ==(other, attributes_names=nil, ignore_class: nil)
-    attributes_names ||= self.class.attribute_names
-    attributes_names = Array(attributes_names)
+    comparison = Compare.(self, other, attributes_names)
 
-    ignore_class = false if ignore_class.nil?
+    different = comparison.different?(ignore_class: ignore_class)
 
-    if !ignore_class
-      return false if self.class != other.class
-    end
-
-    attributes_names.each do |attribute|
-      if attribute.is_a? Hash
-        this_attribute, other_attribute = attribute.keys.first, attribute.values.first
-      else
-        this_attribute, other_attribute = attribute, attribute
-      end
-
-      return false if public_send(this_attribute) != other.public_send(other_attribute)
-    end
-
-    true
+    !different
   end
   alias :eql? :==
 end
