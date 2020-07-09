@@ -4,7 +4,7 @@ context "Schema" do
   context "Boolean Attribute" do
     context "Definition" do
       context "Boolean Constant" do
-        schema_cls = Controls::Schema::Boolean::Example
+        schema_cls = Schema::Controls::Schema::Boolean::Example
 
         test "Boolean constant is defined under schema namespace" do
           assert(schema_cls.const_defined?(:Boolean, false))

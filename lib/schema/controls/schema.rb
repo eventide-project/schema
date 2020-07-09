@@ -3,16 +3,24 @@ module Schema
     module Schema
       def self.example
         example = Example.new
-        example.some_attribute = 'some value'
-        example.some_other_attribute = 'some other value'
+        example.some_attribute = some_attribute
+        example.some_other_attribute = some_other_attribute
         example
       end
 
       def self.other_example
         example = OtherExample.new
-        example.some_attribute = 'some value'
-        example.some_other_attribute = 'some other value'
+        example.some_attribute = some_attribute
+        example.some_other_attribute = some_other_attribute
         example
+      end
+
+      def self.some_attribute
+        Attribute::Value.some_attribute
+      end
+
+      def self.some_other_attribute
+        Attribute::Value.some_other_attribute
       end
 
       def self.ancestors
@@ -23,25 +31,52 @@ module Schema
         example.attributes
       end
 
+      def self.attribute_names
+        example.class.attribute_names
+      end
+
       def self.hash
         example.to_h
       end
 
-      class Example
-        include ::Schema
-        attribute :some_attribute
-        attribute :some_other_attribute
+      module Attributes
+        def self.included(cls)
+          cls.class_exec do
+            include ::Schema
+            attribute :some_attribute
+            attribute :some_other_attribute
+          end
+        end
       end
 
-      class OtherExample < Example
+      class Example
+        include Attributes
+      end
+
+      class OtherExample
+        include Attributes
+      end
+
+      module Random
+        def self.example
+          example_class.new
+        end
+
+        def self.example_class
+          Class.new do
+            include ::Schema
+
+            attribute Attribute::Name.random
+          end
+        end
       end
 
       module TransientAttributes
         def self.example
           example = Example.new
-          example.some_attribute = 'some value'
-          example.some_other_attribute = 'some other value'
-          example.yet_another_attribute = 'yet another value'
+          example.some_attribute = Attribute::Value.some_attribute
+          example.some_other_attribute = Attribute::Value.some_other_attribute
+          example.yet_another_attribute = Attribute::Value.yet_another_attribute
           example
         end
 
@@ -62,9 +97,13 @@ module Schema
       module Equivalent
         def self.example
           example = Example.new
-          example.some_attribute = 'some value'
-          example.yet_another_attribute = 'some other value'
+          example.some_attribute = Attribute::Value.some_attribute
+          example.yet_another_attribute = yet_another_attribute
           example
+        end
+
+        def self.yet_another_attribute
+          Attribute::Value.some_other_attribute
         end
 
         class Example

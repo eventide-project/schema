@@ -17,6 +17,7 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency 'evt-attribute'
   s.add_runtime_dependency 'evt-set_attributes'
+  s.add_runtime_dependency 'evt-initializer'
   s.add_runtime_dependency 'evt-validate'
   s.add_runtime_dependency 'evt-virtual'
 

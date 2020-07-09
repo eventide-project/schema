@@ -4,7 +4,7 @@ context "Schema" do
   context "Boolean Attribute" do
     context "Definition" do
       context "Default Strictness" do
-        schema_cls = Controls::Schema::Boolean::Example
+        schema_cls = Schema::Controls::Schema::Boolean::Example
 
         test "Strict" do
           attribute = schema_cls.attributes[0]

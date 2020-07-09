@@ -14,13 +14,13 @@ module Schema
   end
 
   module AttributeMacro
-    def attribute_macro(attr_name, type=nil, strict: nil, default: nil)
+    def attribute_macro(attribute_name, type=nil, strict: nil, default: nil)
       if type.nil? && !strict.nil?
-        raise Schema::Attribute::Error, "The \"#{attr_name}\" attribute is declared with the \"strict\" option but a type is not specified"
+        raise Schema::Attribute::Error, "The \"#{attribute_name}\" attribute is declared with the \"strict\" option but a type is not specified"
       end
 
       if type == Boolean && strict == false
-        raise Schema::Attribute::Error, "The \"#{attr_name}\" attribute is declared with the \"strict\" option disabled but boolean type is specified"
+        raise Schema::Attribute::Error, "The \"#{attribute_name}\" attribute is declared with the \"strict\" option disabled but boolean type is specified"
       end
 
       check = nil
@@ -54,9 +54,9 @@ module Schema
         initialize_value = proc { default }
       end
 
-      ::Attribute::Define.(self, attr_name, :accessor, check: check, &initialize_value)
+      ::Attribute::Define.(self, attribute_name, :accessor, check: check, &initialize_value)
 
-      attribute = attributes.register(attr_name, type, strict)
+      attribute = attributes.register(attribute_name, type, strict)
       attribute
     end
     alias :attribute :attribute_macro
@@ -157,54 +157,12 @@ module Schema
   end
   alias :to_h :attributes
 
-  def ==(other, attributes=nil, ignore_class: nil)
-    attributes ||= self.class.attribute_names
-    attributes = Array(attributes)
+  def ==(other, attributes_names=nil, ignore_class: nil)
+    comparison = Compare.(self, other, attributes_names)
 
-    ignore_class = false if ignore_class.nil?
+    different = comparison.different?(ignore_class: ignore_class)
 
-    if !ignore_class
-      return false if self.class != other.class
-    end
-
-    attributes.each do |attribute|
-      if attribute.is_a? Hash
-        this_attribute, other_attribute = attribute.keys.first, attribute.values.first
-      else
-        this_attribute, other_attribute = attribute, attribute
-      end
-
-      return false if public_send(this_attribute) != other.public_send(other_attribute)
-    end
-
-    true
+    !different
   end
   alias :eql? :==
-
-  def ===(other)
-    self.eql?(other, ignore_class: true)
-  end
-
-  def attributes_equal?(other, attributes=nil, print: nil)
-    attributes ||= self.class.attribute_names
-
-    print = true if print.nil?
-    print ||= false
-
-    equal = self.eql?(other, attributes, ignore_class: true)
-
-    if !equal && print
-      attributes = Array(attributes)
-
-      require 'pp'
-      puts "self: #{self.class.name}"
-      pp self.attributes.select { |k, v| attributes.include? k }
-      puts "other #{other.class.name}:"
-      pp other.attributes.select { |k, v| attributes.include? k }
-      puts "attributes:"
-      attributes.each { |a| puts a.inspect}
-    end
-
-    equal
-  end
 end

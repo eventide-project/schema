@@ -320,47 +320,256 @@ some_object.to_h
 
 ## Equality
 
-Two instances of a schema can be compared using Ruby's common equality operators: `==`, `===`, and `eql?`.
+Two instances of a schema can be compared using Ruby's common equality operator, `==`, and the `eql?` method.
 
-### `==`
+The `==` operator and the `eql?` method can be used interchangeably. They have identical implementations and signatures. The `eql?` method is an alias of the `==` operator.
 
-Returns `true` if:
+``` ruby
+eql?(other, attribute_names=nil, ignore_class: nil)
+```
+
+**Returns**
+
+Boolean value indicating whether the schemas are equal or not
+
+**Alias**
+
+`==`
+
+_Note that the `==` alias can only be invoked with the first parameter_
+
+**Parameters**
+
+| Name | Description | Type | Default |
+| --- | --- | --- | --- |
+| other | The right-hand side object to compare to the left-hand side object | Schema | |
+| attribute_names | Optional list of attribute names to which equality evaluation is limited | Array of Symbol | Attribute names of left-hand side object |
+| ignore_class | Optionally controls whether the classes of the objects are considered in the evaluation of equality | Boolean | False |
+
+### Basic Equality
+
+Two schema objects are equal if:
 
 - The objects are of the same class
-- Attributes have the same values
+- The attributes of the left-hand side object are also present on the object of the right-hand side
+- The common attributes of the left-hand side and right-hand side objects have values that are equal
 
-### `===` (Case Equality)
+``` ruby
+class SomeClass
+  include Schema
 
-Returns `true` if:
+  attribute :some_attribute, String
+  attribute :some_other_attribute, String
+end
 
-- Attributes have the same values
+some_object = SomeClass.new
+some_object.some_attribute = 'some value'
+some_object.some_other_attribute = 'some other value'
 
-### `eql?`
+some_other_object = SomeClass.new
+some_other_object.some_attribute = 'some value'
+some_other_object.some_other_attribute = 'some other value'
 
-Returns `true` if:
+some_object == some_other_object
+# => true
 
-- The objects are of the same class
-- Attributes have the same values
+some_object.eql?(some_other_object)
+# => true
 
-#### `eql?` with `ignore_class: true`
+some_other_object.some_other_attribute = 'yet another value'
 
-Returns `true` if:
+some_object.eql?(some_other_object)
+# => false
 
-- Attributes have the same values
+some_object.eql?(some_other_object, [:some_attribute])
+# => true
+```
 
-#### `eql?` with List of Attribute Names
+### Equality Irrespective of Class Differences
 
-`obj1.eql?(obj2, [:name, :age], ignore_class: true)` returns true if:
+Two schema objects are equal if:
 
-- `obj1.name == obj2.name`
-- `obj1.age == ob2.age`
+- The objects are either of the same class, or they're not
+- The attributes of the left-hand side object are also present on the object of the right-hand side
+- The common attributes of the left-hand side and right-hand side objects have values that are equal
 
-#### `eql?` with List of Attribute Names and Mappings
+``` ruby
+class SomeOtherClass
+  include Schema
 
-`obj1.eql?(obj2, [:name, {age: :amount}], ignore_class: true)` returns true if:
+  attribute :some_attribute, String
+  attribute :some_other_attribute, String
+end
 
-- `obj1.name == obj2.name`
-- `obj1.age == ob2.amount`
+some_other_object = SomeOtherClass.new
+some_other_object.some_attribute = 'some value'
+some_other_object.some_other_attribute = 'some other value'
+
+some_object.eql?(some_other_object)
+# => false
+
+some_object.eql?(some_other_object, ignore_class: true)
+# => true
+
+some_other_object.some_other_attribute = 'yet another value'
+
+some_object.eql?(some_other_object, ignore_class: true)
+# => false
+
+some_object.eql?(some_other_object, [:some_attribute], ignore_class: true)
+# => true
+```
+
+## Comparison and Difference
+
+Two instances of schema objects can be compared and a comparison object is produced that illustrates which attributes have equal values and which do not.
+
+``` ruby
+Schema::Compare.(control, compare, attribute_names=nil)
+```
+
+**Returns**
+
+Instance of `Schema::Compare::Comparison` containing an entry for each attribute compared
+
+**Parameters**
+
+| Name | Description | Type |
+| --- | --- | --- |
+| control | Baseline object for comparison | Schema |
+| compare | Object to compare to the baseline | Schema |
+| attribute_names | Optional list of attribute names to which comparison is limited | Array of Symbol or Hash |
+
+``` ruby
+class SomeClass
+  include Schema
+
+  attribute :some_attribute, String
+  attribute :some_other_attribute, String
+end
+
+control = SomeClass.new
+control.some_attribute = 'some value'
+control.some_other_attribute = 'some other value'
+
+compare = SomeClass.new
+compare.some_attribute = 'some value'
+compare.some_other_attribute = 'yet another value'
+
+comparison = Schema::Compare.(control, compare)
+#=> #<Schema::Compare::Comparison:0x...
+ @compare_class=SomeClass,
+ @control_class=SomeClass,
+ @entries=
+  [#<struct Schema::Compare::Comparison::Entry
+    control_name=:some_attribute,
+    control_value="some value",
+    compare_name=:some_attribute,
+    compare_value="some value">,
+   #<struct Schema::Compare::Comparison::Entry
+    control_name=:some_other_attribute,
+    control_value="some other value",
+    compare_name=:some_other_attribute,
+    compare_value="yet another value">]>
+
+comparison.different?
+# => true
+
+comparison.different?(:some_attribute)
+# => false
+
+comparison.different?(:some_other_attribute)
+# => true
+
+
+# Different classes, same attribute values
+
+class SomeOtherClass
+  include Schema
+
+  attribute :some_attribute, String
+  attribute :some_other_attribute, String
+end
+
+compare = SomeOtherClass.new
+compare.some_attribute = 'some value'
+compare.some_other_attribute = 'some other value'
+
+comparison = Schema::Compare.(control, compare)
+#=> #<Schema::Compare::Comparison:0x...
+ @compare_class=SomeClass,
+ @control_class=SomeOtherClass,
+ @entries=
+  [#<struct Schema::Compare::Comparison::Entry
+    control_name=:some_attribute,
+    control_value="some value",
+    compare_name=:some_attribute,
+    compare_value="some value">,
+   #<struct Schema::Compare::Comparison::Entry
+    control_name=:some_other_attribute,
+    control_value="some other value",
+    compare_name=:some_other_attribute,
+    compare_value="some other value">]>
+
+comparison.different?
+# => true
+
+comparison.different?(:some_attribute)
+# => false
+
+comparison.different?(:some_other_attribute)
+# => false
+```
+
+### Limit the Attributes Compared
+
+The comparison can be limited to a subset of the schema objects' attributes.
+
+``` ruby
+compare = SomeClass.new
+compare.some_attribute = 'some value'
+compare.some_other_attribute = 'yet another value'
+
+comparison = Schema::Compare.(control, compare, [:some_attribute])
+#=> #<Schema::Compare::Comparison:0x...
+ @compare_class=SomeClass,
+ @control_class=SomeClass,
+ @entries=
+  [#<struct Schema::Compare::Comparison::Entry
+    control_name=:some_attribute,
+    control_value="some value",
+    compare_name=:some_attribute,
+    compare_value="some value">]>
+
+comparison.different?
+# => false
+
+comparison.different?(:some_attribute)
+# => false
+
+comparison.different?(:some_other_attribute)
+# => No attribute difference entry (Attribute Name: :some_other_attribute) (Schema::Compare::Comparison::Error)
+
+comparison = Schema::Compare.(control, compare, [:some_other_attribute])
+#=> #<Schema::Compare::Comparison:0x...
+ @compare_class=SomeClass,
+ @control_class=SomeClass,
+ @entries=
+  [#<struct Schema::Compare::Comparison::Entry
+    control_name=:some_other_attribute,
+    control_value="some other value",
+    compare_name=:some_other_attribute,
+    compare_value="yet another value">]>
+
+comparison.different?
+# => true
+
+comparison.different?(:some_other_attribute)
+# => true
+
+comparison.different?(:some_attribute)
+# => No attribute difference entry (Attribute Name: :some_attribute) (Schema::Compare::Comparison::Error)
+```
 
 ## License
 

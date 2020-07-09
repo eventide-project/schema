@@ -3,8 +3,12 @@ module Schema
     module DataStructure
       def self.example
         example = Example.new
-        example.some_attribute = 'some value'
+        example.some_attribute = some_attribute
         example
+      end
+
+      def self.some_attribute
+        Attribute::Value.some_attribute
       end
 
       def self.ancestors
@@ -17,7 +21,7 @@ module Schema
 
       def self.hash
         {
-          some_attribute: 'some value'
+          some_attribute: some_attribute
         }
       end
 
@@ -29,9 +33,13 @@ module Schema
       module ExtraAttributes
         def self.data
           {
-            :some_attribute => 'some value',
-            :some_other_attribute => 'some other value'
+            :some_attribute => DataStructure.some_attribute,
+            :some_other_attribute => some_other_attribute
           }
+        end
+
+        def self.some_other_attribute
+          Attribute::Value.some_other_attribute
         end
       end
 
@@ -54,7 +62,7 @@ module Schema
       module ReadAndWrite
         def self.example
           example = Example.new
-          example.some_attribute = 'some value'
+          example.some_attribute = DataStructure.some_attribute
           example
         end
 
@@ -71,7 +79,7 @@ module Schema
         module Data
           def self.example
             {
-              some_attribute: 'some value'
+              some_attribute: DataStructure.some_attribute
             }
           end
         end
