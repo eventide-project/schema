@@ -1,14 +1,7 @@
 # TODO
 
+- move check that objects are schema implementations to comparison class
 - mapped comparison
-
-## No attributes specified, uses control's attributes
-
-```ruby
-comparison = Schema::Compare::Comparison.build(control, compare)
-```
-
-- Test that every control attribute was compared
 
 ## Attributes specified
 

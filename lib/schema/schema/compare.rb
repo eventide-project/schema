@@ -2,7 +2,7 @@ module Schema
   module Compare
     Error = Class.new(RuntimeError)
 
-    def self.call(control, compare)
+    def self.call(control, compare, attribute_names=nil)
       if not control.is_a?(Schema)
         raise Error, 'Control object is not an implementation of Schema'
       end
@@ -11,7 +11,7 @@ module Schema
         raise Error, 'Compare object is not an implementation of Schema'
       end
 
-      Difference.build(control, compare)
+      Comparison.build(control, compare, attribute_names)
     end
   end
 end
