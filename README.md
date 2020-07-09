@@ -571,6 +571,89 @@ comparison.different?(:some_attribute)
 # => No attribute difference entry (Attribute Name: :some_attribute) (Schema::Compare::Comparison::Error)
 ```
 
+#### Mapped Attributes
+
+The list of limited attributes used for a comparison can also account for mapping different attribute names.
+
+``` ruby
+compare = SomeClass.new
+compare.some_attribute = 'some value'
+compare.some_other_attribute = 'some other value'
+
+class SomeOtherClass
+  include Schema
+
+  attribute :some_attribute, String
+  attribute :yet_another_attribute, String
+end
+
+compare = SomeOtherClass.new
+compare.some_attribute = 'some value'
+compare.yet_another_attribute = 'some other value'
+
+map = [
+  :some_attribute,
+  { :some_other_attribute => :yet_another_attribute }
+]
+
+comparison = Schema::Compare.(control, compare, map)
+#=> #<Schema::Compare::Comparison:0x...
+ @compare_class=SomeOtherClass,
+ @control_class=SomeClass,
+ @entries=
+  [#<struct Schema::Compare::Comparison::Entry
+    control_name=:some_attribute,
+    control_value="some value",
+    compare_name=:some_attribute,
+    compare_value="some value">,
+  #<struct Schema::Compare::Comparison::Entry
+    control_name=:some_other_attribute,
+    control_value="some other value",
+    compare_name=:yet_another_attribute,
+    compare_value="some other value">]>
+
+  ]>
+
+comparison.different?
+# => false
+
+comparison.different?(:some_attribute)
+# => false
+
+comparison.different?(:some_other_attribute)
+# => false
+
+
+compare.yet_another_attribute = 'yet another value'
+
+comparison = Schema::Compare.(control, compare, map)
+#=> #<Schema::Compare::Comparison:0x...
+ @compare_class=SomeOtherClass,
+ @control_class=SomeClass,
+ @entries=
+  [#<struct Schema::Compare::Comparison::Entry
+    control_name=:some_attribute,
+    control_value="some value",
+    compare_name=:some_attribute,
+    compare_value="some value">,
+  #<struct Schema::Compare::Comparison::Entry
+    control_name=:some_other_attribute,
+    control_value="some other value",
+    compare_name=:yet_another_attribute,
+    compare_value="yet another value">]>
+
+  ]>
+
+comparison.different?
+# => true
+
+comparison.different?(:some_attribute)
+# => false
+
+comparison.different?(:some_other_attribute)
+# => true
+```
+
 ## License
 
 The `schema` library is released under the [MIT License](https://github.com/eventide-project/schema/blob/master/MIT-License.txt).
