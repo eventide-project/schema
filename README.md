@@ -477,11 +477,57 @@ comparison = Schema::Compare.(control, compare)
     compare_name=:some_other_attribute,
     compare_value="yet another value">]>
 
+comparison.different?
+# => true
+
 comparison.different?(:some_attribute)
 # => false
 
 comparison.different?(:some_other_attribute)
 # => true
+```
+
+### Limit the Attributes Compared
+
+The comparison can be limited to a subset of the schema objects' attributes.
+
+``` ruby
+comparison = Schema::Compare.(control, compare, [:some_attribute])
+#=> #<Schema::Compare::Comparison:0x...
+ @entries=
+  [#<struct Schema::Compare::Comparison::Entry
+    control_name=:some_attribute,
+    control_value="some value",
+    compare_name=:some_attribute,
+    compare_value="some value">]>
+
+comparison.different?
+# => false
+
+comparison.different?(:some_attribute)
+# => false
+
+comparison.different?(:some_other_attribute)
+# => No attribute difference entry (Attribute Name: :some_other_attribute) (Schema::Compare::Comparison::Error)
+
+
+comparison = Schema::Compare.(control, compare, [:some_other_attribute])
+#=> #<Schema::Compare::Comparison:0x...
+ @entries=
+  [#<struct Schema::Compare::Comparison::Entry
+    control_name=:some_other_attribute,
+    control_value="some other value",
+    compare_name=:some_other_attribute,
+    compare_value="yet another value">]>
+
+comparison.different?
+# => true
+
+comparison.different?(:some_other_attribute)
+# => true
+
+comparison.different?(:some_attribute)
+# => No attribute difference entry (Attribute Name: :some_attribute) (Schema::Compare::Comparison::Error)
 ```
 
 ## License
