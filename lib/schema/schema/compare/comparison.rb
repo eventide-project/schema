@@ -17,6 +17,10 @@ module Schema
 
         attribute_names ||= control.class.attribute_names
 
+        if not attribute_names.is_a?(Array)
+          attribute_names = [attribute_names]
+        end
+
         entries = build_entries(control, compare, attribute_names)
 
         new(control.class, compare.class, entries)
