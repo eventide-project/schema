@@ -3,6 +3,7 @@ module Schema
 
   def self.included(cls)
     cls.class_exec do
+      extend Info
       extend AttributeMacro
       extend Attributes
 
@@ -10,6 +11,12 @@ module Schema
       virtual :transform_write
 
       const_set(:Boolean, Boolean)
+    end
+  end
+
+  module Info
+    def type
+      name.split('::').last
     end
   end
 
