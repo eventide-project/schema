@@ -117,6 +117,7 @@ module Schema
         class Example
           include ::Schema
           attribute :some_attribute, default: 'some default value'
+          attribute :some_other_attribute
         end
 
         module Proc
