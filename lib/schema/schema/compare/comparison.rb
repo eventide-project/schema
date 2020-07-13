@@ -28,11 +28,11 @@ module Schema
 
       def self.assure_schemas(control, compare)
         if not control.is_a?(Schema)
-          raise Error, 'Control object is not an implementation of Schema (Control Class: #{control.class.name})'
+          raise Error, "Control object is not an implementation of Schema (Control Class: #{control.class.name})"
         end
 
         if not compare.is_a?(Schema)
-          raise Error, 'Compare object is not an implementation of Schema (Compare Class: #{compare.class.name})'
+          raise Error, "Compare object is not an implementation of Schema (Compare Class: #{compare.class.name})"
         end
       end
 
