@@ -325,7 +325,7 @@ Two instances of a schema can be compared using Ruby's common equality operator,
 The `==` operator and the `eql?` method can be used interchangeably. They have identical implementations and signatures. The `eql?` method is an alias of the `==` operator.
 
 ``` ruby
-eql?(other, attribute_names=nil, ignore_class: nil)
+eql?(other, attribute_names=[], ignore_class: false)
 ```
 
 **Returns**
@@ -344,7 +344,7 @@ _Note that the `==` alias can only be invoked with the first parameter_
 | --- | --- | --- | --- |
 | other | The right-hand side object to compare to the left-hand side object | Schema | |
 | attribute_names | Optional list of attribute names to which equality evaluation is limited | Array of Symbol | Attribute names of left-hand side object |
-| ignore_class | Optionally controls whether the classes of the objects are considered in the evaluation of equality | Boolean | False |
+| ignore_class | Optionally controls whether the classes of the objects are considered in the evaluation of equality | Boolean | false |
 
 ### Basic Equality
 
@@ -425,7 +425,7 @@ some_object.eql?(some_other_object, [:some_attribute], ignore_class: true)
 Two instances of schema objects can be compared and a comparison object is produced that illustrates which attributes have equal values and which do not.
 
 ``` ruby
-Schema::Compare.(control, compare, attribute_names=nil)
+Schema::Compare.(control, compare, attribute_names=[])
 ```
 
 **Returns**
@@ -434,11 +434,11 @@ Instance of `Schema::Compare::Comparison` containing an entry for each attribute
 
 **Parameters**
 
-| Name | Description | Type |
-| --- | --- | --- |
-| control | Baseline object for comparison | Schema |
-| compare | Object to compare to the baseline | Schema |
-| attribute_names | Optional list of attribute names to which comparison is limited | Array of Symbol or Hash |
+| Name | Description | Type | Default |
+| --- | --- | --- | --- |
+| control | Baseline object for comparison | Schema | |
+| compare | Object to compare to the baseline | Schema | |
+| attribute_names | Optional list of attribute names to which comparison is limited | Array of Symbol or Hash | Attribute names of left-hand side object |
 
 ``` ruby
 class SomeClass
