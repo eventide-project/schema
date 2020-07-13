@@ -114,6 +114,10 @@ module Schema
       end
 
       module DefaultValue
+        def self.example
+          Example.new
+        end
+
         class Example
           include ::Schema
           attribute :some_attribute, default: 'some default value'
