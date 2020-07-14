@@ -38,5 +38,10 @@ module Schema
         end
       end
     end
+
+    def dup
+      data = to_h
+      self.class.build(data)
+    end
   end
 end
