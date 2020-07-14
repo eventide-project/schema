@@ -275,7 +275,46 @@ end
 
 The `transform_write` method is also aliased to `transform_out`.
 
-## Attribute Names
+## Duplicate
+
+### Shallow Copy
+
+A shallow copy duplicate of a `Schema::DataStructure` instance can be be created using the `dup` method.
+
+```ruby
+class SomeClass
+  include Schema
+
+  attribute :name, String
+end
+
+some_object = SomeClass.new
+some_object.name = 'original name'
+
+duplicate = some_object.dup
+
+some_object.object_id == duplicate.object_id
+# => false
+
+some_object.some_attribute == duplicate.some_attribute
+# => true
+
+some_object.name = 'some other name'
+
+some_object.name
+# => "some other name"
+
+duplicate.name
+# => "original name"
+```
+
+### Deep Copy
+
+The `dup` method doesn't create a deep copy by default. A duplicate of an instance of `Schema::DataStructure` whose attributes have references to instances of complex types rather than just simple primitives will share the references to those complex types with the original instance.
+
+As with the [transformation](#intercepting-and-modifying-input-and-output-data) of attributes, deep copy behavior can be implemented by implementing the `transform_read` and `transform_write` methods in order to replace attribute values that are instances of complex types with entirely new instances.
+
+## Attribute Name Reflection
 
 Attribute names can be retrieved from a schema class.
 
