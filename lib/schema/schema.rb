@@ -8,7 +8,11 @@ module Schema
       extend Attributes
 
       include Virtual
-      virtual :transform_write
+
+      virtual :transform_write do |data|
+        transform_out(data)
+      end
+      virtual :transform_out
 
       const_set(:Boolean, Boolean)
     end

@@ -10,7 +10,11 @@ module Schema
         virtual :configure_dependencies do
           configure
         end
-        virtual :transform_read
+
+        virtual :transform_read do |data|
+          transform_in(data)
+        end
+        virtual :transform_in
       end
     end
 

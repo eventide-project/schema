@@ -83,6 +83,24 @@ module Schema
             }
           end
         end
+
+        module InAndOutAliases
+          def self.example
+            example = Example.new
+            example.some_attribute = DataStructure.some_attribute
+            example
+          end
+
+          class Example < DataStructure::Example
+            def transform_in(data)
+              data[:some_attribute] = 'some read value'
+            end
+
+            def transform_out(data)
+              data[:some_attribute] = 'some written value'
+            end
+          end
+        end
       end
     end
   end

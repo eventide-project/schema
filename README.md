@@ -243,6 +243,8 @@ class SomeClass
 end
 ```
 
+The `transform_read` method is also aliased to `transform_in`.
+
 ### Output Data
 
 A Schema::DataStructure that implements the `transform_write(data)` method can intercept the output data that the object outputs when either `to_h` or `attributes` is invoked. The data can be modified and customized by this method.
@@ -270,6 +272,8 @@ class SomeClass
   end
 end
 ```
+
+The `transform_write` method is also aliased to `transform_out`.
 
 ## Attribute Names
 
