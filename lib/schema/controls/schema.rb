@@ -130,20 +130,14 @@ module Schema
           attribute :some_other_attribute
         end
 
-        module Proc
-          class Example
-            include ::Schema
-            attribute :some_attribute, default: proc { 'some default value' }
-          end
+        class Proc
+          include ::Schema
+          attribute :some_attribute, default: proc { 'some default value' }
         end
 
-        module ObjectReference
-          def self.example
-            Class.new do
-              include ::Schema
-              attribute :some_attribute, default: Object.new
-            end
-          end
+        class ObjectReference
+          include ::Schema
+          attribute :some_attribute, default: []
         end
       end
 

@@ -34,10 +34,6 @@ module Schema
         raise Schema::Attribute::Error, "The \"#{attribute_name}\" attribute is declared with the \"strict\" option disabled but boolean type is specified"
       end
 
-      # if not default.dup.object_id == default.object_id
-      #   raise Schema::Attribute::Error, "The \"#{attribute_name}\" attribute default is a reference object. The default must be defined as a proc that returns the reference object."
-      # end
-
       check = nil
 
       if type == Boolean
@@ -66,7 +62,7 @@ module Schema
       if default.is_a? Proc
         initialize_value = default
       elsif !default.nil?
-        initialize_value = proc { default }
+        initialize_value = proc { default.clone }
       end
 
       ::Attribute::Define.(self, attribute_name, :accessor, check: check, &initialize_value)
