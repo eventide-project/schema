@@ -62,7 +62,7 @@ module Schema
       if default.is_a? Proc
         initialize_value = default
       elsif !default.nil?
-        initialize_value = proc { default }
+        initialize_value = proc { default.clone }
       end
 
       ::Attribute::Define.(self, attribute_name, :accessor, check: check, &initialize_value)

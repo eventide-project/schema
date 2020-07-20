@@ -124,11 +124,20 @@ module Schema
           attribute :some_other_attribute
         end
 
-        module Proc
-          class Example
-            include ::Schema
-            attribute :some_attribute, default: proc { 'some default value' }
-          end
+        class Primitive
+          include ::Schema
+          attribute :some_attribute, default: 11
+          attribute :some_other_attribute
+        end
+
+        class Proc
+          include ::Schema
+          attribute :some_attribute, default: proc { 'some default value' }
+        end
+
+        class ObjectReference
+          include ::Schema
+          attribute :some_attribute, default: []
         end
       end
 
