@@ -39,9 +39,20 @@ module Schema
       end
     end
 
-    def dup
+    def deep_copy
       data = to_h
       self.class.build(data)
+    end
+    alias :dup :deep_copy
+
+    def clone
+      duplicate = deep_copy
+
+      if frozen?
+        duplicate.freeze
+      end
+
+      duplicate
     end
   end
 end
