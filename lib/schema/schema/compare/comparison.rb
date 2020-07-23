@@ -50,12 +50,12 @@ module Schema
 
       def self.build_entry(control_name, control, compare_name, compare)
         control_class = control.class
-        if not control_class.attribute_names.include?(control_name)
+        if not control_class.all_attribute_names.include?(control_name)
           raise Error, "Attribute is not defined (Attribute Name: #{control_name.inspect}, Schema Class: #{control_class})"
         end
 
         compare_class = compare.class
-        if not compare_class.attribute_names.include?(compare_name)
+        if not compare_class.all_attribute_names.include?(compare_name)
           raise Error, "Attribute is not defined (Attribute Name: #{compare_name.inspect}, Schema Class: #{compare_class})"
         end
 
