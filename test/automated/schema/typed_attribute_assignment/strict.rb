@@ -12,9 +12,12 @@ context "Attribute Definition (Strict)" do
   end
 
   context "Attribute value is of the same type as the attribute's declared interface" do
+    something = Schema::Controls::Schema::Typed::SomeType.new
+
     test "Correct" do
-      something = Schema::Controls::Schema::Typed::SomeType.new
-      example.some_attribute = something
+      refute_raises(Schema::Attribute::TypeError) do
+        example.some_attribute = something
+      end
     end
   end
 
@@ -30,7 +33,9 @@ context "Attribute Definition (Strict)" do
 
   context "Value is nil" do
     test "Correct" do
-      example.some_attribute = nil
+      refute_raises(Schema::Attribute::TypeError) do
+        example.some_attribute = nil
+      end
     end
   end
 end
