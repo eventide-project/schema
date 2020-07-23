@@ -78,7 +78,9 @@ module Schema
       @attributes ||= AttributeRegistry.new
     end
 
-    def attribute_names
+    def attribute_names(include_transient: nil)
+      include_transient ||= false
+
       transient_attributes = []
       if respond_to?(:transient_attributes)
         transient_attributes = self.transient_attributes
@@ -86,11 +88,19 @@ module Schema
 
       attribute_names = []
       attributes.each do |attribute|
-        next if transient_attributes.include?(attribute.name)
+        if !include_transient &&
+            transient_attributes.include?(attribute.name)
+          next
+        end
+
         attribute_names << attribute.name
       end
 
       attribute_names
+    end
+
+    def all_attribute_names
+      attribute_names(include_transient: true)
     end
   end
 

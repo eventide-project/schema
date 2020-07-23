@@ -49,6 +49,14 @@ module Schema
       end
 
       def self.build_entry(control_name, control, compare_name, compare)
+
+
+pp control_name
+pp control.class.attribute_names
+
+
+
+
         control_class = control.class
         if not control_class.attribute_names.include?(control_name)
           raise Error, "Attribute is not defined (Attribute Name: #{control_name.inspect}, Schema Class: #{control_class})"

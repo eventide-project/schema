@@ -4,14 +4,13 @@ context "Attributes List" do
   context "Instance" do
     context "Transient" do
       example = Schema::Controls::Schema::TransientAttributes.example
-      attributes = example.attributes
 
-      test "Transient attributes are excluded from hash" do
-        assert(attributes == { some_attribute: 'some value', some_other_attribute: 'some other value' })
+      test "Excluded from attributes" do
+        assert(example.attributes == { some_attribute: 'some value', some_other_attribute: 'some other value' })
       end
 
-      test "Hash of object is the same as its attributes" do
-        assert(example.to_h == attributes)
+      test "Excluded from hash" do
+        assert(example.to_h == example.attributes)
       end
     end
   end
