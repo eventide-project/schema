@@ -255,7 +255,7 @@ some_object.to_h
 # => {name: "Some Name", amount: 11}
 ```
 
-### Including the Excluded Attributes
+### Including the Transient Attributes
 
 The full list of attribute names, including the transient attribute names, can still be accessed via the `attribute_names` class method by passing the `include_transient` keyword argument.
 
@@ -297,9 +297,9 @@ some_object.to_h
 # => {name: "Some Name", amount: 11}
 ```
 
-### Including the Excluded Attributes
+### Including the Transient Attributes
 
-As with the list of attribute names, the hash representation of a schema object does not include the attributes that have been excluded via the `excluded_attributes` class method.
+As with the list of attribute names, the hash representation of a schema object does not include the attributes that have been excluded via the `transiant_attributes` class method.
 
 However, the full hash of attribute values, including the transient attributes, can still be accessed via the `attributes` method by passing the `include_transient` keyword argument.
 
@@ -315,9 +315,6 @@ class SomeClass
     [:active]
   end
 end
-
-SomeClass.attribute_names
-# => [:name, :amount]
 
 some_object = SomeClass.new
 
@@ -339,7 +336,7 @@ some_object.all_attributes
 # => {name: "Some Name", amount: 11, active: true}
 ```
 
-Note: The `include_transient` keyword argument cannot be passed to the `to_h` method, and the result of the `to_h` method never includes any excluded attributes.
+Note: The `include_transient` keyword argument cannot be passed to the `to_h` method, and the result of the `to_h` method never includes any transient attributes.
 
 ## Intercepting and Modifying Input and Output Data
 
