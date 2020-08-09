@@ -208,6 +208,135 @@ puts some_object.inspect
 # => #<SomeClass:0x00555710f467c8 @name="Some Name", @amount=11>
 ```
 
+## Attribute Name Reflection
+
+Attribute names can be retrieved from a schema class.
+
+```ruby
+class SomeClass
+  include Schema
+
+  attribute :name, String
+  attribute :amount, Numeric
+  attribute :active, Boolean
+end
+
+SomeClass.attribute_names
+# => [:name, :amount, :active]
+```
+
+## Transient Attributes
+
+Transient attributes offer a way to exclude attributes and their values from the hash representation of a schema object.
+
+```ruby
+class SomeClass
+  include Schema
+
+  attribute :name, String
+  attribute :amount, Numeric
+  attribute :active, Boolean
+
+  def self.transient_attributes
+    [:active]
+  end
+end
+
+SomeClass.attribute_names
+# => [:name, :amount]
+
+some_object = SomeClass.new
+
+some_object.name = 'Some Name'
+some_object.amount = 11
+some_object.active = true
+
+some_object.to_h
+# => {name: "Some Name", amount: 11}
+```
+
+The full list of attribute names, including the transient attribute names, can still be accessed via the `attribute_names` class method by passing the `include_transient` keyword argument.
+
+``` ruby
+SomeClass.attribute_names(include_transient: true)
+# => [:name, :amount]
+```
+
+The `all_attribute_names` method is a convenient shortcut for accessing the full list of attribute names.
+
+``` ruby
+SomeClass.all_attribute_names
+# => [:name, :amount]
+```
+
+## Converting to a Hash
+
+A schema object can be converted to a hash using either the `to_h` method or the `attributes` method.
+
+The `to_h` method delegates to the `attributes` method, but the `attributes` method provides additional options.
+
+``` ruby
+class SomeClass
+  include Schema
+
+  attribute :name, String
+  attribute :amount, Numeric
+end
+
+some_object = SomeClass.new
+
+some_object.name = 'Some Name'
+some_object.amount = 11
+
+some_object.attributes
+# => {name: "Some Name", amount: 11}
+
+some_object.to_h
+# => {name: "Some Name", amount: 11}
+```
+
+As with the list of attribute names, the hash representation of a schema object does not include the attributes that have been excluded via the `excluded_attributes` class method.
+
+However, the full hash of attribute values, including the transient attributes, can still be accessed via the `attributes` method by passing the `include_transient` keyword argument.
+
+```ruby
+class SomeClass
+  include Schema
+
+  attribute :name, String
+  attribute :amount, Numeric
+  attribute :active, Boolean
+
+  def self.transient_attributes
+    [:active]
+  end
+end
+
+SomeClass.attribute_names
+# => [:name, :amount]
+
+some_object = SomeClass.new
+
+some_object.name = 'Some Name'
+some_object.amount = 11
+some_object.active = true
+
+some_object.attributes
+# => {name: "Some Name", amount: 11}
+
+some_object.attributes(include_transient: true)
+# => {name: "Some Name", amount: 11, active: true}
+```
+
+The `all_attributes` method is a convenient shortcut for accessing the full hash of attributes.
+
+``` ruby
+some_object.all_attributes
+# => {name: "Some Name", amount: 11, active: true}
+```
+
+Note: The `include_transient` keyword argument cannot be passed to the `to_h` method, and the result of the `to_h` method never includes any excluded attributes.
+
 ## Intercepting and Modifying Input and Output Data
 
 By default, a data structure whose attributes are primitive values like strings, numbers, or booleans can be converted to hash data implicitly without any additional implementation.
@@ -313,53 +442,6 @@ duplicate.name
 The `dup` method doesn't create a deep copy by default. A duplicate of an instance of `Schema::DataStructure` whose attributes have references to instances of complex types rather than just simple primitives will share the references to those complex types with the original instance.
 
 As with the [transformation](#intercepting-and-modifying-input-and-output-data) of attributes, deep copy behavior can be implemented by implementing the `transform_read` and `transform_write` methods in order to replace attribute values that are instances of complex types with entirely new instances.
-
-## Attribute Name Reflection
-
-Attribute names can be retrieved from a schema class.
-
-```ruby
-class SomeClass
-  include Schema
-
-  attribute :name, String
-  attribute :amount, Numeric
-  attribute :active, Boolean
-end
-
-SomeClass.attribute_names
-# => [:name, :amount, :active]
-```
-
-## Transient Attributes
-
-Transient attributes offer a way to exclude attributes and their values from the hash representation of a schema object.
-
-```ruby
-class SomeClass
-  include Schema
-
-  attribute :name, String
-  attribute :amount, Numeric
-  attribute :active, Boolean
-
-  def self.transient_attributes
-    [:active]
-  end
-end
-
-SomeClass.attribute_names
-# => [:name, :amount]
-
-some_object = SomeClass.new
-
-some_object.name = 'Some Name'
-some_object.amount = 11
-some_object.active = true
-
-some_object.to_h
-# => {name: "Some Name", amount: 11}
-```
 
 ## Equality
 
