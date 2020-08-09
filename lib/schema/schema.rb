@@ -174,7 +174,10 @@ module Schema
 
     data
   end
-  alias :to_h :attributes
+
+  def to_h
+    attributes
+  end
 
   def all_attributes
     attributes(include_transient: true)
