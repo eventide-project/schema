@@ -5,12 +5,19 @@ context "Attributes List" do
     context "Transient" do
       example = Schema::Controls::Schema::TransientAttributes.example
 
-      test "Excluded from attributes" do
-        assert(example.attributes == { some_attribute: 'some value', some_other_attribute: 'some other value' })
-      end
+      attributes = example.attributes
 
-      test "Excluded from hash" do
-        assert(example.to_h == example.attributes)
+      transient_attributes = Schema::Controls::Schema::TransientAttributes::Example.transient_attributes
+
+      detail "Attributes: #{attributes.inspect}"
+      detail "Transient Attributes: #{transient_attributes.inspect}"
+
+      transient_attributes.each do |attribute|
+        context "#{attribute}" do
+          test "Excluded" do
+            refute(attributes.keys.include?(attribute))
+          end
+        end
       end
     end
   end

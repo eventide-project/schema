@@ -161,22 +161,27 @@ module Schema
     end
   end
 
-  def attributes
-    transient_attributes = []
-    if self.class.respond_to?(:transient_attributes)
-      transient_attributes = self.class.transient_attributes
-    end
+  def attributes(include_transient: nil)
+    include_transient ||= false
 
-    data = self.class.attributes.each_with_object({}) do |attribute, attributes|
-      next if transient_attributes.include?(attribute.name)
-      attributes[attribute.name] = public_send(attribute.name)
+    attribute_names = self.class.attribute_names(include_transient: include_transient)
+
+    data = attribute_names.each_with_object({}) do |attribute_name, attributes|
+      attributes[attribute_name] = public_send(attribute_name)
     end
 
     transform_write(data)
 
     data
   end
-  alias :to_h :attributes
+
+  def to_h
+    attributes
+  end
+
+  def all_attributes
+    attributes(include_transient: true)
+  end
 
   def ==(other, attributes_names=nil, ignore_class: nil)
     comparison = Compare.(self, other, attributes_names)
