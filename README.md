@@ -255,6 +255,8 @@ some_object.to_h
 # => {name: "Some Name", amount: 11}
 ```
 
+### Including the Excluded Attributes
+
 The full list of attribute names, including the transient attribute names, can still be accessed via the `attribute_names` class method by passing the `include_transient` keyword argument.
 
 ``` ruby
@@ -294,6 +296,8 @@ some_object.attributes
 some_object.to_h
 # => {name: "Some Name", amount: 11}
 ```
+
+### Including the Excluded Attributes
 
 As with the list of attribute names, the hash representation of a schema object does not include the attributes that have been excluded via the `excluded_attributes` class method.
 
