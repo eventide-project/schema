@@ -184,6 +184,12 @@ module Schema
   end
 
   def ==(other, attributes_names=nil, ignore_class: nil)
+    ignore_class ||= false
+
+    if not ignore_class
+      return false if self.class != other.class
+    end
+
     comparison = Compare.(self, other, attributes_names)
 
     different = comparison.different?(ignore_class: ignore_class)
