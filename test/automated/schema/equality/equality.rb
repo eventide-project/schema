@@ -32,6 +32,14 @@ context "Equality" do
           refute(control == compare)
         end
       end
+
+      context "Attributes are different and classes are not equal" do
+        compare = Schema::Controls::Schema::Random.example
+
+        test "Schemas are not equal" do
+          refute(control == compare)
+        end
+      end
     end
   end
 end
