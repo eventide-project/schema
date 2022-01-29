@@ -24,8 +24,11 @@ module Schema
         strict ||= false
 
         new.tap do |instance|
-          instance.transform_read(data)
-          set_attributes(instance, data, strict)
+          if not data.empty?
+            instance.transform_read(data)
+            set_attributes(instance, data, strict)
+          end
+
           instance.configure_dependencies
         end
       end
