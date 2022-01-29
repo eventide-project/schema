@@ -102,6 +102,16 @@ module Schema
           end
         end
       end
+
+      module TransformReadFail
+        Error = Class.new(RuntimeError)
+
+        class Example < DataStructure::Example
+          def transform_read(data)
+            raise Error
+          end
+        end
+      end
     end
   end
 end
