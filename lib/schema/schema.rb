@@ -186,11 +186,20 @@ module Schema
   def ==(other, attributes_names=nil, ignore_class: nil)
     ignore_class ||= false
 
+    ## ignore class not needed if we choose not to use Compare to determine equality
     if not ignore_class
       return false if self.class != other.class
     end
 
+    ## reconsider use of compare for equality
+    ## if not using compare, then coalesce attribute names to self.attribute_names
     comparison = Compare.(self, other, attributes_names)
+
+=begin
+Alternative equality
+    raw_attributes == other.raw_attributes
+=end
+
 
     different = comparison.different?(ignore_class: ignore_class)
 
