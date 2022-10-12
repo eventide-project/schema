@@ -18,10 +18,12 @@ context "Schema" do
         other_schema = schema_class.new
         other_schema.some_attribute = attribute_value
 
-        assert(schema.eql?(other_schema))
-
         test "Equivalent" do
           assert(schema.hash == other_schema.hash)
+        end
+
+        test "Schemas instances are equal when hash codes are equal" do
+          assert(schema.eql?(other_schema))
         end
       end
 
@@ -32,10 +34,12 @@ context "Schema" do
         other_schema = schema_class.new
         other_schema.some_attribute = SecureRandom.hex
 
-        refute(schema.eql?(other_schema))
-
         test "Not Equivalent" do
           refute(schema.hash == other_schema.hash)
+        end
+
+        test "Schemas instances are not equal when hash codes are not equal" do
+          refute(schema.eql?(other_schema))
         end
       end
     end
@@ -54,10 +58,12 @@ context "Schema" do
         other_schema = other_schema_class.new
         other_schema.some_attribute = attribute_value
 
-        refute(schema.eql?(other_schema))
-
         test "Not Equivalent" do
           refute(schema.hash == other_schema.hash)
+        end
+
+        test "Schemas instances are not equal when hash codes are not equal" do
+          refute(schema.eql?(other_schema))
         end
       end
 
@@ -68,10 +74,12 @@ context "Schema" do
         other_schema = other_schema_class.new
         other_schema.some_attribute = SecureRandom.hex
 
-        refute(schema.eql?(other_schema))
-
         test "Not Equivalent" do
           refute(schema.hash == other_schema.hash)
+        end
+
+        test "Schemas instances are not equal when hash codes are not equal" do
+          refute(schema.eql?(other_schema))
         end
       end
     end
