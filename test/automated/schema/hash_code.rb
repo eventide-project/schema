@@ -2,16 +2,78 @@ require_relative '../automated_init'
 
 context "Schema" do
   context "Hash Code" do
-    example = Schema::Controls::Schema.example
+    schema_class = Class.new do
+      include Schema
 
-    attributes = example.raw_attributes
-    schema_class = example.class
-    control_hash_code = [schema_class, attributes].hash
+      attribute :some_attribute
+    end
 
-    hash_code = example.hash
+    attribute_value = "some-value"
 
-    test "Is the hash code of the class and raw attributes" do
-      assert(hash_code == control_hash_code)
+    context "Same Class" do
+      context "Same Attribute Values" do
+        schema = schema_class.new
+        schema.some_attribute = attribute_value
+
+        other_schema = schema_class.new
+        other_schema.some_attribute = attribute_value
+
+        assert(schema.eql?(other_schema))
+
+        test "Equivalent" do
+          assert(schema.hash == other_schema.hash)
+        end
+      end
+
+      context "Different Attribute Values" do
+        schema = schema_class.new
+        schema.some_attribute = attribute_value
+
+        other_schema = schema_class.new
+        other_schema.some_attribute = SecureRandom.hex
+
+        refute(schema.eql?(other_schema))
+
+        test "Not Equivalent" do
+          refute(schema.hash == other_schema.hash)
+        end
+      end
+    end
+
+    context "Different Class" do
+      other_schema_class = Class.new do
+        include Schema
+
+        attribute :some_attribute, String
+      end
+
+      context "Same Attribute Values" do
+        schema = schema_class.new
+        schema.some_attribute = attribute_value
+
+        other_schema = other_schema_class.new
+        other_schema.some_attribute = attribute_value
+
+        refute(schema.eql?(other_schema))
+
+        test "Not Equivalent" do
+          refute(schema.hash == other_schema.hash)
+        end
+      end
+
+      context "Different Attribute Values" do
+        schema = schema_class.new
+        schema.some_attribute = attribute_value
+
+        other_schema = other_schema_class.new
+        other_schema.some_attribute = SecureRandom.hex
+
+        refute(schema.eql?(other_schema))
+
+        test "Not Equivalent" do
+          refute(schema.hash == other_schema.hash)
+        end
+      end
     end
   end
 end
