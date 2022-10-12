@@ -163,9 +163,7 @@ module Schema
 
   def raw_attributes
     all_attribute_names = self.class.all_attribute_names
-pp "all attr names"
-pp all_attribute_names
-pp    get_attributes(all_attribute_names)
+    get_attributes(all_attribute_names)
   end
 
   def get_attributes(attribute_names)
@@ -210,6 +208,11 @@ pp    get_attributes(all_attribute_names)
   alias :eql? :==
 
   def hash
-    raw_attributes.hash
+    class_name_hash = self.class.name.hash
+    raw_attributes_hash = raw_attributes.hash
+
+    combined_hash = class_name_hash + raw_attributes_hash
+
+    combined_hash
   end
 end
