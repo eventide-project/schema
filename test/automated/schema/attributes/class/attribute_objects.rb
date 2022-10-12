@@ -1,8 +1,8 @@
-require_relative '../../automated_init'
+require_relative '../../../automated_init'
 
-context "Attributes List" do
+context "Attributes" do
   context "Class" do
-    context "Non-Transient" do
+    context "Attribute Objects" do
       context do
         attributes = Schema::Controls::Schema::Example.attributes
 
@@ -10,7 +10,7 @@ context "Attributes List" do
           assert(attributes.length == 2)
         end
 
-        test "Name is the declared name" do
+        test "Attribute name is the declared name" do
           attribute = attributes[0]
           assert(attribute.name == :some_attribute)
         end

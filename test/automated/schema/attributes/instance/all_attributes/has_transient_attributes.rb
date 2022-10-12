@@ -1,10 +1,10 @@
 require_relative '../../../../automated_init'
 
-context "Attributes List" do
+context "Attributes" do
   context "Instance" do
     context "All Attributes" do
-      context "Has No Transient Attributes" do
-        example = Schema::Controls::Schema.example
+      context "Has Transient Attributes" do
+        example = Schema::Controls::Schema::TransientAttributes.example
 
         attributes = example.all_attributes
 
