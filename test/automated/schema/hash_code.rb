@@ -5,11 +5,12 @@ context "Schema" do
     example = Schema::Controls::Schema.example
 
     attributes = example.raw_attributes
-    control_hash_code = attributes.hash
+    schema_class = example.class
+    control_hash_code = [schema_class, attributes].hash
 
     hash_code = example.hash
 
-    test "Is the hash code of the raw attributes" do
+    test "Is the hash code of the class and raw attributes" do
       assert(hash_code == control_hash_code)
     end
   end

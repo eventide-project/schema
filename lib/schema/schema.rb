@@ -208,6 +208,6 @@ module Schema
   alias :eql? :==
 
   def hash
-    raw_attributes.hash
+    [self.class, raw_attributes].hash
   end
 end
