@@ -161,14 +161,25 @@ module Schema
     end
   end
 
+  def raw_attributes
+    all_attribute_names = self.class.all_attribute_names
+pp "all attr names"
+pp all_attribute_names
+pp    get_attributes(all_attribute_names)
+  end
+
+  def get_attributes(attribute_names)
+    attribute_names.each_with_object({}) do |attribute_name, attributes|
+      attributes[attribute_name] = public_send(attribute_name)
+    end
+  end
+
   def attributes(include_transient: nil)
     include_transient ||= false
 
     attribute_names = self.class.attribute_names(include_transient: include_transient)
 
-    data = attribute_names.each_with_object({}) do |attribute_name, attributes|
-      attributes[attribute_name] = public_send(attribute_name)
-    end
+    data = get_attributes(attribute_names)
 
     transform_write(data)
 
@@ -197,4 +208,8 @@ module Schema
     !different
   end
   alias :eql? :==
+
+  def hash
+    raw_attributes.hash
+  end
 end

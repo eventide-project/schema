@@ -27,6 +27,7 @@ module Schema
 
       class Example
         include ::Schema::DataStructure
+
         attribute :some_attribute
       end
 
@@ -66,7 +67,11 @@ module Schema
           example
         end
 
-        class Example < DataStructure::Example
+        class Example
+          include ::Schema::DataStructure
+
+          attribute :some_attribute
+
           def transform_read(data)
             data[:some_attribute] = 'some read value'
           end
@@ -91,7 +96,11 @@ module Schema
             example
           end
 
-          class Example < DataStructure::Example
+          class Example
+            include ::Schema::DataStructure
+
+            attribute :some_attribute
+
             def transform_in(data)
               data[:some_attribute] = 'some read value'
             end
@@ -107,6 +116,10 @@ module Schema
         Error = Class.new(RuntimeError)
 
         class Example < DataStructure::Example
+          include ::Schema::DataStructure
+
+          attribute :some_attribute
+
           def transform_read(data)
             raise Error
           end
