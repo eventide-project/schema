@@ -405,6 +405,48 @@ end
 
 The `transform_write` method is also aliased to `transform_out`.
 
+## Raw Attributes
+
+The `attributes` or `to_h` methods will transform the data if the `transform_write` method is implemented, and will exclude transient attributes.
+
+The `raw_attributes` method will return the raw, unmodified data
+
+```ruby
+class SomeClass
+  include Schema
+
+  attribute :name, String
+  attribute :amount, Numeric
+  attribute :active, Boolean
+
+  def self.transient_attributes
+    [:active]
+  end
+
+  def transform_write(data)
+    data[:name] = name.upcase
+  end
+end
+
+SomeClass.attribute_names
+# => [:name, :amount]
+
+SomeClass.all_attribute_names
+# => [:name, :amount, :active]
+
+some_object = SomeClass.new
+
+some_object.name = 'Some Name'
+some_object.amount = 11
+some_object.active = true
+
+some_object.to_h
+# => {name: "SOME NAME", amount: 11}
+
+some_object.raw_attributes
+# => {name: "Some Name", amount: 11, active: true}
+```
+
 ## Duplicate
 
 ### Shallow Copy
