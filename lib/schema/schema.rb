@@ -41,7 +41,7 @@ module Schema
 
         check = proc do |val|
           unless val.nil? || Boolean.(val)
-            raise Schema::Attribute::TypeError, "#{val.inspect} is not a boolean"
+            raise Schema::Attribute::TypeError, "#{val.inspect} of type #{val.class.name} cannot be assigned to attribute #{attribute_name} of type Boolean (Strict: #{strict.inspect})"
           end
         end
       elsif !type.nil?
@@ -50,9 +50,13 @@ module Schema
         check = proc do |val|
           unless val.nil?
             if strict
-              raise Schema::Attribute::TypeError, "#{val.inspect} is not an instance of #{type.name}" unless val.instance_of? type
+              if not val.instance_of?(type)
+                raise Schema::Attribute::TypeError, "#{val.inspect} of type #{val.class.name} cannot be assigned to attribute #{attribute_name} of type #{type.name} (Strict: #{strict.inspect})"
+              end
             else
-              raise Schema::Attribute::TypeError, "#{val.inspect} is not a kind of #{type.name}" unless val.is_a? type
+              if not val.is_a?(type)
+                raise Schema::Attribute::TypeError, "#{val.inspect} of type #{val.class.name} cannot be assigned to attribute #{attribute_name} of type #{type.name} (Strict: #{strict.inspect})"
+              end
             end
           end
         end
