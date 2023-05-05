@@ -261,7 +261,7 @@ The full list of attribute names, including the transient attribute names, can s
 
 ``` ruby
 SomeClass.attribute_names(include_transient: true)
-# => [:name, :amount]
+# => [:name, :amount, :active]
 ```
 
 The `all_attribute_names` method is a convenient shortcut for accessing the full list of attribute names.
