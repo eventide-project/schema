@@ -17,7 +17,7 @@ context "Attributes" do
 
         test "Attribute names is a list of just the declared names" do
           attribute_names = Schema::Controls::Schema::Example.attribute_names
-          assert(attribute_names = [:some_attribute])
+          assert(attribute_names == [:some_attribute, :some_other_attribute])
         end
       end
 
