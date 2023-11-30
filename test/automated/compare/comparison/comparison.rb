@@ -9,6 +9,8 @@ context "Compare" do
 
     comparison = Schema::Compare::Comparison.build(control, compare)
 
+    detail "Comparison: #{comparison.pretty_inspect}"
+
     context "Attribute with Same Value" do
       different = comparison.different?(:some_attribute)
 
