@@ -30,7 +30,7 @@ context "Schema" do
       end
 
       context "Value is neither a boolean nor nil" do
-        test "Inorrect" do
+        test "Incorrect" do
           assert_raises(Schema::Attribute::TypeError) do
             example.some_boolean_attribute = Object.new
           end
