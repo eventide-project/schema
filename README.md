@@ -175,7 +175,7 @@ NOTE: An attribute's default value is not type-checked when the class that they 
 class SomeClass
   include Schema
 
-  attribute :age, Numeric, default: 'Some Name'
+  attribute :age, Numeric, default: proc { 'Some Name' }
 end
 
 some_object = SomeClass.new
