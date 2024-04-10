@@ -7,12 +7,12 @@ module Schema
       extend AttributeMacro
       extend Attributes
 
-      include Virtual
+      include TemplateMethod
 
-      virtual :transform_write do |data|
+      template_method :transform_write do |data|
         transform_out(data)
       end
-      virtual :transform_out
+      template_method :transform_out
 
       const_set(:Boolean, Boolean)
     end
