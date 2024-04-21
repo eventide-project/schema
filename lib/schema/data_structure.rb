@@ -2,19 +2,19 @@ module Schema
   module DataStructure
     def self.included(cls)
       cls.class_exec do
-        include Virtual
+        include TemplateMethod
         include Schema
         extend Build
 
-        virtual :configure
-        virtual :configure_dependencies do
+        template_method :configure
+        template_method :configure_dependencies do
           configure
         end
 
-        virtual :transform_read do |data|
+        template_method :transform_read do |data|
           transform_in(data)
         end
-        virtual :transform_in
+        template_method :transform_in
       end
     end
 

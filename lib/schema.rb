@@ -2,7 +2,7 @@ require 'attribute'
 require 'set_attributes'
 require 'initializer'
 require 'validate'
-require 'virtual'
+require 'template_method'
 
 require 'schema/schema'
 require 'schema/schema/compare/comparison'
