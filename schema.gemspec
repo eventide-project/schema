@@ -2,7 +2,7 @@
 Gem::Specification.new do |s|
   s.name = 'evt-schema'
   s.summary = "Primitives for schema and data structure"
-  s.version = '2.3.1.6'
+  s.version = '2.4.0.0'
   s.description = ' '
 
   s.authors = ['The Eventide Project']
