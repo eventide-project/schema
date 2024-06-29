@@ -136,14 +136,14 @@ some_object.active = 'foo'
 
 ## Default Values
 
-Attribute values are `nil` by default. An attribute declaration can specify a default value using the optional `default` argument. To specify a default value to an attribute, it is assigned a `proc`.
+Attribute values are `nil` by default. An attribute declaration can specify a default value using the optional `default` argument. To specify a default value to an attribute, it is assigned a Proc.
 
 ```ruby
 class Planet
   include Schema
 
-  attribute :name, String, default: proc { 'Earth' }
-  attribute :age, Numeric, default: proc { 4_500_000_000 }
+  attribute :name, String, default: -> { 'Earth' }
+  attribute :age, Numeric, default: -> { 4_500_000_000 }
   attribute :description, String
 end
 
@@ -165,7 +165,7 @@ Default values can also be specified for attributes without that are not declare
 class SomeClass
   include Schema
 
-  attribute :something, default: proc { Object.new }
+  attribute :something, default: -> { Object.new }
 end
 ```
 
@@ -175,7 +175,7 @@ NOTE: An attribute's default value is not type-checked when the class that they 
 class SomeClass
   include Schema
 
-  attribute :age, Numeric, default: proc { 'Some Name' }
+  attribute :age, Numeric, default: -> { 'Some Name' }
 end
 
 some_object = SomeClass.new
