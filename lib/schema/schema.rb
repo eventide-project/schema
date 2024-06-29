@@ -62,11 +62,12 @@ module Schema
         end
       end
 
-      initialize_value = nil
-      if default.is_a? Proc
+      if default.nil?
+        initialize_value = nil
+      elsif default.respond_to?(:call)
         initialize_value = default
-      elsif !default.nil?
-        initialize_value = proc { default.clone }
+      else
+        raise Schema::Attribute::Error, "Default values must be callable, like procs, lambdas, or objects that respond to the call method (Attribute: #{attribute_name})"
       end
 
       ::Attribute::Define.(self, attribute_name, :accessor, check: check, &initialize_value)
