@@ -145,6 +145,27 @@ module Schema
         end
       end
 
+      module Check
+        def self.check
+          lambda do |type, value, strict|
+            value == Check.valid_some_attribute
+          end
+        end
+
+        def self.valid_some_attribute
+          "some-valid-value"
+        end
+
+        def self.invalid_some_attribute
+          "some-invalid-value"
+        end
+
+        class Example
+          include ::Schema
+          attribute :some_attribute, check: Check.check
+        end
+      end
+
       module Boolean
         def self.example
           Example.new

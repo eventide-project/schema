@@ -25,7 +25,11 @@ module Schema
   end
 
   module AttributeMacro
-    def attribute_macro(attribute_name, type=nil, strict: nil, default: nil)
+    def attribute_macro(attribute_name, type=nil, strict: nil, default: nil, check: nil)
+      if !check.nil? && !strict.nil?
+        raise Schema::Attribute::Error, "The \"#{attribute_name}\" attribute is declared with the \"strict\" option but a check is specified"
+      end
+
       if type.nil? && !strict.nil?
         raise Schema::Attribute::Error, "The \"#{attribute_name}\" attribute is declared with the \"strict\" option but a type is not specified"
       end
@@ -34,31 +38,17 @@ module Schema
         raise Schema::Attribute::Error, "The \"#{attribute_name}\" attribute is declared with the \"strict\" option disabled but boolean type is specified"
       end
 
-      check = nil
-
       if type == Boolean
         strict ||= true
-
-        check = proc do |val|
-          unless val.nil? || Boolean.(val)
-            raise Schema::Attribute::TypeError, "#{val.inspect} of type #{val.class.name} cannot be assigned to attribute #{attribute_name.inspect} of #{self.to_s} (Strict: #{strict.inspect})"
-          end
-        end
-      elsif !type.nil?
+      else
         strict ||= false
+      end
 
-        check = proc do |val|
-          unless val.nil?
-            if strict
-              if not val.instance_of?(type)
-                raise Schema::Attribute::TypeError, "#{val.inspect} of type #{val.class.name} cannot be assigned to attribute #{attribute_name.inspect} of #{self.to_s} (Strict: #{strict.inspect})"
-              end
-            else
-              if not val.is_a?(type)
-                raise Schema::Attribute::TypeError, "#{val.inspect} of type #{val.class.name} cannot be assigned to attribute #{attribute_name.inspect} of #{self.to_s} (Strict: #{strict.inspect})"
-              end
-            end
-          end
+      check ||= Defaults.check
+
+      attribute_check = lambda do |val|
+        if not check.(type, val, strict)
+          raise Schema::Attribute::TypeError, "#{val.inspect} of type #{val.class.name} cannot be assigned to attribute #{attribute_name.inspect} of #{self.to_s} (Strict: #{strict.inspect})"
         end
       end
 
@@ -70,12 +60,32 @@ module Schema
         raise Schema::Attribute::Error, "Default values must be callable, like procs, lambdas, or objects that respond to the call method (Attribute: #{attribute_name})"
       end
 
-      ::Attribute::Define.(self, attribute_name, :accessor, check: check, &initialize_value)
+      ::Attribute::Define.(self, attribute_name, :accessor, check: attribute_check, &initialize_value)
 
       attribute = attributes.register(attribute_name, type, strict)
       attribute
     end
     alias :attribute :attribute_macro
+
+    module Defaults
+      def self.check
+        lambda do |type, val, strict|
+          return true if val.nil?
+
+          if type == Boolean
+            Boolean.(val)
+          elsif !type.nil?
+            if strict
+              val.instance_of?(type)
+            else
+              val.is_a?(type)
+            end
+          else
+            true
+          end
+        end
+      end
+    end
   end
 
   module Attributes
