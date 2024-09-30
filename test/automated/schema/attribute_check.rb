@@ -1,4 +1,4 @@
-require_relative '../../automated_init'
+require_relative '../automated_init'
 
 context "Attribute Check" do
   example = Schema::Controls::Schema::Check::Example.new

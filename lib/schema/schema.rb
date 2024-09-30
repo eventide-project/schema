@@ -25,30 +25,12 @@ module Schema
   end
 
   module AttributeMacro
-    def attribute_macro(attribute_name, type=nil, strict: nil, default: nil, check: nil)
-      if !check.nil? && !strict.nil?
-        raise Schema::Attribute::Error, "The \"#{attribute_name}\" attribute is declared with the \"strict\" option but a check is specified"
-      end
-
-      if type.nil? && !strict.nil?
-        raise Schema::Attribute::Error, "The \"#{attribute_name}\" attribute is declared with the \"strict\" option but a type is not specified"
-      end
-
-      if type == Boolean && strict == false
-        raise Schema::Attribute::Error, "The \"#{attribute_name}\" attribute is declared with the \"strict\" option disabled but boolean type is specified"
-      end
-
-      if type == Boolean
-        strict ||= true
-      else
-        strict ||= false
-      end
-
+    def attribute_macro(attribute_name, type=nil, default: nil, check: nil)
       check ||= Defaults.check
 
       attribute_check = lambda do |val|
-        if not check.(type, val, strict)
-          raise Schema::Attribute::TypeError, "#{val.inspect} of type #{val.class.name} cannot be assigned to attribute #{attribute_name.inspect} of #{self.to_s} (Strict: #{strict.inspect})"
+        if not check.(type, val)
+          raise Schema::Attribute::TypeError, "#{val.inspect} of type #{val.class.name} cannot be assigned to attribute #{attribute_name.inspect} of #{self.to_s}"
         end
       end
 
@@ -62,24 +44,20 @@ module Schema
 
       ::Attribute::Define.(self, attribute_name, :accessor, check: attribute_check, &initialize_value)
 
-      attribute = attributes.register(attribute_name, type, strict)
+      attribute = attributes.register(attribute_name, type)
       attribute
     end
     alias :attribute :attribute_macro
 
     module Defaults
       def self.check
-        lambda do |type, val, strict|
+        lambda do |type, val|
           return true if val.nil?
 
           if type == Boolean
             Boolean.(val)
           elsif !type.nil?
-            if strict
-              val.instance_of?(type)
-            else
-              val.is_a?(type)
-            end
+            val.is_a?(type)
           else
             true
           end
@@ -145,16 +123,15 @@ module Schema
       entries.each_with_object(obj, &action)
     end
 
-    def add(name, type, strict=nil)
-      strict ||= false
-      attribute = Schema::Attribute.new(name, type, strict)
+    def add(name, type)
+      attribute = Schema::Attribute.new(name, type)
       entries << attribute
       attribute
     end
 
-    def register(name, type, strict=nil)
+    def register(name, type)
       remove(name)
-      add(name, type, strict)
+      add(name, type)
     end
 
     def remove(name)

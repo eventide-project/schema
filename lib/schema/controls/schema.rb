@@ -136,18 +136,11 @@ module Schema
           include ::Schema
           attribute :some_attribute, SomeType
         end
-
-        module Strict
-          class Example
-            include ::Schema
-            attribute :some_attribute, SomeType, strict: true
-          end
-        end
       end
 
       module Check
         def self.check
-          lambda do |type, value, strict|
+          lambda do |type, value|
             value == Check.valid_some_attribute
           end
         end
