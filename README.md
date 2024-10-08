@@ -68,6 +68,37 @@ some_object.name = 123
 # => 123
 ```
 
+## Specialized Type Checking
+
+Type checking is done with `Object#is_a?`, but it can be specialized for types by implementing a `TypeCheck` module with a `call` method that returns a boolean. The check should return `true` if the value satisfies the type check. Otherwise, it should return `false`.
+
+```ruby
+module PositiveNumber
+  module TypeCheck
+    def self.call(type, val)
+      return true if val.nil?
+      return false unless val.is_a?(Numeric)
+
+      val > 0
+    end
+  end
+end
+
+class SomeClass
+  include Schema
+
+  attribute :amount, PositiveNumber
+end
+
+some_object = SomeClass.new
+
+some_object.amount = 123
+# => 123
+
+some_object.amount = -1
+# => Schema::Attribute::Error
+```
+
 ## Boolean Type
 
 Ruby does not have an explicit boolean data type. The `false` and `true` values in Ruby are instances of `FalseClass` and `TrueClass`, respectively. This makes it quite difficult to declare a boolean attribute that is type-checked without adding branching logic that checks whether the value's class is `FalseClass` or `TrueClass`.

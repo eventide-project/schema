@@ -138,13 +138,7 @@ module Schema
         end
       end
 
-      module Check
-        def self.check
-          lambda do |type, value|
-            value == Check.valid_some_attribute
-          end
-        end
-
+      module TypeCheck
         def self.valid_some_attribute
           "some-valid-value"
         end
@@ -153,9 +147,17 @@ module Schema
           "some-invalid-value"
         end
 
+        class ExampleType
+          module TypeCheck
+            def self.call(type, value)
+              value == Schema::TypeCheck.valid_some_attribute
+            end
+          end
+        end
+
         class Example
           include ::Schema
-          attribute :some_attribute, check: Check.check
+          attribute :some_attribute, ExampleType
         end
       end
 

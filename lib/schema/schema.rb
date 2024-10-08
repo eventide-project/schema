@@ -25,11 +25,11 @@ module Schema
   end
 
   module AttributeMacro
-    def attribute_macro(attribute_name, type=nil, default: nil, check: nil)
-      check ||= Defaults.check
+    def attribute_macro(attribute_name, type=nil, default: nil)
+      type_check = TypeCheck.get(type)
 
-      attribute_check = lambda do |val|
-        if not check.(type, val)
+      check = lambda do |val|
+        if not type_check.(type, val)
           raise Schema::Attribute::TypeError, "#{val.inspect} of type #{val.class.name} cannot be assigned to attribute #{attribute_name.inspect} of #{self.to_s}"
         end
       end
@@ -42,25 +42,35 @@ module Schema
         raise Schema::Attribute::Error, "Default values must be callable, like procs, lambdas, or objects that respond to the call method (Attribute: #{attribute_name})"
       end
 
-      ::Attribute::Define.(self, attribute_name, :accessor, check: attribute_check, &initialize_value)
+      ::Attribute::Define.(self, attribute_name, :accessor, check: check, &initialize_value)
 
       attribute = attributes.register(attribute_name, type)
       attribute
     end
     alias :attribute :attribute_macro
 
-    module Defaults
-      def self.check
-        lambda do |type, val|
-          return true if val.nil?
+    module TypeCheck
+      def self.call(type, val)
+        return true if val.nil?
 
-          if type == Boolean
-            Boolean.(val)
-          elsif !type.nil?
-            val.is_a?(type)
-          else
-            true
-          end
+        if type == Boolean
+          Boolean.(val)
+        elsif !type.nil?
+          val.is_a?(type)
+        else
+          true
+        end
+      end
+
+      def self.get(type)
+        return self if type.nil?
+
+        result = Reflect.(type, :TypeCheck, ancestors: true, strict: false)
+
+        if not result.nil?
+          return result.constant
+        else
+          return self
         end
       end
     end
