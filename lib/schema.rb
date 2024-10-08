@@ -3,6 +3,7 @@ require 'set_attributes'
 require 'initializer'
 require 'validate'
 require 'template_method'
+require 'reflect'
 
 require 'schema/schema'
 require 'schema/schema/compare/comparison'
