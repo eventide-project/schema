@@ -20,6 +20,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'evt-initializer'
   s.add_runtime_dependency 'evt-validate'
   s.add_runtime_dependency 'evt-template_method'
+  s.add_runtime_dependency 'evt-reflect'
 
   s.add_development_dependency 'test_bench'
 end
