@@ -52,14 +52,9 @@ module Schema
     module TypeCheck
       def self.call(type, val)
         return true if val.nil?
+        return true if type.nil?
 
-        if type == Boolean
-          Boolean.(val)
-        elsif !type.nil?
-          val.is_a?(type)
-        else
-          true
-        end
+        val.is_a?(type)
       end
 
       def self.get(type)
@@ -158,8 +153,12 @@ module Schema
   end
 
   module Boolean
-    def self.call(val)
-      val == true || val == false
+    module TypeCheck
+      def self.call(type, val)
+        return true if val.nil?
+
+        val == true || val == false
+      end
     end
   end
 
