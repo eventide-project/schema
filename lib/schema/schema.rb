@@ -155,7 +155,9 @@ module Schema
   module Boolean
     module TypeCheck
       def self.call(type, val)
-        val.nil? || val == true || val == false
+        return true if val.nil?
+
+        val == true || val == false
       end
     end
   end
