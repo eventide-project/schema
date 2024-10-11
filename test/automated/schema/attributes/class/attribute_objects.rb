@@ -30,39 +30,17 @@ context "Attributes" do
           test "Type is not declared" do
             assert(attribute.type.nil?)
           end
-
-          test "Strict is false" do
-            refute(attribute.strict)
-          end
         end
       end
 
       context "Typed" do
-        context "Not Strict" do
-          attributes = Schema::Controls::Schema::Typed::Example.attributes
+        attributes = Schema::Controls::Schema::Typed::Example.attributes
 
-          context "Attribute List Entry" do
-            attribute = attributes[0]
+        context "Attribute List Entry" do
+          attribute = attributes[0]
 
-            test "Type is the declared type" do
-              assert(attribute.type == Schema::Controls::Schema::Typed::SomeType)
-            end
-
-            test "Strict is false" do
-              refute(attribute.strict)
-            end
-          end
-        end
-
-        context "Strict" do
-          attributes = Schema::Controls::Schema::Typed::Strict::Example.attributes
-
-          context "Attribute List Entry" do
-            attribute = attributes[0]
-
-            test "Strict is true" do
-              assert(attribute.strict)
-            end
+          test "Type is the declared type" do
+            assert(attribute.type == Schema::Controls::Schema::Typed::SomeType)
           end
         end
       end

@@ -68,47 +68,6 @@ some_object.name = 123
 # => 123
 ```
 
-## Strict Attributes and Polymorphism
-
-A type-checked attribute will, by default, accept a value that is either the attribute's exact type, or a subtype of that type.
-
-```ruby
-class Animal
-end
-
-class Dog < Animal
-end
-
-class SomeClass
-  include Schema
-
-  attribute :animal_only, Animal, strict: true
-  attribute :animal_or_subtype, Animal
-end
-
-some_object = SomeClass.new
-
-some_object.animal_only = Animal.new
-
-some_object.animal_only = Dog.new
-# => Schema::Attribute::TypeError
-
-some_object.animal_or_subtype = Animal.new
-some_object.animal_or_subtype = Dog.new
-```
-
-If an attribute is defined as strict, it must be declared with a type. If it is not declared with a type, an error will be raised when the class is loaded.
-
-```ruby
-class SomeClass
-  include Schema
-
-  attribute :name, strict: true
-end
-
-# => raises Schema::Attribute::Error
-```
-
 ## Boolean Type
 
 Ruby does not have an explicit boolean data type. The `false` and `true` values in Ruby are instances of `FalseClass` and `TrueClass`, respectively. This makes it quite difficult to declare a boolean attribute that is type-checked without adding branching logic that checks whether the value's class is `FalseClass` or `TrueClass`.
