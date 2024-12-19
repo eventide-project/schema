@@ -30,7 +30,7 @@ module Schema
 
       check = lambda do |val|
         if not type_check.(type, val)
-          raise Schema::Attribute::TypeError, "#{val.inspect} of type #{val.class.name} cannot be assigned to attribute #{attribute_name.inspect} of #{self.to_s}"
+          raise Schema::Attribute::TypeError, "#{val.inspect} of type #{val.class.name} cannot be assigned to #{self.to_s} attribute #{attribute_name.inspect} of type #{type.name}"
         end
       end
 
