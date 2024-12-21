@@ -136,12 +136,28 @@ module Schema
           include ::Schema
           attribute :some_attribute, SomeType
         end
+      end
 
-        module Strict
-          class Example
-            include ::Schema
-            attribute :some_attribute, SomeType, strict: true
+      module TypeCheck
+        def self.valid_some_attribute
+          "some-valid-value"
+        end
+
+        def self.invalid_some_attribute
+          "some-invalid-value"
+        end
+
+        class ExampleType
+          module TypeCheck
+            def self.call(type, value)
+              value == Schema::TypeCheck.valid_some_attribute
+            end
           end
+        end
+
+        class Example
+          include ::Schema
+          attribute :some_attribute, ExampleType
         end
       end
 

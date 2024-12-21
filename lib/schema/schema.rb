@@ -25,40 +25,12 @@ module Schema
   end
 
   module AttributeMacro
-    def attribute_macro(attribute_name, type=nil, strict: nil, default: nil)
-      if type.nil? && !strict.nil?
-        raise Schema::Attribute::Error, "The \"#{attribute_name}\" attribute is declared with the \"strict\" option but a type is not specified"
-      end
+    def attribute_macro(attribute_name, type=nil, default: nil)
+      type_check = TypeCheck.get(type)
 
-      if type == Boolean && strict == false
-        raise Schema::Attribute::Error, "The \"#{attribute_name}\" attribute is declared with the \"strict\" option disabled but boolean type is specified"
-      end
-
-      check = nil
-
-      if type == Boolean
-        strict ||= true
-
-        check = proc do |val|
-          unless val.nil? || Boolean.(val)
-            raise Schema::Attribute::TypeError, "#{val.inspect} of type #{val.class.name} cannot be assigned to attribute #{attribute_name.inspect} of type Boolean (Strict: #{strict.inspect})"
-          end
-        end
-      elsif !type.nil?
-        strict ||= false
-
-        check = proc do |val|
-          unless val.nil?
-            if strict
-              if not val.instance_of?(type)
-                raise Schema::Attribute::TypeError, "#{val.inspect} of type #{val.class.name} cannot be assigned to attribute #{attribute_name.inspect} of type #{type.name} (Strict: #{strict.inspect})"
-              end
-            else
-              if not val.is_a?(type)
-                raise Schema::Attribute::TypeError, "#{val.inspect} of type #{val.class.name} cannot be assigned to attribute #{attribute_name.inspect} of type #{type.name} (Strict: #{strict.inspect})"
-              end
-            end
-          end
+      check = lambda do |val|
+        if not type_check.(type, val)
+          raise Schema::Attribute::TypeError, "#{val.inspect} of type #{val.class.name} cannot be assigned to #{self.to_s} attribute #{attribute_name.inspect} of type #{type.name}"
         end
       end
 
@@ -72,10 +44,31 @@ module Schema
 
       ::Attribute::Define.(self, attribute_name, :accessor, check: check, &initialize_value)
 
-      attribute = attributes.register(attribute_name, type, strict)
+      attribute = attributes.register(attribute_name, type)
       attribute
     end
     alias :attribute :attribute_macro
+
+    module TypeCheck
+      def self.call(type, val)
+        return true if val.nil?
+        return true if type.nil?
+
+        val.is_a?(type)
+      end
+
+      def self.get(type)
+        return self if type.nil?
+
+        result = Reflect.(type, :TypeCheck, ancestors: true, strict: false)
+
+        if not result.nil?
+          return result.constant
+        else
+          return self
+        end
+      end
+    end
   end
 
   module Attributes
@@ -135,16 +128,15 @@ module Schema
       entries.each_with_object(obj, &action)
     end
 
-    def add(name, type, strict=nil)
-      strict ||= false
-      attribute = Schema::Attribute.new(name, type, strict)
+    def add(name, type)
+      attribute = Schema::Attribute.new(name, type)
       entries << attribute
       attribute
     end
 
-    def register(name, type, strict=nil)
+    def register(name, type)
       remove(name)
-      add(name, type, strict)
+      add(name, type)
     end
 
     def remove(name)
@@ -161,8 +153,12 @@ module Schema
   end
 
   module Boolean
-    def self.call(val)
-      val == true || val == false
+    module TypeCheck
+      def self.call(type, val)
+        return true if val.nil?
+
+        val == true || val == false
+      end
     end
   end
 

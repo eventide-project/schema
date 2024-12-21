@@ -68,45 +68,35 @@ some_object.name = 123
 # => 123
 ```
 
-## Strict Attributes and Polymorphism
+## Specialized Type Checking
 
-A type-checked attribute will, by default, accept a value that is either the attribute's exact type, or a subtype of that type.
+Type checking is done with `Object#is_a?`, but it can be specialized for types by implementing a `TypeCheck` module with a `call` method that returns a boolean. The check should return `true` if the value satisfies the type check. Otherwise, it should return `false`.
 
 ```ruby
-class Animal
-end
+module PositiveNumber
+  module TypeCheck
+    def self.call(type, val)
+      return true if val.nil?
+      return false unless val.is_a?(Numeric)
 
-class Dog < Animal
+      val > 0
+    end
+  end
 end
 
 class SomeClass
   include Schema
 
-  attribute :animal_only, Animal, strict: true
-  attribute :animal_or_subtype, Animal
+  attribute :amount, PositiveNumber
 end
 
 some_object = SomeClass.new
 
-some_object.animal_only = Animal.new
+some_object.amount = 123
+# => 123
 
-some_object.animal_only = Dog.new
-# => Schema::Attribute::TypeError
-
-some_object.animal_or_subtype = Animal.new
-some_object.animal_or_subtype = Dog.new
-```
-
-If an attribute is defined as strict, it must be declared with a type. If it is not declared with a type, an error will be raised when the class is loaded.
-
-```ruby
-class SomeClass
-  include Schema
-
-  attribute :name, strict: true
-end
-
-# => raises Schema::Attribute::Error
+some_object.amount = -1
+# => Schema::Attribute::Error
 ```
 
 ## Boolean Type
